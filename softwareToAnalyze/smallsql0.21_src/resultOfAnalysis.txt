@@ -1,0 +1,6631 @@
+--------------------------------------------------------------------------------------------
+AGGREGATE ANALYIS OF JAVA CODE OF CODE IN:
+/Users/Edward/eclipse/workspace/Assignment 1/softwareToAnalyze/smallsql0.21_src
+--------------------------------------------------------------------------------------------
+
+Volume rank: 25059 => --
+Duplication rank: 4.94905385700 => +
+Unit size rank: --
+Unit complexity rank: --
+
+--------------------------------------------------------------------------------------------
+RESULTS PER METHOD:
+--------------------------------------------------------------------------------------------
+AllTests
+	createConnection
+		size: 0
+		complexity: 3
+	getConnection
+		size: 0
+		complexity: 3
+	main
+		size: 0
+		complexity: 1
+	printRS
+		size: 0
+		complexity: 3
+	suite
+		size: 1
+		complexity: 1
+
+BasicTestCase
+	BasicTestCase
+		size: 0
+		complexity: 1
+	assertEqualsObject
+		size: 1
+		complexity: 13
+	assertEqualsRsValue
+		size: 3
+		complexity: 23
+	assertRSMetaData
+		size: 0
+		complexity: 3
+	assertRowCount
+		size: 0
+		complexity: 4
+	assertSQLException
+		size: 0
+		complexity: 1
+	bytes2hex
+		size: 0
+		complexity: 2
+	dropTable
+		size: 0
+		complexity: 4
+	dropView
+		size: 0
+		complexity: 1
+	getMonth3L
+		size: 0
+		complexity: 1
+	makeNameValid
+		size: 0
+		complexity: 1
+	printRS
+		size: 0
+		complexity: 3
+	printSQL
+		size: 0
+		complexity: 1
+	string2boolean
+		size: 0
+		complexity: 1
+
+BenchTest
+	createTestDataWithClassicInsert
+		size: 0
+		complexity: 3
+	createTestTable
+		size: 0
+		complexity: 1
+	deleteTestTable
+		size: 0
+		complexity: 1
+	dropTestTable
+		size: 0
+		complexity: 1
+	main
+		size: 2
+		complexity: 9
+	test_DeleteAll
+		size: 0
+		complexity: 1
+	test_DeleteRows
+		size: 1
+		complexity: 6
+	test_InsertClassic
+		size: 1
+		complexity: 3
+	test_InsertEmptyRows
+		size: 1
+		complexity: 3
+	test_InsertRows
+		size: 2
+		complexity: 3
+	test_RowRequestPages
+		size: 1
+		complexity: 8
+	test_Scroll_getXXX
+		size: 1
+		complexity: 2
+	test_UpdateLargeBinary
+		size: 1
+		complexity: 2
+	test_UpdateLargeBinaryWithSP
+		size: 1
+		complexity: 2
+	test_UpdateRows
+		size: 1
+		complexity: 4
+	test_UpdateRowsPrepare
+		size: 1
+		complexity: 3
+	test_UpdateRowsPrepareBatch
+		size: 1
+		complexity: 4
+	test_UpdateRowsPrepareSP
+		size: 1
+		complexity: 3
+
+Column
+	copy
+		size: 0
+		complexity: 1
+	getColumnSize
+		size: 0
+		complexity: 2
+	getDataType
+		size: 0
+		complexity: 1
+	getDefaultDefinition
+		size: 0
+		complexity: 1
+	getDefaultValue
+		size: 0
+		complexity: 2
+	getDisplaySize
+		size: 0
+		complexity: 1
+	getFlag
+		size: 0
+		complexity: 4
+	getName
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 3
+	initAutoIncrement
+		size: 0
+		complexity: 2
+	isAutoIncrement
+		size: 0
+		complexity: 1
+	isCaseSensitive
+		size: 0
+		complexity: 1
+	isNullable
+		size: 0
+		complexity: 1
+	setAutoIncrement
+		size: 0
+		complexity: 1
+	setDataType
+		size: 0
+		complexity: 1
+	setDefaultValue
+		size: 0
+		complexity: 1
+	setFlag
+		size: 0
+		complexity: 1
+	setName
+		size: 0
+		complexity: 1
+	setNewAutoIncrementValue
+		size: 0
+		complexity: 2
+	setNullable
+		size: 0
+		complexity: 1
+	setPrecision
+		size: 0
+		complexity: 2
+	setScale
+		size: 0
+		complexity: 1
+
+ColumnExpression
+	ColumnExpression
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDisplaySize
+		size: 0
+		complexity: 1
+	getName
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 1
+	isAutoIncrement
+		size: 0
+		complexity: 1
+	isCaseSensitive
+		size: 0
+		complexity: 1
+	isNullable
+		size: 0
+		complexity: 1
+
+Columns
+	Columns
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 3
+	copy
+		size: 0
+		complexity: 2
+	get
+		size: 0
+		complexity: 3
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+
+Command
+	Command
+		size: 0
+		complexity: 1
+	addColumnExpression
+		size: 0
+		complexity: 1
+	addParameter
+		size: 0
+		complexity: 1
+	clearParams
+		size: 0
+		complexity: 2
+	execute
+		size: 0
+		complexity: 1
+	getMaxRows
+		size: 0
+		complexity: 1
+	getMoreResults
+		size: 0
+		complexity: 1
+	getParam
+		size: 0
+		complexity: 3
+	getQueryResult
+		size: 0
+		complexity: 2
+	getResultSet
+		size: 0
+		complexity: 1
+	getUpdateCount
+		size: 0
+		complexity: 1
+	setMaxRows
+		size: 0
+		complexity: 1
+	setParamValue
+		size: 0
+		complexity: 2
+	verifyParams
+		size: 0
+		complexity: 3
+
+CommandCreateDatabase
+	CommandCreateDatabase
+		size: 0
+		complexity: 2
+	executeImpl
+		size: 0
+		complexity: 3
+
+CommandCreateView
+	CommandCreateView
+		size: 0
+		complexity: 1
+	addColumn
+		size: 0
+		complexity: 1
+	executeImpl
+		size: 0
+		complexity: 1
+
+CommandDelete
+	CommandDelete
+		size: 0
+		complexity: 1
+	executeImpl
+		size: 0
+		complexity: 2
+
+CommandDrop
+	CommandDrop
+		size: 0
+		complexity: 1
+	executeImpl
+		size: 1
+		complexity: 11
+
+CommandInsert
+	CommandInsert
+		size: 0
+		complexity: 1
+	addColumnExpression
+		size: 0
+		complexity: 2
+	addValues
+		size: 0
+		complexity: 1
+	compile
+		size: 1
+		complexity: 9
+	executeImpl
+		size: 2
+		complexity: 23
+
+CommandLine
+	main
+		size: 1
+		complexity: 7
+	printRS
+		size: 0
+		complexity: 4
+
+CommandSelect
+	CommandSelect
+		size: 0
+		complexity: 1
+	absolute
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	compile
+		size: 2
+		complexity: 26
+	compileAdd_All_Table_Columns
+		size: 0
+		complexity: 2
+	compileJoin
+		size: 0
+		complexity: 4
+	compileLinkExpression
+		size: 0
+		complexity: 2
+	compileLinkExpressionName
+		size: 1
+		complexity: 10
+	compileLinkExpressionParams
+		size: 0
+		complexity: 4
+	deleteRow
+		size: 0
+		complexity: 3
+	executeImpl
+		size: 0
+		complexity: 3
+	findColumn
+		size: 0
+		complexity: 3
+	first
+		size: 0
+		complexity: 1
+	getMaxRows
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 3
+	insertRow
+		size: 1
+		complexity: 9
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isGroupResult
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 3
+	next
+		size: 0
+		complexity: 3
+	previous
+		size: 0
+		complexity: 1
+	relative
+		size: 0
+		complexity: 1
+	setDistinct
+		size: 0
+		complexity: 1
+	setGroup
+		size: 0
+		complexity: 1
+	setHaving
+		size: 0
+		complexity: 1
+	setMaxRows
+		size: 0
+		complexity: 1
+	setOrder
+		size: 0
+		complexity: 1
+	setSource
+		size: 0
+		complexity: 1
+	setTables
+		size: 0
+		complexity: 1
+	setWhere
+		size: 0
+		complexity: 1
+	updateRow
+		size: 1
+		complexity: 8
+
+CommandSet
+	CommandSet
+		size: 0
+		complexity: 1
+	executeImpl
+		size: 0
+		complexity: 3
+
+CommandTable
+	CommandTable
+		size: 0
+		complexity: 1
+	addColumn
+		size: 0
+		complexity: 2
+	addForeingnKey
+		size: 0
+		complexity: 1
+	addIndex
+		size: 0
+		complexity: 1
+	executeImpl
+		size: 1
+		complexity: 7
+
+CommandUpdate
+	CommandUpdate
+		size: 0
+		complexity: 1
+	addSetting
+		size: 0
+		complexity: 1
+	executeImpl
+		size: 1
+		complexity: 4
+
+CreateFile
+	CreateFile
+		size: 0
+		complexity: 1
+	commit
+		size: 0
+		complexity: 1
+	rollback
+		size: 0
+		complexity: 3
+
+DataSource
+	getAlias
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 1
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 3
+
+DataSources
+	add
+		size: 0
+		complexity: 2
+	get
+		size: 0
+		complexity: 2
+	size
+		size: 0
+		complexity: 1
+
+Database
+	Database
+		size: 0
+		complexity: 3
+	checkForeignKeys
+		size: 0
+		complexity: 3
+	close
+		size: 0
+		complexity: 2
+	closeConnection
+		size: 0
+		complexity: 3
+	createTable
+		size: 0
+		complexity: 1
+	createView
+		size: 0
+		complexity: 1
+	dropTable
+		size: 0
+		complexity: 2
+	dropView
+		size: 0
+		complexity: 3
+	getBestRowIdentifier
+		size: 1
+		complexity: 6
+	getCatalogs
+		size: 0
+		complexity: 6
+	getColumns
+		size: 1
+		complexity: 4
+	getDatabase
+		size: 0
+		complexity: 2
+	getIndexInfo
+		size: 1
+		complexity: 5
+	getName
+		size: 0
+		complexity: 1
+	getPrimaryKeys
+		size: 1
+		complexity: 6
+	getReferenceKeys
+		size: 1
+		complexity: 8
+	getTableView
+		size: 0
+		complexity: 2
+	getTables
+		size: 0
+		complexity: 5
+	isReadOnly
+		size: 0
+		complexity: 1
+	removeTableView
+		size: 0
+		complexity: 1
+	replaceTable
+		size: 0
+		complexity: 3
+
+DateTime
+	DateTime
+		size: 0
+		complexity: 5
+	addDateTimeOffset
+		size: 0
+		complexity: 2
+	calcMillis
+		size: 0
+		complexity: 5
+	dayOfWeek
+		size: 0
+		complexity: 1
+	equals
+		size: 0
+		complexity: 2
+	formatHour12
+		size: 0
+		complexity: 2
+	formatMillis
+		size: 0
+		complexity: 3
+	formatNumber
+		size: 0
+		complexity: 3
+	getDataType
+		size: 0
+		complexity: 1
+	getDate
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 3
+	getTime
+		size: 0
+		complexity: 1
+	getTimeMillis
+		size: 0
+		complexity: 1
+	getTimestamp
+		size: 0
+		complexity: 1
+	isLeapYear
+		size: 0
+		complexity: 1
+	now
+		size: 0
+		complexity: 1
+	parse
+		size: 3
+		complexity: 26
+	removeDateTimeOffset
+		size: 0
+		complexity: 1
+	toString
+		size: 3
+		complexity: 40
+	valueOf
+		size: 0
+		complexity: 2
+
+Details
+	Details
+		size: 1
+		complexity: 11
+
+Distinct
+	Distinct
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 1
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 1
+	isScrollable
+		size: 0
+		complexity: 1
+	next
+		size: 0
+		complexity: 5
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+
+Entry
+	Entry
+		size: 0
+		complexity: 1
+
+Expression
+	Expression
+		size: 0
+		complexity: 1
+	clone
+		size: 0
+		complexity: 1
+	equals
+		size: 1
+		complexity: 11
+	getAlias
+		size: 0
+		complexity: 1
+	getApiObject
+		size: 0
+		complexity: 2
+	getDisplaySize
+		size: 0
+		complexity: 1
+	getName
+		size: 0
+		complexity: 1
+	getParams
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 6
+	getTableName
+		size: 0
+		complexity: 1
+	getType
+		size: 0
+		complexity: 1
+	isAutoIncrement
+		size: 0
+		complexity: 1
+	isCaseSensitive
+		size: 0
+		complexity: 1
+	isDefinitelyWritable
+		size: 0
+		complexity: 1
+	isNullable
+		size: 0
+		complexity: 1
+	optimize
+		size: 0
+		complexity: 3
+	setAlias
+		size: 0
+		complexity: 1
+	setName
+		size: 0
+		complexity: 1
+	setParamAt
+		size: 0
+		complexity: 1
+	setParams
+		size: 0
+		complexity: 1
+
+ExpressionArithmetic
+	ExpressionArithmetic
+		size: 0
+		complexity: 2
+	convertExpressionIfNeeded
+		size: 1
+		complexity: 15
+	createUnspportedConversion
+		size: 0
+		complexity: 2
+	createUnspportedDataType
+		size: 0
+		complexity: 1
+	equals
+		size: 0
+		complexity: 4
+	getBestNumberDataType
+		size: 0
+		complexity: 6
+	getBoolean
+		size: 3
+		complexity: 119
+	getBytes
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 3
+	getDouble
+		size: 1
+		complexity: 15
+	getDoubleImpl
+		size: 0
+		complexity: 6
+	getFloat
+		size: 1
+		complexity: 15
+	getFloatImpl
+		size: 0
+		complexity: 6
+	getInt
+		size: 1
+		complexity: 15
+	getIntImpl
+		size: 0
+		complexity: 7
+	getKeywordFromOperation
+		size: 0
+		complexity: 6
+	getLong
+		size: 1
+		complexity: 15
+	getLongImpl
+		size: 0
+		complexity: 8
+	getMoney
+		size: 1
+		complexity: 15
+	getMoneyImpl
+		size: 0
+		complexity: 5
+	getNumeric
+		size: 1
+		complexity: 14
+	getNumericImpl
+		size: 2
+		complexity: 11
+	getObject
+		size: 2
+		complexity: 33
+	getOperation
+		size: 0
+		complexity: 1
+	getOperationFromToken
+		size: 1
+		complexity: 23
+	getScale
+		size: 0
+		complexity: 7
+	getString
+		size: 0
+		complexity: 1
+	isInList
+		size: 0
+		complexity: 4
+	isNull
+		size: 0
+		complexity: 10
+	optimize
+		size: 0
+		complexity: 3
+	setParamAt
+		size: 0
+		complexity: 8
+
+ExpressionFunction
+	ExpressionFunction
+		size: 0
+		complexity: 1
+	createUnspportedConversion
+		size: 0
+		complexity: 1
+	createUnspportedDataType
+		size: 0
+		complexity: 1
+	equals
+		size: 0
+		complexity: 3
+	getBytes
+		size: 0
+		complexity: 1
+	setParamAt
+		size: 0
+		complexity: 4
+	setParams
+		size: 0
+		complexity: 5
+
+ExpressionFunctionACos
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionASin
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionATan
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionATan2
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionAbs
+	getBoolean
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 3
+	getObject
+		size: 1
+		complexity: 18
+	getString
+		size: 0
+		complexity: 2
+
+ExpressionFunctionAscii
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 3
+	getObject
+		size: 0
+		complexity: 3
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionBitLen
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionCase
+	ExpressionFunctionCase
+		size: 0
+		complexity: 1
+	addCase
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 3
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 2
+	getResult
+		size: 0
+		complexity: 3
+	getScale
+		size: 0
+		complexity: 2
+	getString
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	setElseResult
+		size: 0
+		complexity: 1
+	setEnd
+		size: 0
+		complexity: 3
+	setParamAt
+		size: 0
+		complexity: 3
+	setParams
+		size: 0
+		complexity: 3
+
+ExpressionFunctionCeiling
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionChar
+	getDataType
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+
+ExpressionFunctionCharLen
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionConvert
+	ExpressionFunctionConvert
+		size: 0
+		complexity: 2
+	convertToString
+		size: 0
+		complexity: 6
+	getBoolean
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDateTimeLong
+		size: 0
+		complexity: 3
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 2
+		complexity: 35
+	getPrecision
+		size: 0
+		complexity: 7
+	getScale
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 6
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionCos
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionCot
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionDayOfMonth
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionFunctionDayOfWeek
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionFunctionDayOfYear
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionFunctionDegrees
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionDifference
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 4
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionExp
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionFloor
+	getDouble
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+
+ExpressionFunctionHour
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionFunctionIIF
+	getBoolean
+		size: 0
+		complexity: 2
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 2
+	getFloat
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+	getLong
+		size: 0
+		complexity: 2
+	getMoney
+		size: 0
+		complexity: 2
+	getNumeric
+		size: 0
+		complexity: 2
+	getObject
+		size: 0
+		complexity: 2
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 2
+
+ExpressionFunctionInsert
+	getBytes
+		size: 0
+		complexity: 3
+	getFunction
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 3
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionLCase
+	getBytes
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionLTrim
+	getBytes
+		size: 0
+		complexity: 4
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 4
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionLeft
+	getBytes
+		size: 0
+		complexity: 3
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionLength
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 4
+
+ExpressionFunctionLocate
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 6
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionLog
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionLog10
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionMinute
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionFunctionMod
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionMonth
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionFunctionOctetLen
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionPI
+	getDouble
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionPower
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionRTrim
+	getBytes
+		size: 0
+		complexity: 4
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 4
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionRadians
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionRand
+	getDouble
+		size: 0
+		complexity: 3
+	getFunction
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionRepeat
+	getBytes
+		size: 0
+		complexity: 3
+	getFunction
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 3
+
+ExpressionFunctionReplace
+	getBytes
+		size: 1
+		complexity: 5
+	getFunction
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getString
+		size: 1
+		complexity: 5
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionReturnFloat
+	getBoolean
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 4
+	getObject
+		size: 0
+		complexity: 2
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionReturnInt
+	getBoolean
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 2
+	getObject
+		size: 0
+		complexity: 2
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionReturnP1
+	getDataType
+		size: 0
+		complexity: 1
+	getObject
+		size: 1
+		complexity: 30
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionReturnP1Number
+	getBoolean
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 7
+	getString
+		size: 0
+		complexity: 2
+
+ExpressionFunctionReturnP1StringAndBinary
+	getBoolean
+		size: 0
+		complexity: 2
+	getDouble
+		size: 0
+		complexity: 2
+	getFloat
+		size: 0
+		complexity: 2
+	getInt
+		size: 0
+		complexity: 2
+	getLong
+		size: 0
+		complexity: 2
+	getMoney
+		size: 0
+		complexity: 2
+	getNumeric
+		size: 0
+		complexity: 2
+	getObject
+		size: 0
+		complexity: 2
+
+ExpressionFunctionReturnString
+	getBoolean
+		size: 0
+		complexity: 2
+	getDouble
+		size: 0
+		complexity: 2
+	getFloat
+		size: 0
+		complexity: 2
+	getInt
+		size: 0
+		complexity: 2
+	getLong
+		size: 0
+		complexity: 2
+	getMoney
+		size: 0
+		complexity: 2
+	getNumeric
+		size: 0
+		complexity: 2
+	getObject
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionRight
+	getBytes
+		size: 0
+		complexity: 3
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionRound
+	getDouble
+		size: 1
+		complexity: 6
+	getFunction
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionSign
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 1
+		complexity: 15
+
+ExpressionFunctionSin
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionSoundex
+	getBytes
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getString
+		size: 2
+		complexity: 25
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionSpace
+	getDataType
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 4
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionSqrt
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionSubstring
+	getBytes
+		size: 0
+		complexity: 6
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 3
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionTan
+	getDouble
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+
+ExpressionFunctionTimestampAdd
+	ExpressionFunctionTimestampAdd
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 1
+		complexity: 11
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 2
+	getObject
+		size: 0
+		complexity: 2
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionTimestampDiff
+	ExpressionFunctionTimestampDiff
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 1
+		complexity: 11
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 2
+	getObject
+		size: 0
+		complexity: 2
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+	mapIntervalType
+		size: 1
+		complexity: 11
+
+ExpressionFunctionTruncate
+	getDouble
+		size: 1
+		complexity: 6
+	getFunction
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionUCase
+	getBytes
+		size: 0
+		complexity: 2
+	getFunction
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 2
+	isNull
+		size: 0
+		complexity: 1
+
+ExpressionFunctionYear
+	getFunction
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 2
+
+ExpressionInSelect
+	ExpressionInSelect
+		size: 0
+		complexity: 1
+	isInList
+		size: 0
+		complexity: 1
+	loadInList
+		size: 0
+		complexity: 4
+
+ExpressionName
+	ExpressionName
+		size: 0
+		complexity: 1
+	equals
+		size: 0
+		complexity: 4
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getColumn
+		size: 0
+		complexity: 1
+	getColumnIndex
+		size: 0
+		complexity: 1
+	getDataSource
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 9
+	getDisplaySize
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTable
+		size: 0
+		complexity: 1
+	getTableAlias
+		size: 0
+		complexity: 1
+	getTableName
+		size: 0
+		complexity: 2
+	isAutoIncrement
+		size: 0
+		complexity: 1
+	isCaseSensitive
+		size: 0
+		complexity: 1
+	isDefinitelyWritable
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	isNullable
+		size: 0
+		complexity: 1
+	setFrom
+		size: 0
+		complexity: 1
+	setNameAfterTableAlias
+		size: 0
+		complexity: 1
+	toString
+		size: 0
+		complexity: 2
+
+ExpressionValue
+	ExpressionValue
+		size: 0
+		complexity: 1
+	accumulate
+		size: 3
+		complexity: 69
+	clear
+		size: 0
+		complexity: 1
+	createUnsupportedConversion
+		size: 0
+		complexity: 1
+	equals
+		size: 0
+		complexity: 5
+	getBoolean
+		size: 0
+		complexity: 11
+	getBytes
+		size: 1
+		complexity: 13
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 12
+	getFloat
+		size: 0
+		complexity: 14
+	getInt
+		size: 1
+		complexity: 19
+	getLong
+		size: 1
+		complexity: 17
+	getMoney
+		size: 0
+		complexity: 13
+	getNumeric
+		size: 1
+		complexity: 17
+	getObject
+		size: 0
+		complexity: 2
+	getPrecision
+		size: 0
+		complexity: 5
+	getScale
+		size: 0
+		complexity: 4
+	getString
+		size: 0
+		complexity: 4
+	getTableName
+		size: 0
+		complexity: 1
+	initValue
+		size: 1
+		complexity: 16
+	isEmpty
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	set
+		size: 0
+		complexity: 1
+
+Expressions
+	Expressions
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	addAll
+		size: 0
+		complexity: 2
+	clear
+		size: 0
+		complexity: 1
+	get
+		size: 0
+		complexity: 2
+	indexOf
+		size: 0
+		complexity: 6
+	remove
+		size: 0
+		complexity: 1
+	resize
+		size: 0
+		complexity: 1
+	set
+		size: 0
+		complexity: 1
+	setSize
+		size: 0
+		complexity: 3
+	size
+		size: 0
+		complexity: 1
+	toArray
+		size: 0
+		complexity: 1
+
+FileIndex
+	FileIndex
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 1
+	load
+		size: 0
+		complexity: 1
+	print
+		size: 0
+		complexity: 2
+	save
+		size: 0
+		complexity: 1
+
+FileIndexNode
+	FileIndexNode
+		size: 0
+		complexity: 1
+	createIndexNode
+		size: 0
+		complexity: 1
+	loadRef
+		size: 0
+		complexity: 1
+	loadRootNode
+		size: 0
+		complexity: 1
+	save
+		size: 0
+		complexity: 1
+	saveRef
+		size: 0
+		complexity: 2
+
+ForeignKey
+	ForeignKey
+		size: 0
+		complexity: 1
+
+ForeignKeys
+	ForeignKeys
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	get
+		size: 0
+		complexity: 2
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+
+GroupResult
+	GroupResult
+		size: 0
+		complexity: 6
+	accumulateRow
+		size: 0
+		complexity: 2
+	addGroupRow
+		size: 0
+		complexity: 3
+	addInternalExpressionFromGroupBy
+		size: 0
+		complexity: 3
+	addInternalExpressionFromSelect
+		size: 1
+		complexity: 8
+	execute
+		size: 0
+		complexity: 3
+	patchExpression
+		size: 1
+		complexity: 9
+	patchExpressions
+		size: 0
+		complexity: 3
+
+Identity
+	Identity
+		size: 0
+		complexity: 1
+	createNextValue
+		size: 0
+		complexity: 1
+	createStorePage
+		size: 0
+		complexity: 1
+	doubleValue
+		size: 0
+		complexity: 1
+	floatValue
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 0
+		complexity: 1
+	setNextValue
+		size: 0
+		complexity: 2
+	toString
+		size: 0
+		complexity: 1
+
+Index
+	Index
+		size: 0
+		complexity: 1
+	add
+		size: 1
+		complexity: 10
+	addNull
+		size: 0
+		complexity: 2
+	addValues
+		size: 2
+		complexity: 31
+	bytesToBinarySortOrder
+		size: 0
+		complexity: 2
+	clear
+		size: 0
+		complexity: 1
+	createScrollStatus
+		size: 0
+		complexity: 1
+	doubleToBinarySortOrder
+		size: 0
+		complexity: 2
+	equals
+		size: 0
+		complexity: 5
+	find
+		size: 0
+		complexity: 8
+	findNull
+		size: 0
+		complexity: 1
+	findRows
+		size: 2
+		complexity: 32
+	floatToBinarySortOrder
+		size: 0
+		complexity: 2
+	intToBinarySortOrder
+		size: 0
+		complexity: 1
+	longToBinarySortOrder
+		size: 0
+		complexity: 1
+	numericToBinarySortOrder
+		size: 0
+		complexity: 4
+	removeValue
+		size: 0
+		complexity: 5
+	shortToBinarySortOrder
+		size: 0
+		complexity: 1
+	stringToBinarySortOrder
+		size: 0
+		complexity: 5
+
+IndexDescription
+	IndexDescription
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 2
+	create
+		size: 0
+		complexity: 1
+	createFile
+		size: 0
+		complexity: 3
+	createName
+		size: 0
+		complexity: 2
+	drop
+		size: 0
+		complexity: 2
+	getColumns
+		size: 0
+		complexity: 1
+	getFile
+		size: 0
+		complexity: 1
+	getName
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 3
+	isPrimary
+		size: 0
+		complexity: 1
+	isUnique
+		size: 0
+		complexity: 1
+	load
+		size: 0
+		complexity: 2
+	matchFactor
+		size: 0
+		complexity: 2
+	save
+		size: 0
+		complexity: 2
+	writeExpression
+		size: 0
+		complexity: 2
+	writeFinish
+		size: 0
+		complexity: 1
+	writeMagic
+		size: 0
+		complexity: 1
+
+IndexDescriptions
+	IndexDescriptions
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	close
+		size: 0
+		complexity: 2
+	create
+		size: 0
+		complexity: 2
+	drop
+		size: 0
+		complexity: 2
+	findBestMatch
+		size: 0
+		complexity: 5
+	get
+		size: 0
+		complexity: 2
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+
+IndexNode
+	IndexNode
+		size: 0
+		complexity: 1
+	addNode
+		size: 0
+		complexity: 2
+	addRemainderKey
+		size: 0
+		complexity: 2
+	addRoot
+		size: 0
+		complexity: 2
+	addRootValue
+		size: 0
+		complexity: 1
+	clear
+		size: 0
+		complexity: 1
+	clearValue
+		size: 0
+		complexity: 1
+	createIndexNode
+		size: 0
+		complexity: 1
+	findNodeInsertPos
+		size: 0
+		complexity: 5
+	findNodePos
+		size: 0
+		complexity: 5
+	getChildNode
+		size: 0
+		complexity: 2
+	getChildNodes
+		size: 0
+		complexity: 1
+	getDigit
+		size: 0
+		complexity: 1
+	getRemainderValue
+		size: 0
+		complexity: 1
+	getUnique
+		size: 0
+		complexity: 1
+	getValue
+		size: 0
+		complexity: 1
+	isEmpty
+		size: 0
+		complexity: 1
+	load
+		size: 1
+		complexity: 7
+	loadRef
+		size: 0
+		complexity: 1
+	moveRemainderValue
+		size: 0
+		complexity: 2
+	moveRemainderValueSub
+		size: 0
+		complexity: 1
+	removeNode
+		size: 0
+		complexity: 2
+	save
+		size: 1
+		complexity: 8
+	saveNode
+		size: 0
+		complexity: 2
+	saveRef
+		size: 0
+		complexity: 1
+	saveRemainderValue
+		size: 0
+		complexity: 2
+	saveValue
+		size: 0
+		complexity: 4
+
+IndexNodeScrollStatus
+	IndexNodeScrollStatus
+		size: 0
+		complexity: 2
+	afterLast
+		size: 0
+		complexity: 2
+
+IndexScrollStatus
+	IndexScrollStatus
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	getReturnValue
+		size: 0
+		complexity: 2
+	getRowOffset
+		size: 2
+		complexity: 17
+	reset
+		size: 0
+		complexity: 1
+
+Join
+	Join
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	createJoinScrollIndex
+		size: 1
+		complexity: 12
+	execute
+		size: 0
+		complexity: 2
+	first
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 2
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 7
+	isScrollable
+		size: 0
+		complexity: 1
+	next
+		size: 0
+		complexity: 3
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+
+JoinScroll
+	JoinScroll
+		size: 0
+		complexity: 2
+	beforeFirst
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	next
+		size: 2
+		complexity: 25
+
+JoinScrollIndex
+	JoinScrollIndex
+		size: 0
+		complexity: 1
+	createIndex
+		size: 0
+		complexity: 2
+	next
+		size: 0
+		complexity: 2
+	nextEquals
+		size: 1
+		complexity: 6
+
+Language
+	Language
+		size: 0
+		complexity: 1
+	addMessages
+		size: 0
+		complexity: 3
+	getDefaultLanguage
+		size: 0
+		complexity: 1
+	getEntries
+		size: 0
+		complexity: 1
+	getFromLocaleTree
+		size: 1
+		complexity: 3
+	getLanguage
+		size: 0
+		complexity: 1
+	getMessage
+		size: 0
+		complexity: 1
+	getSqlState
+		size: 0
+		complexity: 1
+	setSqlStates
+		size: 0
+		complexity: 3
+
+Language_de
+	Language_de
+		size: 0
+		complexity: 1
+	getEntries
+		size: 0
+		complexity: 1
+
+Language_it
+	Language_it
+		size: 0
+		complexity: 1
+	getEntries
+		size: 0
+		complexity: 1
+
+Lobs
+	Lobs
+		size: 0
+		complexity: 1
+	getFile
+		size: 0
+		complexity: 1
+
+Logger
+	isLogging
+		size: 0
+		complexity: 1
+	println
+		size: 0
+		complexity: 2
+
+LongList
+	LongList
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	clear
+		size: 0
+		complexity: 1
+	get
+		size: 0
+		complexity: 2
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+
+LongLongList
+	LongLongList
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	clear
+		size: 0
+		complexity: 1
+	get1
+		size: 0
+		complexity: 2
+	get2
+		size: 0
+		complexity: 2
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+
+LongTreeList
+	LongTreeList
+		size: 0
+		complexity: 1
+	add
+		size: 1
+		complexity: 11
+	correctPointers
+		size: 1
+		complexity: 9
+	getNext
+		size: 1
+		complexity: 7
+	getPointer
+		size: 0
+		complexity: 2
+	getPrevious
+		size: 1
+		complexity: 7
+	getSize
+		size: 0
+		complexity: 1
+	getUnsignedShort
+		size: 0
+		complexity: 1
+	insertNode
+		size: 0
+		complexity: 2
+	insertNodeLastLevel
+		size: 0
+		complexity: 2
+	loopToEndOfNode
+		size: 0
+		complexity: 4
+	remove
+		size: 2
+		complexity: 12
+	removeNode
+		size: 0
+		complexity: 1
+	removeNodeLastLevel
+		size: 0
+		complexity: 1
+	resize
+		size: 0
+		complexity: 3
+	save
+		size: 0
+		complexity: 1
+	setPreviousOffset
+		size: 0
+		complexity: 4
+	writePointer
+		size: 0
+		complexity: 2
+	writeShort
+		size: 0
+		complexity: 1
+
+LongTreeListEnum
+	reset
+		size: 0
+		complexity: 1
+
+MemoryResult
+	MemoryResult
+		size: 1
+		complexity: 6
+	absolute
+		size: 0
+		complexity: 3
+	addColumn
+		size: 0
+		complexity: 1
+	addRow
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	deleteRow
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 1
+	get
+		size: 0
+		complexity: 2
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getColumn
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 2
+	getRowCount
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTableView
+		size: 0
+		complexity: 1
+	insertRow
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	isScrollable
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	move
+		size: 0
+		complexity: 3
+	next
+		size: 0
+		complexity: 1
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 2
+	relative
+		size: 0
+		complexity: 2
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+	updateRow
+		size: 0
+		complexity: 1
+
+MemoryStream
+	MemoryStream
+		size: 0
+		complexity: 1
+	readByte
+		size: 0
+		complexity: 1
+	readBytes
+		size: 0
+		complexity: 1
+	readChars
+		size: 0
+		complexity: 2
+	readInt
+		size: 0
+		complexity: 1
+	readLong
+		size: 0
+		complexity: 1
+	readShort
+		size: 0
+		complexity: 1
+	skip
+		size: 0
+		complexity: 1
+	verifyFreePufferSize
+		size: 0
+		complexity: 3
+	writeByte
+		size: 0
+		complexity: 1
+	writeBytes
+		size: 0
+		complexity: 1
+	writeChars
+		size: 0
+		complexity: 2
+	writeInt
+		size: 0
+		complexity: 1
+	writeLong
+		size: 0
+		complexity: 1
+	writeShort
+		size: 0
+		complexity: 1
+	writeTo
+		size: 0
+		complexity: 1
+
+Money
+	Money
+		size: 0
+		complexity: 1
+	createFromUnscaledValue
+		size: 0
+		complexity: 1
+	doubleValue
+		size: 0
+		complexity: 1
+	equals
+		size: 0
+		complexity: 1
+	floatValue
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	hashCode
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 0
+		complexity: 1
+	parseMoney
+		size: 0
+		complexity: 1
+	toBigDecimal
+		size: 0
+		complexity: 2
+	toByteArray
+		size: 0
+		complexity: 1
+	toString
+		size: 0
+		complexity: 1
+	unscaledValue
+		size: 0
+		complexity: 1
+
+MutableDouble
+	MutableDouble
+		size: 0
+		complexity: 1
+	doubleValue
+		size: 0
+		complexity: 1
+	floatValue
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 0
+		complexity: 1
+	toString
+		size: 0
+		complexity: 1
+
+MutableFloat
+	MutableFloat
+		size: 0
+		complexity: 1
+	doubleValue
+		size: 0
+		complexity: 1
+	floatValue
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 0
+		complexity: 1
+	toString
+		size: 0
+		complexity: 1
+
+MutableInteger
+	MutableInteger
+		size: 0
+		complexity: 1
+	doubleValue
+		size: 0
+		complexity: 1
+	floatValue
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 0
+		complexity: 1
+	toString
+		size: 0
+		complexity: 1
+
+MutableLong
+	MutableLong
+		size: 0
+		complexity: 1
+	doubleValue
+		size: 0
+		complexity: 1
+	floatValue
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 0
+		complexity: 1
+	toString
+		size: 0
+		complexity: 1
+
+MutableNumeric
+	MutableNumeric
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 5
+	compareTo
+		size: 0
+		complexity: 1
+	div
+		size: 0
+		complexity: 1
+	divImpl
+		size: 1
+		complexity: 10
+	doubleValue
+		size: 0
+		complexity: 8
+	equals
+		size: 0
+		complexity: 2
+	floatValue
+		size: 0
+		complexity: 8
+	floor
+		size: 0
+		complexity: 1
+	getImmutableObject
+		size: 0
+		complexity: 1
+	getInternalValue
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 1
+	getSignum
+		size: 0
+		complexity: 1
+	intValue
+		size: 0
+		complexity: 1
+	longValue
+		size: 1
+		complexity: 10
+	mod
+		size: 0
+		complexity: 1
+	mul
+		size: 0
+		complexity: 4
+	negate
+		size: 0
+		complexity: 4
+	resizeValue
+		size: 0
+		complexity: 1
+	setScale
+		size: 1
+		complexity: 7
+	setSignum
+		size: 0
+		complexity: 1
+	setValue
+		size: 1
+		complexity: 8
+	sub
+		size: 0
+		complexity: 7
+	toBigDecimal
+		size: 0
+		complexity: 2
+	toByteArray
+		size: 1
+		complexity: 10
+	toString
+		size: 1
+		complexity: 11
+
+NoFromResult
+	absolute
+		size: 0
+		complexity: 2
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 2
+	getRowPosition
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 1
+	isScrollable
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	next
+		size: 0
+		complexity: 1
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 1
+	relative
+		size: 0
+		complexity: 2
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+
+RowSource
+	absolute
+		size: 0
+		complexity: 1
+	hasAlias
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 1
+	relative
+		size: 0
+		complexity: 1
+	setAlias
+		size: 0
+		complexity: 1
+
+SQLParser
+	addColumn
+		size: 2
+		complexity: 16
+	alter
+		size: 0
+		complexity: 6
+	alterTable
+		size: 0
+		complexity: 4
+	caseExpr
+		size: 1
+		complexity: 7
+	checkValidIdentifier
+		size: 0
+		complexity: 8
+	create
+		size: 1
+		complexity: 11
+	createDatabase
+		size: 0
+		complexity: 2
+	createIndex
+		size: 0
+		complexity: 2
+	createProcedure
+		size: 0
+		complexity: 1
+	createSyntaxError
+		size: 0
+		complexity: 5
+	createTable
+		size: 0
+		complexity: 2
+	createView
+		size: 0
+		complexity: 1
+	datatype
+		size: 3
+		complexity: 38
+	delete
+		size: 0
+		complexity: 3
+	drop
+		size: 0
+		complexity: 7
+	execute
+		size: 0
+		complexity: 1
+	expression
+		size: 2
+		complexity: 31
+	expressionDefList
+		size: 0
+		complexity: 2
+	expressionParenthesisList
+		size: 0
+		complexity: 6
+	expressionSingle
+		size: 3
+		complexity: 39
+	expressionTokenList
+		size: 1
+		complexity: 8
+	from
+		size: 0
+		complexity: 5
+	function
+		size: 3
+		complexity: 82
+	getErrorString
+		size: 1
+		complexity: 4
+	getIdentifier
+		size: 0
+		complexity: 1
+	group
+		size: 0
+		complexity: 1
+	having
+		size: 0
+		complexity: 1
+	index
+		size: 1
+		complexity: 6
+	insert
+		size: 0
+		complexity: 4
+	isKeyword
+		size: 0
+		complexity: 14
+	join
+		size: 0
+		complexity: 6
+	lastToken
+		size: 0
+		complexity: 2
+	limit
+		size: 0
+		complexity: 1
+	nextIdentiferPart
+		size: 0
+		complexity: 3
+	nextIdentifier
+		size: 0
+		complexity: 1
+	nextToken
+		size: 0
+		complexity: 8
+	order
+		size: 0
+		complexity: 1
+	parse
+		size: 1
+		complexity: 12
+	parseExpression
+		size: 0
+		complexity: 1
+	previousToken
+		size: 0
+		complexity: 1
+	rowSource
+		size: 2
+		complexity: 20
+	select
+		size: 1
+		complexity: 8
+	set
+		size: 0
+		complexity: 2
+	setTransaction
+		size: 1
+		complexity: 6
+	singleSelect
+		size: 1
+		complexity: 12
+	tableSource
+		size: 1
+		complexity: 7
+	truncate
+		size: 0
+		complexity: 1
+	update
+		size: 1
+		complexity: 6
+	where
+		size: 0
+		complexity: 1
+
+SQLToken
+	SQLToken
+		size: 0
+		complexity: 1
+	getName
+		size: 0
+		complexity: 2
+
+SQLTokenizer
+	addKeyWord
+		size: 1
+		complexity: 7
+	getKeyWord
+		size: 0
+		complexity: 1
+	getSQLDataType
+		size: 2
+		complexity: 33
+	parseSQL
+		size: 3
+		complexity: 84
+
+SSCallableStatement
+	SSCallableStatement
+		size: 0
+		complexity: 1
+	findParameter
+		size: 0
+		complexity: 1
+	getArray
+		size: 0
+		complexity: 1
+	getBigDecimal
+		size: 0
+		complexity: 1
+	getBlob
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getByte
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getClob
+		size: 0
+		complexity: 1
+	getDate
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getRef
+		size: 0
+		complexity: 1
+	getShort
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTime
+		size: 0
+		complexity: 1
+	getTimestamp
+		size: 0
+		complexity: 1
+	getURL
+		size: 0
+		complexity: 1
+	getValue
+		size: 0
+		complexity: 1
+	registerOutParameter
+		size: 0
+		complexity: 1
+	setAsciiStream
+		size: 0
+		complexity: 1
+	setBigDecimal
+		size: 0
+		complexity: 1
+	setBinaryStream
+		size: 0
+		complexity: 1
+	setBoolean
+		size: 0
+		complexity: 1
+	setByte
+		size: 0
+		complexity: 1
+	setBytes
+		size: 0
+		complexity: 1
+	setCharacterStream
+		size: 0
+		complexity: 1
+	setDate
+		size: 0
+		complexity: 1
+	setDouble
+		size: 0
+		complexity: 1
+	setFloat
+		size: 0
+		complexity: 1
+	setInt
+		size: 0
+		complexity: 1
+	setLong
+		size: 0
+		complexity: 1
+	setNull
+		size: 0
+		complexity: 1
+	setObject
+		size: 0
+		complexity: 1
+	setShort
+		size: 0
+		complexity: 1
+	setString
+		size: 0
+		complexity: 1
+	setTime
+		size: 0
+		complexity: 1
+	setTimestamp
+		size: 0
+		complexity: 1
+	setURL
+		size: 0
+		complexity: 1
+	wasNull
+		size: 0
+		complexity: 1
+
+SSConnection
+	SSConnection
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 1
+	clearWarnings
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 1
+	commit
+		size: 1
+		complexity: 3
+	createStatement
+		size: 0
+		complexity: 1
+	getAutoCommit
+		size: 0
+		complexity: 1
+	getCatalog
+		size: 0
+		complexity: 2
+	getDatabase
+		size: 0
+		complexity: 3
+	getHoldability
+		size: 0
+		complexity: 1
+	getMetaData
+		size: 0
+		complexity: 1
+	getMonitor
+		size: 0
+		complexity: 1
+	getSavepoint
+		size: 0
+		complexity: 1
+	getTransactionIsolation
+		size: 0
+		complexity: 1
+	getTypeMap
+		size: 0
+		complexity: 1
+	getWarnings
+		size: 0
+		complexity: 1
+	isClosed
+		size: 0
+		complexity: 1
+	isReadOnly
+		size: 0
+		complexity: 1
+	nativeSQL
+		size: 0
+		complexity: 1
+	prepareCall
+		size: 0
+		complexity: 1
+	prepareStatement
+		size: 0
+		complexity: 1
+	releaseSavepoint
+		size: 0
+		complexity: 2
+	rollback
+		size: 0
+		complexity: 3
+	rollbackFile
+		size: 0
+		complexity: 3
+	setAutoCommit
+		size: 0
+		complexity: 3
+	setCatalog
+		size: 0
+		complexity: 1
+	setHoldability
+		size: 0
+		complexity: 1
+	setReadOnly
+		size: 0
+		complexity: 1
+	setSavepoint
+		size: 0
+		complexity: 1
+	setTransactionIsolation
+		size: 0
+		complexity: 2
+	setTypeMap
+		size: 0
+		complexity: 1
+	testClosedConnection
+		size: 0
+		complexity: 2
+
+SSDatabaseMetaData
+	SSDatabaseMetaData
+		size: 0
+		complexity: 1
+	allProceduresAreCallable
+		size: 0
+		complexity: 1
+	allTablesAreSelectable
+		size: 0
+		complexity: 1
+	dataDefinitionCausesTransactionCommit
+		size: 0
+		complexity: 1
+	dataDefinitionIgnoredInTransactions
+		size: 0
+		complexity: 1
+	deletesAreDetected
+		size: 0
+		complexity: 1
+	doesMaxRowSizeIncludeBlobs
+		size: 0
+		complexity: 1
+	getAttributes
+		size: 0
+		complexity: 1
+	getBestRowIdentifier
+		size: 0
+		complexity: 1
+	getCatalogSeparator
+		size: 0
+		complexity: 1
+	getCatalogTerm
+		size: 0
+		complexity: 1
+	getCatalogs
+		size: 0
+		complexity: 1
+	getColumnPrivileges
+		size: 0
+		complexity: 1
+	getColumns
+		size: 0
+		complexity: 1
+	getConnection
+		size: 0
+		complexity: 1
+	getCrossReference
+		size: 0
+		complexity: 1
+	getDatabaseMajorVersion
+		size: 0
+		complexity: 1
+	getDatabaseMinorVersion
+		size: 0
+		complexity: 1
+	getDatabaseProductName
+		size: 0
+		complexity: 1
+	getDatabaseProductVersion
+		size: 0
+		complexity: 1
+	getDefaultTransactionIsolation
+		size: 0
+		complexity: 1
+	getDriverMajorVersion
+		size: 0
+		complexity: 1
+	getDriverMinorVersion
+		size: 0
+		complexity: 1
+	getDriverName
+		size: 0
+		complexity: 1
+	getDriverVersion
+		size: 0
+		complexity: 1
+	getExportedKeys
+		size: 0
+		complexity: 1
+	getExtraNameCharacters
+		size: 0
+		complexity: 1
+	getFunctions
+		size: 0
+		complexity: 3
+	getIdentifierQuoteString
+		size: 0
+		complexity: 1
+	getImportedKeys
+		size: 0
+		complexity: 1
+	getIndexInfo
+		size: 0
+		complexity: 1
+	getJDBCMajorVersion
+		size: 0
+		complexity: 1
+	getJDBCMinorVersion
+		size: 0
+		complexity: 1
+	getMaxBinaryLiteralLength
+		size: 0
+		complexity: 1
+	getMaxCatalogNameLength
+		size: 0
+		complexity: 1
+	getMaxCharLiteralLength
+		size: 0
+		complexity: 1
+	getMaxColumnNameLength
+		size: 0
+		complexity: 1
+	getMaxColumnsInGroupBy
+		size: 0
+		complexity: 1
+	getMaxColumnsInIndex
+		size: 0
+		complexity: 1
+	getMaxColumnsInOrderBy
+		size: 0
+		complexity: 1
+	getMaxColumnsInSelect
+		size: 0
+		complexity: 1
+	getMaxColumnsInTable
+		size: 0
+		complexity: 1
+	getMaxConnections
+		size: 0
+		complexity: 1
+	getMaxCursorNameLength
+		size: 0
+		complexity: 1
+	getMaxIndexLength
+		size: 0
+		complexity: 1
+	getMaxProcedureNameLength
+		size: 0
+		complexity: 1
+	getMaxRowSize
+		size: 0
+		complexity: 1
+	getMaxSchemaNameLength
+		size: 0
+		complexity: 1
+	getMaxStatementLength
+		size: 0
+		complexity: 1
+	getMaxStatements
+		size: 0
+		complexity: 1
+	getMaxTableNameLength
+		size: 0
+		complexity: 1
+	getMaxTablesInSelect
+		size: 0
+		complexity: 1
+	getMaxUserNameLength
+		size: 0
+		complexity: 1
+	getNumericFunctions
+		size: 0
+		complexity: 1
+	getPrimaryKeys
+		size: 0
+		complexity: 1
+	getProcedureColumns
+		size: 0
+		complexity: 1
+	getProcedureTerm
+		size: 0
+		complexity: 1
+	getProcedures
+		size: 0
+		complexity: 1
+	getResultSetHoldability
+		size: 0
+		complexity: 1
+	getSQLKeywords
+		size: 0
+		complexity: 1
+	getSQLStateType
+		size: 0
+		complexity: 1
+	getSchemaTerm
+		size: 0
+		complexity: 1
+	getSchemas
+		size: 0
+		complexity: 1
+	getSearchStringEscape
+		size: 0
+		complexity: 1
+	getStringFunctions
+		size: 0
+		complexity: 1
+	getSuperTables
+		size: 0
+		complexity: 1
+	getSuperTypes
+		size: 0
+		complexity: 1
+	getSystemFunctions
+		size: 0
+		complexity: 1
+	getTablePrivileges
+		size: 0
+		complexity: 1
+	getTableTypes
+		size: 0
+		complexity: 1
+	getTables
+		size: 2
+		complexity: 12
+	getTimeDateFunctions
+		size: 0
+		complexity: 1
+	getTypeInfo
+		size: 0
+		complexity: 1
+	getUDTs
+		size: 0
+		complexity: 1
+	getURL
+		size: 0
+		complexity: 2
+	getUserName
+		size: 0
+		complexity: 1
+	getVersionColumns
+		size: 0
+		complexity: 1
+	insertsAreDetected
+		size: 0
+		complexity: 1
+	isCatalogAtStart
+		size: 0
+		complexity: 1
+	isReadOnly
+		size: 0
+		complexity: 1
+	locatorsUpdateCopy
+		size: 0
+		complexity: 1
+	nullPlusNonNullIsNull
+		size: 0
+		complexity: 1
+	nullsAreSortedAtEnd
+		size: 0
+		complexity: 1
+	nullsAreSortedAtStart
+		size: 0
+		complexity: 1
+	nullsAreSortedHigh
+		size: 0
+		complexity: 1
+	nullsAreSortedLow
+		size: 0
+		complexity: 1
+	othersDeletesAreVisible
+		size: 0
+		complexity: 1
+	othersInsertsAreVisible
+		size: 0
+		complexity: 1
+	othersUpdatesAreVisible
+		size: 0
+		complexity: 1
+	ownDeletesAreVisible
+		size: 0
+		complexity: 1
+	ownInsertsAreVisible
+		size: 0
+		complexity: 1
+	ownUpdatesAreVisible
+		size: 0
+		complexity: 1
+	storesLowerCaseIdentifiers
+		size: 0
+		complexity: 1
+	storesLowerCaseQuotedIdentifiers
+		size: 0
+		complexity: 1
+	storesMixedCaseIdentifiers
+		size: 0
+		complexity: 1
+	storesMixedCaseQuotedIdentifiers
+		size: 0
+		complexity: 1
+	storesUpperCaseIdentifiers
+		size: 0
+		complexity: 1
+	storesUpperCaseQuotedIdentifiers
+		size: 0
+		complexity: 1
+	supportsANSI92EntryLevelSQL
+		size: 0
+		complexity: 1
+	supportsANSI92FullSQL
+		size: 0
+		complexity: 1
+	supportsANSI92IntermediateSQL
+		size: 0
+		complexity: 1
+	supportsAlterTableWithAddColumn
+		size: 0
+		complexity: 1
+	supportsAlterTableWithDropColumn
+		size: 0
+		complexity: 1
+	supportsBatchUpdates
+		size: 0
+		complexity: 1
+	supportsCatalogsInDataManipulation
+		size: 0
+		complexity: 1
+	supportsCatalogsInIndexDefinitions
+		size: 0
+		complexity: 1
+	supportsCatalogsInPrivilegeDefinitions
+		size: 0
+		complexity: 1
+	supportsCatalogsInProcedureCalls
+		size: 0
+		complexity: 1
+	supportsCatalogsInTableDefinitions
+		size: 0
+		complexity: 1
+	supportsColumnAliasing
+		size: 0
+		complexity: 1
+	supportsConvert
+		size: 0
+		complexity: 1
+	supportsCoreSQLGrammar
+		size: 0
+		complexity: 1
+	supportsCorrelatedSubqueries
+		size: 0
+		complexity: 1
+	supportsDataDefinitionAndDataManipulationTransactions
+		size: 0
+		complexity: 1
+	supportsDataManipulationTransactionsOnly
+		size: 0
+		complexity: 1
+	supportsDifferentTableCorrelationNames
+		size: 0
+		complexity: 1
+	supportsExpressionsInOrderBy
+		size: 0
+		complexity: 1
+	supportsExtendedSQLGrammar
+		size: 0
+		complexity: 1
+	supportsFullOuterJoins
+		size: 0
+		complexity: 1
+	supportsGetGeneratedKeys
+		size: 0
+		complexity: 1
+	supportsGroupBy
+		size: 0
+		complexity: 1
+	supportsGroupByBeyondSelect
+		size: 0
+		complexity: 1
+	supportsGroupByUnrelated
+		size: 0
+		complexity: 1
+	supportsIntegrityEnhancementFacility
+		size: 0
+		complexity: 1
+	supportsLikeEscapeClause
+		size: 0
+		complexity: 1
+	supportsLimitedOuterJoins
+		size: 0
+		complexity: 1
+	supportsMinimumSQLGrammar
+		size: 0
+		complexity: 1
+	supportsMixedCaseIdentifiers
+		size: 0
+		complexity: 1
+	supportsMixedCaseQuotedIdentifiers
+		size: 0
+		complexity: 1
+	supportsMultipleOpenResults
+		size: 0
+		complexity: 1
+	supportsMultipleResultSets
+		size: 0
+		complexity: 1
+	supportsMultipleTransactions
+		size: 0
+		complexity: 1
+	supportsNamedParameters
+		size: 0
+		complexity: 1
+	supportsNonNullableColumns
+		size: 0
+		complexity: 1
+	supportsOpenCursorsAcrossCommit
+		size: 0
+		complexity: 1
+	supportsOpenCursorsAcrossRollback
+		size: 0
+		complexity: 1
+	supportsOpenStatementsAcrossCommit
+		size: 0
+		complexity: 1
+	supportsOpenStatementsAcrossRollback
+		size: 0
+		complexity: 1
+	supportsOrderByUnrelated
+		size: 0
+		complexity: 1
+	supportsOuterJoins
+		size: 0
+		complexity: 1
+	supportsPositionedDelete
+		size: 0
+		complexity: 1
+	supportsPositionedUpdate
+		size: 0
+		complexity: 1
+	supportsResultSetConcurrency
+		size: 0
+		complexity: 5
+	supportsResultSetHoldability
+		size: 0
+		complexity: 1
+	supportsResultSetType
+		size: 0
+		complexity: 3
+	supportsSavepoints
+		size: 0
+		complexity: 1
+	supportsSchemasInDataManipulation
+		size: 0
+		complexity: 1
+	supportsSchemasInIndexDefinitions
+		size: 0
+		complexity: 1
+	supportsSchemasInPrivilegeDefinitions
+		size: 0
+		complexity: 1
+	supportsSchemasInProcedureCalls
+		size: 0
+		complexity: 1
+	supportsSchemasInTableDefinitions
+		size: 0
+		complexity: 1
+	supportsSelectForUpdate
+		size: 0
+		complexity: 1
+	supportsStatementPooling
+		size: 0
+		complexity: 1
+	supportsStoredProcedures
+		size: 0
+		complexity: 1
+	supportsSubqueriesInComparisons
+		size: 0
+		complexity: 1
+	supportsSubqueriesInExists
+		size: 0
+		complexity: 1
+	supportsSubqueriesInIns
+		size: 0
+		complexity: 1
+	supportsSubqueriesInQuantifieds
+		size: 0
+		complexity: 1
+	supportsTableCorrelationNames
+		size: 0
+		complexity: 1
+	supportsTransactionIsolationLevel
+		size: 0
+		complexity: 5
+	supportsTransactions
+		size: 0
+		complexity: 1
+	supportsUnion
+		size: 0
+		complexity: 1
+	supportsUnionAll
+		size: 0
+		complexity: 1
+	updatesAreDetected
+		size: 0
+		complexity: 1
+	usesLocalFilePerTable
+		size: 0
+		complexity: 1
+	usesLocalFiles
+		size: 0
+		complexity: 1
+
+SSDriver
+	acceptsURL
+		size: 0
+		complexity: 1
+	connect
+		size: 0
+		complexity: 2
+	getMajorVersion
+		size: 0
+		complexity: 1
+	getMinorVersion
+		size: 0
+		complexity: 1
+	getPropertyInfo
+		size: 0
+		complexity: 1
+	jdbcCompliant
+		size: 0
+		complexity: 1
+	parse
+		size: 1
+		complexity: 8
+
+SSPreparedStatement
+	SSPreparedStatement
+		size: 0
+		complexity: 1
+	addBatch
+		size: 0
+		complexity: 3
+	clearBatch
+		size: 0
+		complexity: 2
+	clearParameters
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	executeBatch
+		size: 1
+		complexity: 7
+	executeImp
+		size: 0
+		complexity: 3
+	executeQuery
+		size: 0
+		complexity: 1
+	executeUpdate
+		size: 0
+		complexity: 1
+	getMetaData
+		size: 0
+		complexity: 2
+	getParameterMetaData
+		size: 0
+		complexity: 1
+	setArray
+		size: 0
+		complexity: 1
+	setAsciiStream
+		size: 0
+		complexity: 1
+	setBigDecimal
+		size: 0
+		complexity: 1
+	setBinaryStream
+		size: 0
+		complexity: 1
+	setBlob
+		size: 0
+		complexity: 1
+	setBoolean
+		size: 0
+		complexity: 1
+	setByte
+		size: 0
+		complexity: 1
+	setBytes
+		size: 0
+		complexity: 1
+	setCharacterStream
+		size: 0
+		complexity: 1
+	setClob
+		size: 0
+		complexity: 1
+	setDate
+		size: 0
+		complexity: 1
+	setDouble
+		size: 0
+		complexity: 1
+	setFloat
+		size: 0
+		complexity: 1
+	setInt
+		size: 0
+		complexity: 1
+	setLong
+		size: 0
+		complexity: 1
+	setNull
+		size: 0
+		complexity: 1
+	setObject
+		size: 0
+		complexity: 1
+	setRef
+		size: 0
+		complexity: 1
+	setShort
+		size: 0
+		complexity: 1
+	setString
+		size: 0
+		complexity: 1
+	setTime
+		size: 0
+		complexity: 1
+	setTimestamp
+		size: 0
+		complexity: 1
+	setURL
+		size: 0
+		complexity: 1
+	setUnicodeStream
+		size: 0
+		complexity: 1
+
+SSResultSet
+	SSResultSet
+		size: 0
+		complexity: 1
+	absolute
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 2
+	beforeFirst
+		size: 0
+		complexity: 1
+	cancelRowUpdates
+		size: 0
+		complexity: 1
+	clearRowBuffer
+		size: 0
+		complexity: 3
+	clearWarnings
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 1
+	deleteRow
+		size: 0
+		complexity: 1
+	findColumn
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 2
+	getArray
+		size: 0
+		complexity: 1
+	getAsciiStream
+		size: 0
+		complexity: 1
+	getBigDecimal
+		size: 0
+		complexity: 1
+	getBinaryStream
+		size: 0
+		complexity: 1
+	getBlob
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getByte
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getCharacterStream
+		size: 0
+		complexity: 1
+	getClob
+		size: 0
+		complexity: 1
+	getCmd
+		size: 0
+		complexity: 2
+	getConcurrency
+		size: 0
+		complexity: 2
+	getCursorName
+		size: 0
+		complexity: 1
+	getDate
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFetchDirection
+		size: 0
+		complexity: 1
+	getFetchSize
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMetaData
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getRef
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 1
+	getShort
+		size: 0
+		complexity: 1
+	getStatement
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTime
+		size: 0
+		complexity: 1
+	getTimestamp
+		size: 0
+		complexity: 1
+	getType
+		size: 0
+		complexity: 2
+	getURL
+		size: 0
+		complexity: 1
+	getUnicodeStream
+		size: 0
+		complexity: 1
+	getUpdateValue
+		size: 0
+		complexity: 3
+	getValue
+		size: 0
+		complexity: 4
+	getWarnings
+		size: 0
+		complexity: 1
+	insertRow
+		size: 0
+		complexity: 2
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	moveToCurrentRow
+		size: 0
+		complexity: 2
+	moveToInsertRow
+		size: 0
+		complexity: 2
+	next
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 1
+	refreshRow
+		size: 0
+		complexity: 1
+	relative
+		size: 0
+		complexity: 1
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	rowUpdated
+		size: 0
+		complexity: 1
+	setFetchDirection
+		size: 0
+		complexity: 1
+	setFetchSize
+		size: 0
+		complexity: 1
+	testNotInsertRow
+		size: 0
+		complexity: 2
+	updateArray
+		size: 0
+		complexity: 1
+	updateAsciiStream
+		size: 0
+		complexity: 1
+	updateBigDecimal
+		size: 0
+		complexity: 1
+	updateBinaryStream
+		size: 0
+		complexity: 1
+	updateBlob
+		size: 0
+		complexity: 1
+	updateBoolean
+		size: 0
+		complexity: 1
+	updateByte
+		size: 0
+		complexity: 1
+	updateBytes
+		size: 0
+		complexity: 1
+	updateCharacterStream
+		size: 0
+		complexity: 1
+	updateClob
+		size: 0
+		complexity: 1
+	updateDate
+		size: 0
+		complexity: 1
+	updateDouble
+		size: 0
+		complexity: 1
+	updateFloat
+		size: 0
+		complexity: 1
+	updateInt
+		size: 0
+		complexity: 1
+	updateLong
+		size: 0
+		complexity: 1
+	updateNull
+		size: 0
+		complexity: 1
+	updateObject
+		size: 0
+		complexity: 1
+	updateRef
+		size: 0
+		complexity: 1
+	updateRow
+		size: 0
+		complexity: 2
+	updateShort
+		size: 0
+		complexity: 1
+	updateString
+		size: 0
+		complexity: 1
+	updateTime
+		size: 0
+		complexity: 1
+	updateTimestamp
+		size: 0
+		complexity: 1
+	updateValue
+		size: 0
+		complexity: 2
+	wasNull
+		size: 0
+		complexity: 1
+
+SSResultSetMetaData
+	getCatalogName
+		size: 0
+		complexity: 1
+	getColumnClassName
+		size: 1
+		complexity: 24
+	getColumnCount
+		size: 0
+		complexity: 1
+	getColumnDisplaySize
+		size: 0
+		complexity: 1
+	getColumnExpression
+		size: 0
+		complexity: 1
+	getColumnIdx
+		size: 0
+		complexity: 3
+	getColumnLabel
+		size: 0
+		complexity: 1
+	getColumnName
+		size: 0
+		complexity: 1
+	getColumnType
+		size: 0
+		complexity: 1
+	getColumnTypeName
+		size: 0
+		complexity: 1
+	getDataTypePrecision
+		size: 2
+		complexity: 31
+	getDisplaySize
+		size: 1
+		complexity: 23
+	getPrecision
+		size: 0
+		complexity: 1
+	getScale
+		size: 0
+		complexity: 1
+	getSchemaName
+		size: 0
+		complexity: 1
+	getTableName
+		size: 0
+		complexity: 1
+	isAutoIncrement
+		size: 0
+		complexity: 1
+	isBinaryDataType
+		size: 0
+		complexity: 4
+	isCaseSensitive
+		size: 0
+		complexity: 1
+	isCurrency
+		size: 0
+		complexity: 2
+	isDefinitelyWritable
+		size: 0
+		complexity: 1
+	isNullable
+		size: 0
+		complexity: 2
+	isNumberDataType
+		size: 0
+		complexity: 1
+	isReadOnly
+		size: 0
+		complexity: 1
+	isSearchable
+		size: 0
+		complexity: 1
+	isSigned
+		size: 0
+		complexity: 1
+	isSignedDataType
+		size: 0
+		complexity: 10
+	isWritable
+		size: 0
+		complexity: 1
+
+SSSavepoint
+	SSSavepoint
+		size: 0
+		complexity: 1
+	getSavepointId
+		size: 0
+		complexity: 1
+	getSavepointName
+		size: 0
+		complexity: 1
+
+SSStatement
+	SSStatement
+		size: 0
+		complexity: 1
+	addBatch
+		size: 0
+		complexity: 2
+	cancel
+		size: 0
+		complexity: 1
+	checkStatement
+		size: 0
+		complexity: 2
+	clearBatch
+		size: 0
+		complexity: 2
+	clearWarnings
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	executeBatch
+		size: 1
+		complexity: 5
+	executeImpl
+		size: 0
+		complexity: 3
+	executeQuery
+		size: 0
+		complexity: 1
+	executeUpdate
+		size: 0
+		complexity: 1
+	getConnection
+		size: 0
+		complexity: 1
+	getFetchDirection
+		size: 0
+		complexity: 1
+	getFetchSize
+		size: 0
+		complexity: 1
+	getGeneratedKeyIndexes
+		size: 0
+		complexity: 1
+	getGeneratedKeyNames
+		size: 0
+		complexity: 1
+	getGeneratedKeys
+		size: 0
+		complexity: 2
+	getMaxFieldSize
+		size: 0
+		complexity: 1
+	getMaxRows
+		size: 0
+		complexity: 1
+	getMoreResults
+		size: 0
+		complexity: 5
+	getQueryTimeout
+		size: 0
+		complexity: 1
+	getResultSet
+		size: 0
+		complexity: 1
+	getResultSetConcurrency
+		size: 0
+		complexity: 1
+	getResultSetHoldability
+		size: 0
+		complexity: 1
+	getResultSetType
+		size: 0
+		complexity: 1
+	getUpdateCount
+		size: 0
+		complexity: 1
+	getWarnings
+		size: 0
+		complexity: 1
+	needGeneratedKeys
+		size: 0
+		complexity: 1
+	setCursorName
+		size: 0
+		complexity: 1
+	setEscapeProcessing
+		size: 0
+		complexity: 1
+	setFetchDirection
+		size: 0
+		complexity: 1
+	setFetchSize
+		size: 0
+		complexity: 1
+	setGeneratedKeys
+		size: 0
+		complexity: 1
+	setMaxFieldSize
+		size: 0
+		complexity: 1
+	setMaxRows
+		size: 0
+		complexity: 2
+	setNeedGeneratedKeys
+		size: 0
+		complexity: 1
+	setQueryTimeout
+		size: 0
+		complexity: 1
+
+Scrollable
+	Scrollable
+		size: 0
+		complexity: 1
+	absolute
+		size: 1
+		complexity: 8
+	afterLast
+		size: 0
+		complexity: 3
+	beforeFirst
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 2
+	getRowPosition
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 5
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 2
+	isScrollable
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	next
+		size: 0
+		complexity: 3
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 4
+	relative
+		size: 0
+		complexity: 2
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+
+SmallSQLException
+	SmallSQLException
+		size: 0
+		complexity: 1
+	create
+		size: 0
+		complexity: 1
+	createFromException
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 2
+	printStackTrace
+		size: 0
+		complexity: 2
+	setLanguage
+		size: 0
+		complexity: 4
+	stripMsg
+		size: 0
+		complexity: 4
+	translateMsg
+		size: 0
+		complexity: 1
+
+SortedResult
+	SortedResult
+		size: 0
+		complexity: 1
+	absolute
+		size: 0
+		complexity: 7
+	afterLast
+		size: 0
+		complexity: 3
+	beforeFirst
+		size: 0
+		complexity: 1
+	currentInsertedRow
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 2
+	first
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 2
+	getRowCount
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 3
+	isScrollable
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	next
+		size: 1
+		complexity: 8
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 5
+	relative
+		size: 0
+		complexity: 7
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+
+Store
+	isValidPage
+		size: 0
+		complexity: 1
+
+StoreImpl
+	StoreImpl
+		size: 0
+		complexity: 1
+	copyValueFrom
+		size: 0
+		complexity: 1
+	createStore
+		size: 1
+		complexity: 9
+	createWriteLock
+		size: 0
+		complexity: 2
+	deleteRow
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 2
+		complexity: 33
+	getBytes
+		size: 2
+		complexity: 33
+	getCurrentOffsetInPage
+		size: 0
+		complexity: 1
+	getDouble
+		size: 2
+		complexity: 33
+	getFloat
+		size: 2
+		complexity: 33
+	getInt
+		size: 2
+		complexity: 33
+	getLink
+		size: 0
+		complexity: 1
+	getLong
+		size: 2
+		complexity: 33
+	getMoney
+		size: 2
+		complexity: 33
+	getNextPagePos
+		size: 0
+		complexity: 3
+	getNumeric
+		size: 2
+		complexity: 33
+	getObject
+		size: 2
+		complexity: 34
+	getString
+		size: 2
+		complexity: 34
+	getUsedSize
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	isRollback
+		size: 0
+		complexity: 1
+	isValidPage
+		size: 0
+		complexity: 1
+	loadUpdatedStore
+		size: 0
+		complexity: 2
+	readBinary
+		size: 0
+		complexity: 1
+	readBoolean
+		size: 0
+		complexity: 1
+	readByte
+		size: 0
+		complexity: 1
+	readBytes
+		size: 0
+		complexity: 1
+	readChars
+		size: 0
+		complexity: 2
+	readColumn
+		size: 0
+		complexity: 3
+	readDate
+		size: 0
+		complexity: 1
+	readDouble
+		size: 0
+		complexity: 1
+	readFloat
+		size: 0
+		complexity: 1
+	readInt
+		size: 0
+		complexity: 1
+	readLong
+		size: 0
+		complexity: 1
+	readLongBinary
+		size: 0
+		complexity: 1
+	readLongString
+		size: 0
+		complexity: 2
+	readNumeric
+		size: 0
+		complexity: 2
+	readPageHeader
+		size: 0
+		complexity: 2
+	readShort
+		size: 0
+		complexity: 1
+	readSmallDateTime
+		size: 0
+		complexity: 1
+	readString
+		size: 0
+		complexity: 1
+	readTime
+		size: 0
+		complexity: 1
+	readTimestamp
+		size: 0
+		complexity: 1
+	readUnsignedByte
+		size: 0
+		complexity: 1
+	recreateStore
+		size: 0
+		complexity: 1
+	resizePage
+		size: 0
+		complexity: 1
+	scanObjectOffsets
+		size: 2
+		complexity: 36
+	setCurrentOffsetInPage
+		size: 0
+		complexity: 1
+	updateFinsh
+		size: 1
+		complexity: 7
+	writeBinary
+		size: 0
+		complexity: 6
+	writeBoolean
+		size: 0
+		complexity: 3
+	writeByte
+		size: 0
+		complexity: 2
+	writeBytes
+		size: 0
+		complexity: 2
+	writeChars
+		size: 0
+		complexity: 3
+	writeColumn
+		size: 0
+		complexity: 3
+	writeDate
+		size: 0
+		complexity: 1
+	writeDouble
+		size: 0
+		complexity: 1
+	writeExpression
+		size: 3
+		complexity: 72
+	writeFinsh
+		size: 1
+		complexity: 8
+	writeFloat
+		size: 0
+		complexity: 1
+	writeInt
+		size: 0
+		complexity: 2
+	writeLong
+		size: 0
+		complexity: 2
+	writeLongBinary
+		size: 0
+		complexity: 1
+	writeLongString
+		size: 0
+		complexity: 1
+	writeNumeric
+		size: 0
+		complexity: 2
+	writeShort
+		size: 0
+		complexity: 2
+	writeSmallDateTime
+		size: 0
+		complexity: 1
+	writeString
+		size: 0
+		complexity: 5
+	writeTime
+		size: 0
+		complexity: 1
+	writeTimestamp
+		size: 0
+		complexity: 1
+
+StoreNoCurrentRow
+	deleteRow
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNextPagePos
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getUsedSize
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	noCurrentRow
+		size: 0
+		complexity: 1
+	scanObjectOffsets
+		size: 0
+		complexity: 1
+
+StoreNull
+	StoreNull
+		size: 0
+		complexity: 1
+	deleteRow
+		size: 0
+		complexity: 2
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNextPagePos
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getUsedSize
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	scanObjectOffsets
+		size: 0
+		complexity: 1
+
+StorePage
+	StorePage
+		size: 0
+		complexity: 1
+	commit
+		size: 0
+		complexity: 4
+	rollback
+		size: 0
+		complexity: 1
+	setPageData
+		size: 0
+		complexity: 1
+
+StorePageLink
+	getStore
+		size: 0
+		complexity: 3
+
+StorePageMap
+	StorePageMap
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	clear
+		size: 0
+		complexity: 2
+	containsKey
+		size: 0
+		complexity: 1
+	containsValue
+		size: 0
+		complexity: 4
+	get
+		size: 0
+		complexity: 4
+	isEmpty
+		size: 0
+		complexity: 1
+	remove
+		size: 0
+		complexity: 4
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+	transfer
+		size: 1
+		complexity: 6
+
+Strings
+	Strings
+		size: 0
+		complexity: 1
+	add
+		size: 0
+		complexity: 2
+	get
+		size: 0
+		complexity: 2
+	resize
+		size: 0
+		complexity: 1
+	size
+		size: 0
+		complexity: 1
+	toArray
+		size: 0
+		complexity: 1
+
+Table
+	Table
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 3
+	drop
+		size: 0
+		complexity: 5
+	freeLock
+		size: 2
+		complexity: 15
+	getFirstPage
+		size: 0
+		complexity: 1
+	getInserts
+		size: 0
+		complexity: 5
+	getLobStore
+		size: 0
+		complexity: 2
+	getStore
+		size: 0
+		complexity: 1
+	getStoreInsert
+		size: 0
+		complexity: 1
+	getStoreTemp
+		size: 0
+		complexity: 1
+	requestLock
+		size: 0
+		complexity: 6
+	requestLockImpl
+		size: 3
+		complexity: 34
+	requestWriteLock
+		size: 1
+		complexity: 6
+	write
+		size: 1
+		complexity: 3
+	writeMagic
+		size: 0
+		complexity: 1
+
+TableResult
+	TableResult
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	copyValueInto
+		size: 0
+		complexity: 2
+	deleteRow
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTableView
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 3
+	insertRow
+		size: 0
+		complexity: 3
+	isNull
+		size: 0
+		complexity: 1
+	moveToRow
+		size: 1
+		complexity: 7
+	moveToValidRow
+		size: 0
+		complexity: 3
+	next
+		size: 0
+		complexity: 2
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	rowDeleted
+		size: 0
+		complexity: 5
+	rowInserted
+		size: 0
+		complexity: 1
+	setNextFilePos
+		size: 0
+		complexity: 5
+	setRowPosition
+		size: 0
+		complexity: 3
+	updateRow
+		size: 0
+		complexity: 3
+
+TableStorePage
+	TableStorePage
+		size: 0
+		complexity: 1
+	commit
+		size: 0
+		complexity: 3
+	freeLock
+		size: 0
+		complexity: 1
+	getData
+		size: 0
+		complexity: 1
+
+TableStorePageInsert
+	TableStorePageInsert
+		size: 0
+		complexity: 1
+	commit
+		size: 0
+		complexity: 1
+	getLink
+		size: 0
+		complexity: 1
+
+TableView
+	TableView
+		size: 0
+		complexity: 1
+	close
+		size: 0
+		complexity: 1
+	createFile
+		size: 0
+		complexity: 3
+	findColumn
+		size: 0
+		complexity: 3
+	findColumnIdx
+		size: 0
+		complexity: 3
+	getFile
+		size: 0
+		complexity: 1
+	getName
+		size: 0
+		complexity: 1
+	getTimestamp
+		size: 0
+		complexity: 1
+	load
+		size: 1
+		complexity: 8
+
+TableViewMap
+	get
+		size: 0
+		complexity: 1
+	getUniqueKey
+		size: 0
+		complexity: 1
+	put
+		size: 0
+		complexity: 1
+	remove
+		size: 0
+		complexity: 1
+	values
+		size: 0
+		complexity: 1
+
+TableViewResult
+	createResult
+		size: 0
+		complexity: 2
+	getAlias
+		size: 0
+		complexity: 2
+	getTableViewResult
+		size: 0
+		complexity: 3
+	hasAlias
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 2
+	isScrollable
+		size: 0
+		complexity: 1
+	setAlias
+		size: 0
+		complexity: 1
+
+TestAlterTable
+	setUp
+		size: 1
+		complexity: 1
+	tearDown
+		size: 0
+		complexity: 1
+	testAdd1Column
+		size: 0
+		complexity: 1
+	testAdd2Column
+		size: 0
+		complexity: 2
+	testAddWithTableLock_READ_COMMITTED
+		size: 0
+		complexity: 1
+	testAddWithTableLock_REPEATABLE_READ
+		size: 0
+		complexity: 1
+
+TestAlterTable2
+	setUp
+		size: 0
+		complexity: 1
+	tearDown
+		size: 0
+		complexity: 1
+	testAdd2Keys
+		size: 0
+		complexity: 1
+	testAdd2PrimaryKeys
+		size: 0
+		complexity: 1
+	testAddPrimaryKey
+		size: 0
+		complexity: 1
+	testWithPrimaryKey
+		size: 0
+		complexity: 1
+
+TestDBMetaData
+	TestDBMetaData
+		size: 0
+		complexity: 1
+	testFunctions
+		size: 0
+		complexity: 1
+	testGetBestRowIdentifier
+		size: 1
+		complexity: 1
+	testGetCatalogs
+		size: 0
+		complexity: 2
+	testGetColumn
+		size: 1
+		complexity: 1
+	testGetConnection
+		size: 0
+		complexity: 1
+	testGetCrossReference
+		size: 1
+		complexity: 1
+	testGetProcedureColumns
+		size: 0
+		complexity: 1
+	testGetProcedures
+		size: 0
+		complexity: 1
+	testGetSchemas
+		size: 0
+		complexity: 1
+	testGetTableTypes
+		size: 0
+		complexity: 2
+	testGetTables
+		size: 0
+		complexity: 1
+	testGetTypeInfo
+		size: 0
+		complexity: 2
+	testGetURL
+		size: 0
+		complexity: 1
+	testGetgetUDTs
+		size: 0
+		complexity: 1
+	testVersions
+		size: 0
+		complexity: 1
+
+TestDataTypes
+	TestDataTypes
+		size: 0
+		complexity: 1
+	checkValues
+		size: 0
+		complexity: 2
+	main
+		size: 0
+		complexity: 1
+	runTest
+		size: 3
+		complexity: 64
+	setUp
+		size: 0
+		complexity: 1
+	suite
+		size: 0
+		complexity: 2
+	tearDown
+		size: 0
+		complexity: 1
+
+TestDeleteUpdate
+	TestDeleteUpdate
+		size: 0
+		complexity: 1
+	testDelete
+		size: 0
+		complexity: 2
+	testUpdate1
+		size: 1
+		complexity: 2
+	testUpdate2
+		size: 1
+		complexity: 2
+	testUpdateMultiTables
+		size: 0
+		complexity: 1
+
+TestExceptionMethods
+	countFiles
+		size: 0
+		complexity: 3
+	testAmbiguousColumn
+		size: 0
+		complexity: 1
+	testClosedPreparedStatement
+		size: 1
+		complexity: 1
+	testClosedStatement
+		size: 1
+		complexity: 1
+	testDuplicatedColumnAlter
+		size: 0
+		complexity: 1
+	testDuplicatedColumnCreate
+		size: 0
+		complexity: 1
+	testDuplicatedColumnInsert
+		size: 0
+		complexity: 1
+	testDuplicatedCreateTable
+		size: 0
+		complexity: 1
+	testForwardOnly
+		size: 2
+		complexity: 1
+	testGetConnection
+		size: 0
+		complexity: 1
+
+TestExceptions
+	TestExceptions
+		size: 0
+		complexity: 1
+	a
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 2
+	runTest
+		size: 1
+		complexity: 4
+	suite
+		size: 0
+		complexity: 2
+
+TestFunctions
+	TestFunctions
+		size: 0
+		complexity: 1
+	a
+		size: 0
+		complexity: 1
+	runTest
+		size: 0
+		complexity: 2
+	setUp
+		size: 0
+		complexity: 1
+	suite
+		size: 0
+		complexity: 2
+	tearDown
+		size: 0
+		complexity: 1
+
+TestGroupBy
+	TestGroupBy
+		size: 0
+		complexity: 1
+	init
+		size: 1
+		complexity: 2
+	testAvg
+		size: 0
+		complexity: 1
+	testComplex
+		size: 0
+		complexity: 2
+	testCountNoRow
+		size: 0
+		complexity: 1
+	testCountOrderBy
+		size: 0
+		complexity: 2
+	testCountWhere
+		size: 0
+		complexity: 1
+	testCountWherePrepare
+		size: 0
+		complexity: 2
+	testFirst1
+		size: 0
+		complexity: 1
+	testFirst2
+		size: 0
+		complexity: 1
+	testGroupBy
+		size: 0
+		complexity: 1
+	testGroupByWithExpression
+		size: 0
+		complexity: 2
+	testLast1
+		size: 0
+		complexity: 1
+	testLast2
+		size: 0
+		complexity: 1
+	testMaxBigInt
+		size: 0
+		complexity: 1
+	testMaxDate
+		size: 0
+		complexity: 1
+	testMaxDouble
+		size: 0
+		complexity: 1
+	testMaxFloat
+		size: 0
+		complexity: 1
+	testMaxInt
+		size: 0
+		complexity: 1
+	testMaxMoney
+		size: 0
+		complexity: 1
+	testMaxNumeric
+		size: 0
+		complexity: 1
+	testMaxOfNull
+		size: 0
+		complexity: 1
+	testMaxReal
+		size: 0
+		complexity: 1
+	testMaxString
+		size: 0
+		complexity: 1
+	testMaxTime
+		size: 0
+		complexity: 1
+	testMaxTimestamp
+		size: 0
+		complexity: 1
+	testMaxTinyint
+		size: 0
+		complexity: 1
+	testMaxUniqueidentifier
+		size: 0
+		complexity: 1
+	testMin
+		size: 0
+		complexity: 1
+	testMinOfNull
+		size: 0
+		complexity: 1
+	testMinString
+		size: 0
+		complexity: 1
+	testSumDecimal
+		size: 0
+		complexity: 1
+	testSumDouble
+		size: 0
+		complexity: 1
+	testSumInt
+		size: 0
+		complexity: 1
+	testSumLong
+		size: 0
+		complexity: 1
+	testSumReal
+		size: 0
+		complexity: 1
+	testTest
+		size: 1
+		complexity: 3
+	testViewWidthGroupBy
+		size: 0
+		complexity: 1
+	testWithNullValue
+		size: 0
+		complexity: 1
+
+TestIdentifer
+	TestIdentifer
+		size: 0
+		complexity: 1
+	testQuoteIdentifer
+		size: 0
+		complexity: 2
+
+TestJoins
+	TestJoins
+		size: 0
+		complexity: 1
+	a
+		size: 0
+		complexity: 1
+	clear
+		size: 0
+		complexity: 1
+	insertValues
+		size: 1
+		complexity: 1
+	runTest
+		size: 1
+		complexity: 1
+	setUp
+		size: 0
+		complexity: 1
+	suite
+		size: 0
+		complexity: 2
+	tearDown
+		size: 0
+		complexity: 1
+
+TestLanguage
+	assertMessage
+		size: 0
+		complexity: 4
+	recreateTestTab
+		size: 0
+		complexity: 1
+	setUp
+		size: 0
+		complexity: 1
+	tearDown
+		size: 0
+		complexity: 1
+	testBogusLocale
+		size: 0
+		complexity: 1
+	testEntries
+		size: 2
+		complexity: 15
+	testLocalizedErrors
+		size: 1
+		complexity: 1
+	testSyntaxErrors
+		size: 1
+		complexity: 1
+
+TestMoneyRounding
+	setUp
+		size: 0
+		complexity: 1
+	tearDown
+		size: 0
+		complexity: 1
+	testMoney1
+		size: 0
+		complexity: 2
+	testMoney2
+		size: 0
+		complexity: 2
+	verify
+		size: 1
+		complexity: 3
+
+TestOperatoren
+	TestOperatoren
+		size: 0
+		complexity: 1
+	a
+		size: 0
+		complexity: 1
+	main
+		size: 0
+		complexity: 1
+	runTest
+		size: 2
+		complexity: 1
+	setUp
+		size: 1
+		complexity: 1
+	suite
+		size: 0
+		complexity: 2
+	tearDown
+		size: 0
+		complexity: 1
+
+TestOrderBy
+	init
+		size: 2
+		complexity: 3
+	test2Columns
+		size: 1
+		complexity: 6
+	testOrderBy_Scollable
+		size: 1
+		complexity: 4
+	testOrderBy_Scollable2
+		size: 1
+		complexity: 5
+	testOrderBy_ScollableDesc
+		size: 1
+		complexity: 4
+	testOrderBy_char
+		size: 0
+		complexity: 2
+	testOrderBy_double
+		size: 0
+		complexity: 2
+	testOrderBy_int
+		size: 0
+		complexity: 2
+	testOrderBy_int_asc
+		size: 0
+		complexity: 2
+	testOrderBy_int_desc
+		size: 0
+		complexity: 4
+	testOrderBy_nvarchar
+		size: 0
+		complexity: 2
+	testOrderBy_real
+		size: 0
+		complexity: 2
+	testOrderBy_varchar
+		size: 0
+		complexity: 2
+	testOrderBy_varchar_DescAsc
+		size: 0
+		complexity: 4
+	testOrderBy_varchar_GroupBy
+		size: 0
+		complexity: 2
+	testOrderBy_varchar_Join
+		size: 0
+		complexity: 2
+	testOrderBy_varchar_asc
+		size: 0
+		complexity: 2
+	testOrderBy_varchar_desc
+		size: 0
+		complexity: 4
+	testUnion
+		size: 1
+		complexity: 2
+	testVarbinaryEmpty
+		size: 0
+		complexity: 1
+	testVarcharEmpty
+		size: 0
+		complexity: 1
+	test_bigint
+		size: 0
+		complexity: 2
+	test_bigint_withDoublicateValues
+		size: 0
+		complexity: 2
+	test_boolean
+		size: 1
+		complexity: 5
+	test_function
+		size: 0
+		complexity: 2
+	test_functionAscDesc
+		size: 1
+		complexity: 3
+
+TestOther
+	testBinaryStore
+		size: 0
+		complexity: 1
+	testCatalog
+		size: 0
+		complexity: 1
+	testCharEqualsVarchar
+		size: 0
+		complexity: 1
+	testConstantAndRowPos
+		size: 0
+		complexity: 1
+	testCreateDropDatabases
+		size: 0
+		complexity: 1
+	testDistinct
+		size: 0
+		complexity: 1
+	testInSelect
+		size: 0
+		complexity: 1
+	testInsertSelect
+		size: 0
+		complexity: 1
+	testLike
+		size: 0
+		complexity: 1
+	testManyColumns
+		size: 0
+		complexity: 3
+	testNoFromResult
+		size: 1
+		complexity: 1
+	testSetTransaction
+		size: 0
+		complexity: 1
+
+TestResultSet
+	setUp
+		size: 0
+		complexity: 2
+	testDelete
+		size: 0
+		complexity: 1
+	testOther
+		size: 0
+		complexity: 1
+	testScrollStates
+		size: 1
+		complexity: 1
+	testScrollStatesGroupBy
+		size: 1
+		complexity: 1
+	testUpdate
+		size: 1
+		complexity: 1
+	testUpdateAndScroll
+		size: 1
+		complexity: 1
+
+TestScrollable
+	testAbsoluteRelative
+		size: 0
+		complexity: 1
+	testAbsoluteRelativeAssert
+		size: 2
+		complexity: 1
+	testFirstWithWhere
+		size: 0
+		complexity: 1
+	testFirstWithWhereAssert
+		size: 0
+		complexity: 1
+	testLastWithWhere
+		size: 0
+		complexity: 1
+	testLastWithWhereAssert
+		size: 0
+		complexity: 1
+	testNextWithWhere
+		size: 0
+		complexity: 1
+	testNextWithWhereAssert
+		size: 0
+		complexity: 1
+	testPreviousWithWhere
+		size: 0
+		complexity: 1
+	testPreviousWithWhereAssert
+		size: 0
+		complexity: 1
+	testUpdatable
+		size: 0
+		complexity: 2
+	testUpdatableAssert
+		size: 0
+		complexity: 2
+
+TestStatement
+	setUp
+		size: 0
+		complexity: 2
+	testBatchUpate
+		size: 1
+		complexity: 3
+	testFetch
+		size: 0
+		complexity: 1
+	testGeneratedKeys
+		size: 2
+		complexity: 1
+	testGeneratedKeysWithPrepare
+		size: 2
+		complexity: 1
+	testGetConnection
+		size: 0
+		complexity: 1
+	testMaxRows
+		size: 1
+		complexity: 1
+	testMoreResults
+		size: 1
+		complexity: 1
+	testMultiValues
+		size: 0
+		complexity: 1
+	testOther
+		size: 0
+		complexity: 1
+	testResultSetType
+		size: 0
+		complexity: 1
+	testTruncate
+		size: 0
+		complexity: 1
+
+TestThreads
+	testConcurrentConnectionWrite
+		size: 1
+		complexity: 4
+	testConcurrentRead
+		size: 1
+		complexity: 5
+	testConcurrentThreadWrite
+		size: 1
+		complexity: 4
+
+TestTokenizer
+	createTable
+		size: 0
+		complexity: 1
+	dropTable
+		size: 0
+		complexity: 1
+	failureTest
+		size: 0
+		complexity: 1
+	setUp
+		size: 0
+		complexity: 2
+	successTest
+		size: 0
+		complexity: 1
+	tearDown
+		size: 0
+		complexity: 2
+	testMultiLine
+		size: 0
+		complexity: 1
+	testSingleLine
+		size: 0
+		complexity: 1
+
+TestTransactions
+	testCommit
+		size: 0
+		complexity: 1
+	testCommitWithOneCommitRow
+		size: 0
+		complexity: 1
+	testCreateTable
+		size: 0
+		complexity: 1
+	testInsertAndUpdate
+		size: 1
+		complexity: 1
+	testInsertRow_Last
+		size: 0
+		complexity: 1
+	testInsertRow_withRightWhere
+		size: 0
+		complexity: 1
+	testInsertRow_withWrongWhere
+		size: 0
+		complexity: 1
+	testReadCommited
+		size: 0
+		complexity: 1
+	testReadSerialized
+		size: 1
+		complexity: 1
+	testReadUncommited
+		size: 0
+		complexity: 1
+	testReadWriteLock
+		size: 0
+		complexity: 1
+	testRollback
+		size: 0
+		complexity: 1
+	testRollbackWithOneCommitRow
+		size: 0
+		complexity: 1
+	testUpdateAndSavepoint
+		size: 1
+		complexity: 1
+
+TransactionStep
+	TransactionStep
+		size: 0
+		complexity: 1
+	freeLock
+		size: 0
+		complexity: 1
+
+UnionAll
+	addDataSource
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 2
+	first
+		size: 0
+		complexity: 2
+	getBitCount
+		size: 0
+		complexity: 2
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTableView
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 4
+	isNull
+		size: 0
+		complexity: 1
+	isScrollable
+		size: 0
+		complexity: 1
+	next
+		size: 0
+		complexity: 4
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+
+Utils
+	bytes2double
+		size: 0
+		complexity: 1
+	bytes2float
+		size: 0
+		complexity: 1
+	bytes2hex
+		size: 0
+		complexity: 2
+	bytes2int
+		size: 0
+		complexity: 2
+	bytes2long
+		size: 0
+		complexity: 2
+	bytes2unique
+		size: 1
+		complexity: 2
+	compareBytes
+		size: 0
+		complexity: 7
+	createIdxFileName
+		size: 0
+		complexity: 1
+	createLobFileName
+		size: 0
+		complexity: 1
+	createMemoryCommandSelect
+		size: 0
+		complexity: 2
+	createTableViewFileName
+		size: 0
+		complexity: 1
+	double2bytes
+		size: 0
+		complexity: 1
+	double2long
+		size: 0
+		complexity: 3
+	doubleToMoney
+		size: 0
+		complexity: 2
+	float2bytes
+		size: 0
+		complexity: 1
+	getExpressionNameFromTree
+		size: 0
+		complexity: 4
+	getInteger
+		size: 0
+		complexity: 3
+	getShort
+		size: 0
+		complexity: 3
+	hex2byte
+		size: 0
+		complexity: 1
+	hex2bytes
+		size: 0
+		complexity: 2
+	hexDigit2int
+		size: 0
+		complexity: 5
+	indexOf
+		size: 0
+		complexity: 1
+	int2bytes
+		size: 0
+		complexity: 1
+	like
+		size: 0
+		complexity: 8
+	long2bytes
+		size: 0
+		complexity: 1
+	long2int
+		size: 0
+		complexity: 3
+	money2int
+		size: 0
+		complexity: 3
+	openRaFile
+		size: 0
+		complexity: 3
+	string2boolean
+		size: 0
+		complexity: 1
+	unique2bytes
+		size: 0
+		complexity: 1
+
+View
+	View
+		size: 0
+		complexity: 1
+	createColumns
+		size: 0
+		complexity: 3
+	drop
+		size: 0
+		complexity: 2
+	write
+		size: 0
+		complexity: 1
+	writeMagic
+		size: 0
+		complexity: 1
+
+ViewResult
+	ViewResult
+		size: 0
+		complexity: 1
+	absolute
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 1
+	beforeFirst
+		size: 0
+		complexity: 1
+	deleteRow
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 1
+	getBoolean
+		size: 0
+		complexity: 1
+	getBytes
+		size: 0
+		complexity: 1
+	getDataType
+		size: 0
+		complexity: 1
+	getDouble
+		size: 0
+		complexity: 1
+	getFloat
+		size: 0
+		complexity: 1
+	getInt
+		size: 0
+		complexity: 1
+	getLong
+		size: 0
+		complexity: 1
+	getMoney
+		size: 0
+		complexity: 1
+	getNumeric
+		size: 0
+		complexity: 1
+	getObject
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 1
+	getRowPosition
+		size: 0
+		complexity: 1
+	getString
+		size: 0
+		complexity: 1
+	getTableView
+		size: 0
+		complexity: 1
+	init
+		size: 0
+		complexity: 2
+	insertRow
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 1
+	isNull
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 1
+	next
+		size: 0
+		complexity: 1
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 1
+	relative
+		size: 0
+		complexity: 1
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+	updateRow
+		size: 0
+		complexity: 1
+
+Where
+	Where
+		size: 0
+		complexity: 1
+	afterLast
+		size: 0
+		complexity: 2
+	beforeFirst
+		size: 0
+		complexity: 1
+	execute
+		size: 0
+		complexity: 1
+	first
+		size: 0
+		complexity: 3
+	getFrom
+		size: 0
+		complexity: 1
+	getRow
+		size: 0
+		complexity: 2
+	getRowPosition
+		size: 0
+		complexity: 1
+	isAfterLast
+		size: 0
+		complexity: 1
+	isBeforeFirst
+		size: 0
+		complexity: 1
+	isExpressionsFromThisRowSource
+		size: 0
+		complexity: 1
+	isFirst
+		size: 0
+		complexity: 1
+	isLast
+		size: 0
+		complexity: 2
+	isScrollable
+		size: 0
+		complexity: 1
+	isValidRow
+		size: 0
+		complexity: 1
+	last
+		size: 0
+		complexity: 2
+	next
+		size: 0
+		complexity: 5
+	noRow
+		size: 0
+		complexity: 1
+	nullRow
+		size: 0
+		complexity: 1
+	previous
+		size: 0
+		complexity: 5
+	rowDeleted
+		size: 0
+		complexity: 1
+	rowInserted
+		size: 0
+		complexity: 1
+	setRowPosition
+		size: 0
+		complexity: 1
+

@@ -94,5 +94,77 @@ public list[value] declarationToLines(Declaration ast)
 public list[value] handleMethodOrConstructor(list[Modifier] modifiers, value returnType, str nameOfMethod, list[Declaration] parameters, list[Expression] exceptions, Statement impl) {
 	list[value] body = statementToLines(impl);
 	
-	return "<modifiers> <returnType> <nameOfMethod> <parameters>" + exceptions + body;
+	return "<modifiers> <returnType> <nameOfMethod> <parameters>" + "<exceptions> {" + body + "}";
+}
+
+/*
+ * Get a list of lines in a Statement.
+ */
+public list[value] statementToLines(Statement statement) {
+	switch (statement) {
+		/* Oneliners */
+		case a:\assert(_):
+			return [a];
+		case a:\assert(_, _):
+			return [a];
+		case b:\break():
+			return [b];
+		case b:\break(_):
+			return [b];
+		case c:\continue():
+			return [c];
+		case c:\continue(_):
+			return [c];
+		case l:\label(_, _):
+			return [l];
+		case r:\return(_):
+			return [r];
+		case r:\return():
+			return [r];
+		case c:\case(_):
+			return [c];
+		case d:\defaultCase():
+			return [d];
+		case t:\throw(_):
+			return [t];
+		case d:\declarationStatement(_):
+			return [d];
+		case c:\constructorCall(_, _, _):
+			return [c];
+   		case c:\constructorCall(_, _):
+   			return [c];
+   		/* Multiliners */
+		case e:\expressionStatement(_):
+			return [e];
+		case b:\block(list[Statement] statements):
+			return ([] | it + x | x <- mapper(statements, statementToLines));
+		case \do(Statement body, Expression condition): {
+			return "do {" + statementToLines(body) + "} while(<condition>)";
+		}
+		case \foreach(Declaration parameter, Expression collection, Statement body):
+			return "foreach <parameter> <collection> {" + statementToLines(body) + "}";
+		case \for(list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body):			
+			return "for <initializers> <condition> <updaters> {" + statementToLines(body) + "}";
+		case \for(list[Expression] initializers, list[Expression] updaters, Statement body):
+			return "for <initializers> <updaters> {" + statementToLines(body) + "}"; 
+		case \if(Expression condition, Statement thenBranch):
+			return "if <condition> {" + statementToLines(thenBranch) + "}";
+		case \if(Expression condition, Statement thenBranch, Statement elseBranch):
+			return "if <condition> {" + statementToLines(thenBranch) + "} else {" + statementToLines(elseBranch) + "}";
+		case \switch(Expression expression, list[Statement] statements):
+			return "switch (<expression>) {" + ([] | it + x | x <- mapper(statements, statementToLines)) + "}";
+		case \synchronizedStatement(Expression lock, Statement body):
+			return "synchronized (<lock>) {" + statementToLines(body) + "}";
+		case \try(Statement body, list[Statement] catchClauses):
+			return "try {" + statementToLines(body) + "}" + ([] | it + x | x <- mapper(catchClauses, statementToLines));
+    	case \try(Statement body, list[Statement] catchClauses, Statement \finally):
+    		return "try {" + statementToLines(body) + "}" + ([] | it + x | x <- mapper(catchClauses, statementToLines)) + "finally {" + statementToLines(\finally) + "}";
+    	case \catch(Declaration exception, Statement body):
+    		return "catch (<exception>) {" + statementToLines(body) + "}";
+    	case \while(Expression condition, Statement body): {
+    		return "while (<condition>) {" + statementToLines(body) + "}";
+    	}
+    	default:
+    		return [];
+	}
 }

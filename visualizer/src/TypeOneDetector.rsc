@@ -47,7 +47,7 @@ public list[value] declarationToLines(Declaration ast)
 		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types):
 			return package + imports + ([] | it + x | x <- mapper(types, declarationToLines));
 		case e:\enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body):
-			return <e@modifiers, name, "{"> + implements + constants + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
+			return <e@modifiers, name, "{", e@src> + implements + constants + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 		case c:\class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			list[value] extImpl = extends + implements;
 			return <c@modifiers, extImpl, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
@@ -71,6 +71,10 @@ public list[value] declarationToLines(Declaration ast)
 		default:
 			return [];
 	}
+}
+
+public loc returnFirstLineLocationFromLocation(loc location) {
+	return location.scheme + location.path + "(<location.offset>,<location.length>,\<<location.begin.line>, 0\>,\<<location.begin.line>, 0\>)" ;
 }
 
 /*

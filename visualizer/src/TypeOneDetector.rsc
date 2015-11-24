@@ -2,10 +2,17 @@ module TypeOneDetector
 
 import IO;
 import lang::java::m3::AST;
+import List;
+import Set;
 
 // for debugging purposes
-public void treeToFile(set[Declaration] asts) {
-	iprintToFile(|project://visualizer/treeFile.txt|, asts);
+public void printToFile(set[value] s) {
+	iprintToFile(|project://visualizer/debugPrintSet.txt|, s);
+}
+
+// for debugging purposes
+public void printToFile(list[value] l) {
+	iprintToFile(|project://visualizer/debugPrintList.txt|, l);
 }
 
 /*
@@ -43,15 +50,15 @@ public list[value] declarationToLines(Declaration ast)
 			return package + imports + ([] | it + x | x <- mapper(types, declarationToLines));
 		case e:\enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body):
 			return "<e@modifiers> <name> {"  + implements + constants + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
-		case \class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
+		case c:\class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			list[value] extImpl = extends + implements;
 			
 			list[value] result;
 			if (isEmpty(extImpl)) {
-				result = "<e@modifiers> <name> {" + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
+				result = "<c@modifiers> <name> {" + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 			}
 			else {
-				result = "<e@modifiers> <extImpl> <name> {" + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
+				result = "<c@modifiers> <extImpl> <name> {" + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 			}
 			
 			return result;

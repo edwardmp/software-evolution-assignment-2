@@ -49,13 +49,13 @@ public list[value] declarationToLines(Declaration ast)
 			return package + imports + ([] | it + x | x <- mapper(types, declarationToLines));
 		case e:\enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body): {
 			list[value] bodyLines = ([] | it + x | x <- mapper(body, declarationToLines));
-			return <e@modifiers, name, "{", returnFirstLineLocationFromLocation(getSource(e))> + implements + constants +
+			return <[e@modifiers, name, "{"], returnFirstLineLocationFromLocation(getSource(e))> + implements + constants +
 			bodyLines + <"}", getSource(last(bodyLines))>;
 		}
 		case c:\class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			list[value] extImpl = extends + implements;
 			list[value] bodyLines = ([] | it + x | x <- mapper(body, declarationToLines));
-			return <c@modifiers, extImpl, name, "{", returnFirstLineLocationFromLocation(getSource(c))> +
+			return <[c@modifiers, extImpl, name, "{"], returnFirstLineLocationFromLocation(getSource(c))> +
 			bodyLines + <"}", getSource(last(bodyLines))>;
 		}
 		case \class(list[Declaration] body): {
@@ -65,7 +65,7 @@ public list[value] declarationToLines(Declaration ast)
 		case i:\interface(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			list[value] extImpl = extends + implements;
 			list[value] bodyLines = ([] | it + x | x <- mapper(body, declarationToLines));
-			return <e@modifiers, extImpl, name, "{", returnFirstLineLocationFromLocation(getSource(i))> + bodyLines + <"}", getSource(last(bodyLines))>;
+			return <[e@modifiers, extImpl, name, "{"], returnFirstLineLocationFromLocation(getSource(i))> + bodyLines + <"}", getSource(last(bodyLines))>;
 		}
 		case f:\field(Type \type, list[Expression] fragments):
 			return [f];
@@ -73,13 +73,13 @@ public list[value] declarationToLines(Declaration ast)
 			return statementToLines(initializerBody);
 		case m:\method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
 			list[value] body = statementToLines(impl);
-			return <m@modifiers, \return, name, parameters, exceptions, "{", returnFirstLineLocationFromLocation(getSource(m))> + body + <"}", getSource(last(body))>;
+			return <[m@modifiers, \return, name, parameters, exceptions, "{"], returnFirstLineLocationFromLocation(getSource(m))> + body + <"}", getSource(last(body))>;
 		}
 		case m:\method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions):
-			return <m@modifiers, \return, name, parameters, returnFirstLineLocationFromLocation(getSource(m))> + exceptions;
+			return <[m@modifiers, \return, name, parameters], returnFirstLineLocationFromLocation(getSource(m))> + exceptions;
 		case c:\constructor(str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
 			list[value] body = statementToLines(impl);
-			return <c@modifiers, "instance", name, parameters, exceptions, "{", returnFirstLineLocationFromLocation(getSource(c))> + body + <"}", getSource(last(body))>;
+			return <[c@modifiers, "instance", name, parameters, exceptions, "{"], returnFirstLineLocationFromLocation(getSource(c))> + body + <"}", getSource(last(body))>;
 		}
 		default:
 			return [];
@@ -111,8 +111,7 @@ public value removeAnnotations(value v) {
 		return removeAnnotations(x);
 	}
 	else {
-		print(v);
-		throw AssertionFailed();
+		return v;
 	}
 }
 
@@ -169,40 +168,40 @@ public list[value] statementToLines(Statement statement) {
 			list[value] bodyLines = statementToLines(body);
 			loc location = getSource(last(bodyLines));
 			location.end.line += 1;
-			return <"do", "{", returnFirstLineLocationFromLocation(getSource(d))> + bodyLines + <"} while(", condition, ")", location>;
+			return <["do", "{"], returnFirstLineLocationFromLocation(getSource(d))> + bodyLines + <["} while(", condition, ")"], location>;
 		}
 		case f:\foreach(Declaration parameter, Expression collection, Statement body): {
 			list[value] bodyLines = statementToLines(body);
-			return <"foreach", parameter, collection, "{", returnFirstLineLocationFromLocation(getSource(f))> + bodyLines
+			return <["foreach", parameter, collection, "{"], returnFirstLineLocationFromLocation(getSource(f))> + bodyLines
 			+ <"}", getSource(last(bodyLines))>;
 		}
 		case f:\for(list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body): {
 			list[value] bodyLines = statementToLines(body);		
-			return <"for", initializers, condition, updaters, "{",returnFirstLineLocationFromLocation(getSource(f))> + bodyLines
+			return <["for", initializers, condition, updaters, "{"], returnFirstLineLocationFromLocation(getSource(f))> + bodyLines
 			+ <"}", getSource(last(bodyLines))>;
 		}
 		case f:\for(list[Expression] initializers, list[Expression] updaters, Statement body): {
 			list[value] bodyLines = statementToLines(body);
-			return <"for", initializers, updaters, "{", returnFirstLineLocationFromLocation(getSource(f))> + bodyLines + <"}", getSource(last(bodyLines))>;
+			return <["for", initializers, updaters, "{"], returnFirstLineLocationFromLocation(getSource(f))> + bodyLines + <"}", getSource(last(bodyLines))>;
 		} 
 		case i:\if(Expression condition, Statement thenBranch): {
 			list[value] thenBranchLines = statementToLines(thenBranch);
-			return <"if", condition, "{", returnFirstLineLocationFromLocation(getSource(i))> + thenBranchLines + <"}", getSource(last(thenBranchLines))>;
+			return <["if", condition, "{"], returnFirstLineLocationFromLocation(getSource(i))> + thenBranchLines + <"}", getSource(last(thenBranchLines))>;
 		}
 		case i:\if(Expression condition, Statement thenBranch, Statement elseBranch): {
 			list[value] thenBranchLines = statementToLines(thenBranch);
 			list[value] elseBranchLines = statementToLines(elseBranch);
-			return <"if", condition, "{", returnFirstLineLocationFromLocation(getSource(i))> + thenBranchLines
+			return <["if", condition, "{"], returnFirstLineLocationFromLocation(getSource(i))> + thenBranchLines
 			+ <"} else {", getSource(last(thenBranchLines))> + elseBranchLines + <"}", getSource(last(elseBranchLines))>;
 		}
 		case s:\switch(Expression expression, list[Statement] statements): {
 			list[value] bodyLines = ([] | it + x | x <- mapper(statements, statementToLines));
-			return <"switch (", expression, ") {", returnFirstLineLocationFromLocation(getSource(s))>
+			return <["switch (", expression, ") {"], returnFirstLineLocationFromLocation(getSource(s))>
 			+ bodyLines + <"}", getSource(last(bodyLines))>;
 		}
 		case s:\synchronizedStatement(Expression lock, Statement body): {
 			list[value] bodyLines = statementToLines(body);
-			return <"synchronized (", lock, ") {", returnFirstLineLocationFromLocation(getSource(s))> + bodyLines + <"}", getSource(last(bodyLines))>;
+			return <["synchronized (", lock, ") {"], returnFirstLineLocationFromLocation(getSource(s))> + bodyLines + <"}", getSource(last(bodyLines))>;
 		}
 		case t:\try(Statement body, list[Statement] catchClauses): {
 			list[value] bodyLines = statementToLines(body);
@@ -218,11 +217,11 @@ public list[value] statementToLines(Statement statement) {
     	}
     	case c:\catch(Declaration exception, Statement body): {
     		list[value] bodyLines = statementToLines(body);
-    		return <"catch (", exception, ") {", returnFirstLineLocationFromLocation(getSource(c))> + bodyLines + <"}", getSource(last(bodyLines))>;
+    		return <["catch (", exception, ") {"], returnFirstLineLocationFromLocation(getSource(c))> + bodyLines + <"}", getSource(last(bodyLines))>;
     	}
     	case w:\while(Expression condition, Statement body): {
     		list[value] bodyLines = statementToLines(body);
-    		return <"while (", condition, ") {", returnFirstLineLocationFromLocation(getSource(w))> + bodyLines + <"}", getSource(last(bodyLines))>;
+    		return <["while (", condition, ") {"], returnFirstLineLocationFromLocation(getSource(w))> + bodyLines + <"}", getSource(last(bodyLines))>;
     	}
     	default:
     		return [];
@@ -258,26 +257,25 @@ public list[set [list [value]]] getDuplicationClasses(list[list[value]] linesPer
 					for (int k <- [(j + 6)..size(linesPerFile[i]) - 5]) {
 						list[value] blockToCompare = linesPerFile[i][k..(k + 6)];
 						
-						if(j == 7 && k == 17) {
-							println(removeAnnotations(blockToCompare));
-							println("sterf");
-							println(removeAnnotations(lines));
-						}
 						if (removeAnnotations(lines) == removeAnnotations(blockToCompare)) {
 							int l = 0;
-								println("komt ie");
 							while ((k + 6 + l) < size(linesPerFile[i]) && linesPerFile[i][(j + l)] == linesPerFile[i][(k + l)]) {
 								blockToCompare += linesPerFile[i][(j + l)];
 								lines += linesPerFile[i][(j + l)];
-								println("komt ie");
+				
 								if (size(largestMatch[0]) < size(blockToCompare)) {
-									loc startLocation = getSource((head(blockToCompare)));
-									loc endLocation = getSource((last(blockToCompare)));
-									loc file = startLocation.scheme + startLocation.path;
-									loc startLine = startLocation.begin;
-									loc endLine = endLocation.end;
-									loc blockLocation = file + startLine + endLine;
-									println("bb <blockLocation>");
+									loc startLocation = getSource(head(blockToCompare));
+									loc endLocation = getSource(last(blockToCompare));
+									
+									println(blockToCompare);
+									println();
+									
+									println("<startLocation> einde <endLocation>");
+											//		println("komt ie <linesPerFile[i]>");
+									startLocation.end.column = endLocation.end.column;
+									startLocation.end.line = endLocation.end.line;
+								
+									println("bb <startLocation>");
 									//largestMatch = <blockToCompare, >;
 								}
 							

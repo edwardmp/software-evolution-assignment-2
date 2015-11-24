@@ -5,6 +5,7 @@ import lang::java::m3::AST;
 import List;
 import Set;
 import Node;
+import Exception;
 
 // for debugging purposes
 public void printToFile(set[value] s) {
@@ -92,6 +93,28 @@ public loc getSource(Statement stat) = stat@src;
 public loc getSource(Expression expr) = expr@src;
 
 public loc getSource(<*value v, loc location>) = location;
+
+public Declaration removeAnnotations(Declaration decl) = delAnnotationsRec(decl);
+
+public Statement removeAnnotations(Statement stat) = delAnnotationsRec(stat);
+
+public Expression removeAnnotations(Expression expr) = delAnnotationsRec(expr);
+
+public list[value] removeAnnotations(list[value] v) {
+	return for (val <- v) {
+		append (removeAnnotations(val));
+	}
+}
+
+public value removeAnnotations(value v) { 
+	if (<value x, loc location> := v) {
+		return removeAnnotations(x);
+	}
+	else {
+		print(v);
+		throw AssertionFailed();
+	}
+}
 
 public loc returnFirstLineLocationFromLocation(loc location) {
 	location.length = 0;
@@ -235,11 +258,18 @@ public list[set [list [value]]] getDuplicationClasses(list[list[value]] linesPer
 					for (int k <- [(j + 6)..size(linesPerFile[i]) - 5]) {
 						list[value] blockToCompare = linesPerFile[i][k..(k + 6)];
 						
-						if (lines == blockToCompare) {
+						if(j == 7 && k == 17) {
+							println(removeAnnotations(blockToCompare));
+							println("sterf");
+							println(removeAnnotations(lines));
+						}
+						if (removeAnnotations(lines) == removeAnnotations(blockToCompare)) {
 							int l = 0;
+								println("komt ie");
 							while ((k + 6 + l) < size(linesPerFile[i]) && linesPerFile[i][(j + l)] == linesPerFile[i][(k + l)]) {
 								blockToCompare += linesPerFile[i][(j + l)];
 								lines += linesPerFile[i][(j + l)];
+								println("komt ie");
 								if (size(largestMatch[0]) < size(blockToCompare)) {
 									loc startLocation = getSource((head(blockToCompare)));
 									loc endLocation = getSource((last(blockToCompare)));

@@ -7,8 +7,7 @@ public class BasicTestCase {
 	public void firstMethodContainingDuplicateLines() {
 		for (int i = 0; i < 10; i++) {
 			if (i == 0) {
-
-			System.out.println("OMG i == 0");
+				System.out.println("OMG i == 0");
 				System.out.println("OMG i == 0");
 				System.out.println("OMG i == 0");
 				System.out.println("OMG i == 0");

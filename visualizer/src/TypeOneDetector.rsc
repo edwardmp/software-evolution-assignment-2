@@ -33,10 +33,7 @@ public set[Declaration] locToAsts(loc fileLocation) {
  * Get a list of the lines in a set of Declarations (ASTs) the way they
  * are represented in the ASTs.
  */
-public list[value] astsToLines(set[Declaration] decs)
-{
-	return ([] | it + dec | dec <- mapper(decs, declarationToLines));
-}
+public list[list[value]] astsToLines(set[Declaration] decs) = ([] | [*it, dec] | dec <- mapper(decs, declarationToLines));
 
 /*
  * Get a list of the lines in a Declaration (AST) the way they are
@@ -53,31 +50,13 @@ public list[value] declarationToLines(Declaration ast)
 			return <e@modifiers, name, "{"> + implements + constants + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 		case c:\class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			list[value] extImpl = extends + implements;
-			
-			list[value] result;
-			if (isEmpty(extImpl)) {
-				result = <c@modifiers, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
-			}
-			else {
-				result = <c@modifiers, extImpl, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
-			}
-			
-			return result;
+			return <c@modifiers, extImpl, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 		}
 		case \class(list[Declaration] body):
 			return "{" + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 		case \interface(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			list[value] extImpl = extends + implements;
-			
-			list[value] result;
-			if (isEmpty(extImpl)) {
-				result = <e@modifiers, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
-			}
-			else {
-				result = <e@modifiers, extImpl, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
-			}
-			
-			return result;
+			return <e@modifiers, extImpl, name, "{"> + ([] | it + x | x <- mapper(body, declarationToLines)) + "}";
 		}
 		case f:\field(Type \type, list[Expression] fragments):
 			return [f];
@@ -89,8 +68,6 @@ public list[value] declarationToLines(Declaration ast)
 			return "<m@modifiers> <\return> <name> <parameters>" + exceptions;
 		case c:\constructor(str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl):
 			return handleMethodOrConstructor(c@modifiers, "instance", name, parameters, exceptions, impl);
-		case \variables(Type \type, list[Expression] \fragments):
-			return [];
 		default:
 			return [];
 	}
@@ -101,8 +78,7 @@ public list[value] declarationToLines(Declaration ast)
  */
 public list[value] handleMethodOrConstructor(list[Modifier] modifiers, value returnType, str nameOfMethod, list[Declaration] parameters, list[Expression] exceptions, Statement impl) {
 	list[value] body = statementToLines(impl);
-	
-	return [<modifiers, returnType, nameOfMethod, parameters>, "<exceptions> {", body, "}"];
+	return <modifiers, returnType, nameOfMethod, parameters, exceptions, "{"> + body + "}";
 }
 
 /*
@@ -160,7 +136,7 @@ public list[value] statementToLines(Statement statement) {
 		case \if(Expression condition, Statement thenBranch, Statement elseBranch):
 			return <"if", condition, "{"> + statementToLines(thenBranch) + "} else {" + statementToLines(elseBranch) + "}";
 		case \switch(Expression expression, list[Statement] statements):
-			return <"switch (", expression, "){"> + ([] | it + x | x <- mapper(statements, statementToLines)) + "}";
+			return <"switch (", expression, ") {"> + ([] | it + x | x <- mapper(statements, statementToLines)) + "}";
 		case \synchronizedStatement(Expression lock, Statement body):
 			return <"synchronized (", lock, ") {"> + statementToLines(body) + "}";
 		case \try(Statement body, list[Statement] catchClauses):
@@ -175,4 +151,96 @@ public list[value] statementToLines(Statement statement) {
     	default:
     		return [];
 	}
+}
+
+public list[set [list [value]]] getDuplicationClasses(list[list[value]] linesPerFile) {
+	list[set [list [value]]] duplicationClasses = [];
+	
+	int i = 0;
+	while (i < size(linesPerFile)) {
+		if (size(linesPerFile[i]) >= 6)
+		{
+			for (int j <- [0..(size(linesPerFile[i]) - 5)]) {
+				bool foundSomething = false;
+				for (set [list [value]] duplicationClass <- duplicationClasses ) {
+					set [list [value]] firstElementOfDuplicationClass = head(duplicationClass);
+					
+					int numberOfLinesOfDuplicationClass = size(firstElementOfDuplicationClass);
+					list[value] lines = linesPerFile[i][j..(j + numberOfLinesOfDuplicationClass)];
+					
+					// compare with initial block of six lines of duplication class
+					if (firstElementOfDuplicationClass == lines) {
+						duplicationClass += firstFile;
+						foundSomething = true;
+						break;
+					}
+				}			
+						
+				if (!foundSomething) {
+					tuple[list[value], loc] largestMatch = <[], |project:///|>; 
+					list[value] lines = linesPerFile[i][j..(j + 6)];
+					for (int k <- [(j + 6)..size(linesPerFile[i]) - 5]) {
+						list[value] blockToCompare = linesPerFile[i][k..(k + 6)];
+						
+						if (lines == blockToCompare) {
+							int l = 0;
+							println("yo");
+							while ((k + 6 + l) < size(linesPerFile[i]) && linesPerFile[i][(j + l)] == linesPerFile[i][(k + l)]) {
+								blockToCompare += linesPerFile[i][(j + l)];
+								lines += linesPerFile[i][(j + l)];
+								if (size(largestMatch[0]) < size(blockToCompare)) {
+									loc startLocation = (head(blockToCompare))@src;
+									loc endLocation = (last(blockToCompare))@src;
+									loc file = startLocation.scheme + startLocation.path;
+									loc startLine = startLocation.begin;
+									loc endLine = endLocation.end;
+									loc blockLocation = file + startLine + endLine;
+									println("bb <blockLocation>");
+									//largestMatch = <blockToCompare, >;
+								}
+							
+								l += 1;
+							}
+						}
+					}
+				}
+			}
+		}	
+
+		bool foundSomething = false;
+		list[value] firstFile = linesPerFile[i]; 
+		for (set [list [value]] duplicationClass <- duplicationClasses ) {
+			set [list [value]] firstElementOfDuplicationClass = head(duplicationClass);
+			
+			if (firstElementOfDuplicationClass == firstFile) {
+				duplicationClass += firstFile;
+				foundSomething = true;
+				break;
+			}
+		}
+		
+		if (!foundSomething) {
+			int j = i + 1;
+			while(j < size(linesPerFile)) {
+				list[value] secondFile = linesPerFile[j];
+				if (firstFile == secondFile) {
+					duplicationClasses += {firstFile, secondFile};
+					foundSomething = true;
+					break;
+				}
+			}
+		}
+		
+		i += 1;
+	}
+	
+	return duplicationClasses;
+}
+
+public void main(loc location) {
+	set[Declaration] asts = locToAsts(location);
+	list[value] lines = astsToLines(asts);
+	printToFile(lines);
+	
+	getDuplicationClasses(lines);
 }

@@ -228,14 +228,17 @@ public list[value] statementToLines(Statement statement) {
 	}
 }
 
-public list[set [list [value]]] getDuplicationClasses(list[list[value]] linesPerFile) {
-	list[set [list [value]]] duplicationClasses = [];
+public list[list [list [value]]] getDuplicationClasses(list[list[value]] linesPerFile) {
+	list[list [list [value]]] duplicationClasses = [];
 	
 	int i = 0;
 	while (i < size(linesPerFile)) {
+		//println(linesPerFile[i]);
+		//println();
 		if (size(linesPerFile[i]) >= 6)
 		{
 			for (int j <- [0..(size(linesPerFile[i]) - 5)]) {
+				//println("Comparing from file <i> line <j> with existing duplication classes");
 				bool foundSomething = false;
 				for (set [list [value]] duplicationClass <- duplicationClasses ) {
 					set [list [value]] firstElementOfDuplicationClass = head(duplicationClass);
@@ -249,78 +252,60 @@ public list[set [list [value]]] getDuplicationClasses(list[list[value]] linesPer
 						foundSomething = true;
 						break;
 					}
-				}			
+				}
 						
 				if (!foundSomething) {
+					list[value] largestOriginal = [];
 					tuple[list[value], loc] largestMatch = <[], |project:///|>; 
 					list[value] lines = linesPerFile[i][j..(j + 6)];
+					
 					for (int k <- [(j + 6)..size(linesPerFile[i]) - 5]) {
+						//println("Comparing from file <i> line <j> with rest of file");
 						list[value] blockToCompare = linesPerFile[i][k..(k + 6)];
 						
 						if (removeAnnotations(lines) == removeAnnotations(blockToCompare)) {
-							int l = 0;
-							while ((k + 6 + l) < size(linesPerFile[i]) && linesPerFile[i][(j + l)] == linesPerFile[i][(k + l)]) {
+							//println("test");
+							
+							int l = 6;
+							while ((k + l) < size(linesPerFile[i]) && linesPerFile[i][(j + l)] == linesPerFile[i][(k + l)]) {
 								blockToCompare += linesPerFile[i][(j + l)];
 								lines += linesPerFile[i][(j + l)];
-				
-								if (size(largestMatch[0]) < size(blockToCompare)) {
-									loc startLocation = getSource(head(blockToCompare));
-									loc endLocation = getSource(last(blockToCompare));
-									
-									println(blockToCompare);
-									println();
-									
-									println("<startLocation> einde <endLocation>");
-											//		println("komt ie <linesPerFile[i]>");
-									startLocation.end.column = endLocation.end.column;
-									startLocation.end.line = endLocation.end.line;
-								
-									println("bb <startLocation>");
-									//largestMatch = <blockToCompare, >;
-								}
-							
-								l += 1;
 							}
+							if (size(largestMatch[0]) < size(blockToCompare)) {
+								loc startLocation = getSource(head(blockToCompare));
+								loc endLocation = getSource(last(blockToCompare));
+								
+								//println(blockToCompare);
+								//println();
+								
+								//println("<startLocation> einde <endLocation>");
+								//println("komt ie <linesPerFile[i]>");
+								startLocation.end.column = endLocation.end.column;
+								startLocation.end.line = endLocation.end.line;
+								
+								//println("bb <startLocation>");
+								largestOriginal = lines;
+								largestMatch = <blockToCompare, startLocation>;
+							}
+							l += 1;
 						}
+					}
+					//duplication found
+					if (size(largestOriginal) > 0) {
+						duplicationClasses = [*duplicationClasses, [largestOriginal,largestMatch[0]]];
 					}
 				}
 			}
-		}	
-
-		bool foundSomething = false;
-		list[value] firstFile = linesPerFile[i]; 
-		for (set [list [value]] duplicationClass <- duplicationClasses ) {
-			set [list [value]] firstElementOfDuplicationClass = head(duplicationClass);
-			
-			if (firstElementOfDuplicationClass == firstFile) {
-				duplicationClass += firstFile;
-				foundSomething = true;
-				break;
-			}
 		}
-		
-		if (!foundSomething) {
-			int j = i + 1;
-			while(j < size(linesPerFile)) {
-				list[value] secondFile = linesPerFile[j];
-				if (firstFile == secondFile) {
-					duplicationClasses += {firstFile, secondFile};
-					foundSomething = true;
-					break;
-				}
-			}
-		}
-		
 		i += 1;
 	}
-	
 	return duplicationClasses;
 }
 
 public void main(loc location) {
 	set[Declaration] asts = locToAsts(location);
 	list[value] lines = astsToLines(asts);
-	printToFile(lines);
-	
-	getDuplicationClasses(lines);
+	//printToFile(lines);
+	list[list[list[value]]] duplicationClasses = getDuplicationClasses(lines);
+	//printToFile(removeAnnotations(duplicationClasses));
 }

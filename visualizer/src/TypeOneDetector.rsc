@@ -263,13 +263,11 @@ public map[list[value], list[loc]] getDuplicationClasses(list[list[value]] lines
 				// plus amount of lines of known duplicate block matches with that known duplicate block.
 				// If so, we've found yet another duplication instance of that block.
 				for (list[value] duplicationClass <- duplicationClasses ) {
-					list[value] linesInDuplicationBlock = duplicationClass;
-					
-					int numberOfLinesOfDuplicationClass = size(linesInDuplicationBlock);
+					int numberOfLinesOfDuplicationClass = size(duplicationClass);
 					list[value] lines = linesForCurrentFileProcessed[j..(j + numberOfLinesOfDuplicationClass)];
 					
 					// compare with representative block of duplication class
-					if (linesInDuplicationBlock == lines) {
+					if (duplicationClass == lines) {
 						loc startLocationDuplicateBlock = getSource(head(linesForCurrentFileProcessed));
 						loc endLocationDuplicateBlock = getSource(last(linesForCurrentFileProcessed));
 						
@@ -294,8 +292,8 @@ public map[list[value], list[loc]] getDuplicationClasses(list[list[value]] lines
 					while (m < size(linesToConsider)) {
 						int k = 0;
 						while (k < size(linesToConsider[m])) {	
-							list[value] blockToCompare = linesForCurrentFileProcessed[k..(k + minimumDuplicateBlockSizeConsidered)];
-							
+							list[value] blockToCompare = linesToConsider[m][k..(k + minimumDuplicateBlockSizeConsidered)];
+		
 							// remove annotations such as @src because they will let the equality check fail though their lines are equal
 							if (removeAnnotations(lines) == removeAnnotations(blockToCompare)) {
 								int l = minimumDuplicateBlockSizeConsidered;				
@@ -317,9 +315,13 @@ public map[list[value], list[loc]] getDuplicationClasses(list[list[value]] lines
 									
 									largestOriginal = <lines, mergeLocations(startLocationOriginalBlock, endLocationOriginalBlock)>;
 									largestMatch = <blockToCompare, mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock)>;
+									
 								}
-								k += size(blockToCompare);
 							}
+							
+							// only increment by size of largest match if there actually is a largest match
+							int sizeOfLargestMatch = size(largestMatch[0]);
+							k += (sizeOfLargestMatch== 0) ? 1 : sizeOfLargestMatch;
 						}
 						m += 1;
 					}

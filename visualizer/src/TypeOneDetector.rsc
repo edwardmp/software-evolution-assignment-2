@@ -1,14 +1,11 @@
 module TypeOneDetector
 
-import Prelude;
 import IO;
 import lang::java::m3::AST;
 import List;
 import Set;
 import Node;
 import Exception;
-
-private map[str, loc] locationForDuplicateBlock = ();
 
 /*
  * Defines the least amount of lines considered that would count as a duplicate.
@@ -25,6 +22,11 @@ public void printToFile(list[value] l) {
 	iprintToFile(|project://visualizer/debugPrintList.txt|, l);
 }
 
+// for debugging purposes
+public void printToFile(map[value, value] m) {
+	iprintToFile(|project://visualizer/debugPrintMap.txt|, m);
+}
+
 /*
  * Get a set of Declarations (an AST) from a location.
  * The location must be a directory and must be specified
@@ -36,7 +38,6 @@ public set[Declaration] locToAsts(loc fileLocation) {
 	else
 		return createAstsFromDirectory(fileLocation, false);
 }
-
 
 /*
  * Get a list of the lines in a set of Declarations (ASTs) the way they
@@ -95,23 +96,27 @@ public list[value] declarationToLines(Declaration ast)
 }
 
 public loc getSource(Declaration decl) = decl@src;
-
 public loc getSource(Statement stat) = stat@src;
-
 public loc getSource(Expression expr) = expr@src;
-
 public loc getSource(<*value v, loc location>) = location;
 
 public Declaration removeAnnotations(Declaration decl) = delAnnotationsRec(decl);
-
 public Statement removeAnnotations(Statement stat) = delAnnotationsRec(stat);
-
 public Expression removeAnnotations(Expression expr) = delAnnotationsRec(expr);
 
 public list[value] removeAnnotations(list[value] v) {
 	return for (val <- v) {
 		append (removeAnnotations(val));
 	}
+}
+
+public map[list[value], list[loc]] removeAnnotations(map[list[value], list[loc]] linesAndLocationMap) {
+	map[list[value], list[loc]] result = ();
+	for(lines <- linesAndLocationMap) {
+		result += (removeAnnotations(lines): linesAndLocationMap[lines]);
+	}
+	
+	return result;
 }
 
 public value removeAnnotations(value v) { 
@@ -239,8 +244,8 @@ public list[value] statementToLines(Statement statement) {
 /*
  * A list is passed which contains a list with lines for each file discovered.
  */
-public list[list [list [value]]] getDuplicationClasses(list[list[value]] linesPerFile) {
-	list[list [list [value]]] duplicationClasses = [];
+public map[list[value], list[loc]] getDuplicationClasses(list[list[value]] linesPerFile) {
+	map[list[value], list[loc]] duplicationClasses = ();
 	
 	// manually loop through all files, which contain the source lines
 	int i = 0;
@@ -248,32 +253,38 @@ public list[list [list [value]]] getDuplicationClasses(list[list[value]] linesPe
 		list[value] linesForCurrentFileProcessed = linesPerFile[i];
 		
 		if (size(linesForCurrentFileProcessed ) >= minimumDuplicateBlockSizeConsidered) {
-			for (int j <- [0..(size(linesForCurrentFileProcessed) - (minimumDuplicateBlockSizeConsidered - 1))]) {
+			int j = 0;
+			while (j < size(linesForCurrentFileProcessed) - minimumDuplicateBlockSizeConsidered) {
+				int stepNumOfLines = 1;
 				//println("Comparing from file <i> line <j> with existing duplication classes");
 				bool foundSomething = false;
 				
 				// Loop through all currently known duplicate blocks and check if the block starting at current position
 				// plus amount of lines of known duplicate block matches with that known duplicate block.
 				// If so, we've found yet another duplication instance of that block.
-				for (set [list [value]] duplicationClass <- duplicationClasses ) {
-					set [list [value]] firstElementOfDuplicationClass = head(duplicationClass);
+				for (list[value] duplicationClass <- duplicationClasses ) {
+					list[value] linesInDuplicationBlock = duplicationClass;
 					
-					int numberOfLinesOfDuplicationClass = size(firstElementOfDuplicationClass);
-					list[value] lines = linesPerFile[i][j..(j + numberOfLinesOfDuplicationClass)];
+					int numberOfLinesOfDuplicationClass = size(linesInDuplicationBlock);
+					list[value] lines = linesForCurrentFileProcessed[j..(j + numberOfLinesOfDuplicationClass)];
 					
 					// compare with representative block of duplication class
-					if (firstElementOfDuplicationClass == lines) {
-						duplicationClass += linesForCurrentFileProcessed;
+					if (linesInDuplicationBlock == lines) {
+						loc startLocationDuplicateBlock = getSource(head(linesForCurrentFileProcessed));
+						loc endLocationDuplicateBlock = getSource(last(linesForCurrentFileProcessed));
+						
+						duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock,endLocationDuplicateBlock);
 						foundSomething = true;
+						stepNumOfLines = size(linesForCurrentFileProcessed);
 						break;
 					}
 				}
-				
-				// no match yet, try to find duplicate in same file
-				if (!foundSomething) {
-					list[value] largestOriginal = [];
-					tuple[list[value], loc] largestMatch = <[], |project:///|>; 
 					
+				// no match yet, try to find duplicate in same file
+				if (!foundSomething) {			
+					tuple[list[value], loc] largestOriginal = <[], |project:///|>;
+					tuple[list[value], loc] largestMatch = <[], |project:///|>; 
+				
 					list[value] lines = linesForCurrentFileProcessed[j..(j + minimumDuplicateBlockSizeConsidered)];
 					for (int k <- [(j + minimumDuplicateBlockSizeConsidered)..size(linesForCurrentFileProcessed) - (minimumDuplicateBlockSizeConsidered - 1)]) {
 						list[value] blockToCompare = linesForCurrentFileProcessed[k..(k + minimumDuplicateBlockSizeConsidered)];
@@ -291,27 +302,26 @@ public list[list [list [value]]] getDuplicationClasses(list[list[value]] linesPe
 							
 							// we have found a new largest match, store it
 							if (size(largestMatch[0]) < size(blockToCompare)) {
-								loc startLocation = getSource(head(blockToCompare));
-								loc endLocation = getSource(last(blockToCompare));
-
-								startLocation.end.column = endLocation.end.column;
-								startLocation.end.line = endLocation.end.line;
-
-								largestOriginal = lines;
-								largestMatch = <blockToCompare, startLocation>;
+								// 'remember' location of duplicate blocks
+								loc startLocationDuplicateBlock = getSource(head(blockToCompare));
+								loc endLocationDuplicateBlock = getSource(last(blockToCompare));
+								loc startLocationOriginalBlock = getSource(head(lines));
+								loc endLocationOriginalBlock = getSource(last(lines));
+								
+								largestOriginal = <lines, mergeLocations(startLocationOriginalBlock, endLocationOriginalBlock)>;
+								largestMatch = <blockToCompare, mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock)>;
 							}
 						}
 					}
 					
 					// duplication found
-					if (size(largestOriginal) >= 1) {						
-						// 'remember' location of duplicate blocks
-						str blockWithLinesToOneString = toString(largestMatch[0]);
-						locationForDuplicateBlock[blockWithLinesToOneString] = largestMatch[1];
-
-						duplicationClasses = [*duplicationClasses, [largestOriginal, largestMatch[0]]]; // first index of largestMatch is blockToCompare value
+					if (size(largestOriginal[0]) >= 1) {			
+						// first index of largestMatch is blockToCompare value
+						duplicationClasses += (largestOriginal[0]: [largestOriginal[1], largestMatch[1]]);
+						stepNumOfLines = size(largestOriginal[0]);
 					}
 				}
+				j += stepNumOfLines;
 			}
 		}
 		i += 1;
@@ -319,13 +329,19 @@ public list[list [list [value]]] getDuplicationClasses(list[list[value]] linesPe
 	return duplicationClasses;
 }
 
+public loc mergeLocations(loc startLocation, loc endLocation) {
+	startLocation.end.column = endLocation.end.column;
+	startLocation.end.line = endLocation.end.line;
+	return startLocation;
+}
+
 public void main(loc location) {
 	set[Declaration] asts = locToAsts(location);
 	list[value] lines = astsToLines(asts);
 
-	list[list[list[value]]] duplicationClasses = getDuplicationClasses(lines);
+	map[list[value], list[loc]] duplicationClasses = getDuplicationClasses(lines);
 	
 	// for debug purposes
 	printToFile(removeAnnotations(duplicationClasses));
-	println(range(locationForDuplicateBlock));
+	// println(removeAnnotations(duplicationClasses));
 }

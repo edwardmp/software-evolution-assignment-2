@@ -321,7 +321,7 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
 	// manually loop through all files, which contain the source lines
 	int indexOfFile = 0;
 	while (indexOfFile < size(linesPerFile)) {
-		println("Currently processing file: <indexOfFile> <indexOfFile / size(linesPerFile)>");
+		println("Currently processing file: <(indexOfFile + 1)> <(indexOfFile + 1) / (size(linesPerFile) * 1.0)>");
 		list[value] linesForCurrentFileProcessed = linesPerFile[indexOfFile];
 		
 		if (size(linesForCurrentFileProcessed) >= minimumDuplicateBlockSizeConsidered) {
@@ -343,7 +343,7 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 		int stepNumOfLines = addBlockToDuplicationClassIfApplicable(linesForCurrentFileProcessed, startIndexOfBlock);
 			
 		// no match yet, try to find duplicate in same file
-		if (stepNumOfLines == 1) {	
+		if (stepNumOfLines == 1) {
 			tuple[list[value], loc] largestOriginal = <[], |project:///|>;
 			tuple[list[value], loc] largestMatch = <[], |project:///|>; 
 		
@@ -363,14 +363,18 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 					if (removeAnnotations(encounteredBlock) == removeAnnotations(blockToCompare)) {
 						int distanceFromStartPosition = minimumDuplicateBlockSizeConsidered;				
 						
-						// increase duplicate block size by one line each iteration to see if an even larger match can be found	
-						while ((startIndexOfBlockToCompare + distanceFromStartPosition) < size(linesForCurrentFileProcessed) 
+						// increase duplicate block size by one line each iteration to see if an even larger match can be found
+						while ( (startIndexOfBlock + distanceFromStartPosition) < size(linesForCurrentFileProcessed)
+							&& (startIndexOfBlockToCompare + distanceFromStartPosition) < size(linesToConsiderInFile) 
 							&& linesForCurrentFileProcessed[(startIndexOfBlock + distanceFromStartPosition)]
-								== linesForCurrentFileProcessed[(startIndexOfBlockToCompare + distanceFromStartPosition)]) {
-							blockToCompare += linesForCurrentFileProcessed[(startIndexOfBlock + distanceFromStartPosition)];
+								== linesToConsiderInFile[(startIndexOfBlockToCompare + distanceFromStartPosition)]) {
+							blockToCompare += linesToConsiderInFile[(startIndexOfBlockToCompare + distanceFromStartPosition)];
 							encounteredBlock += linesForCurrentFileProcessed[(startIndexOfBlock + distanceFromStartPosition)];
 							distanceFromStartPosition += 1;
 						}
+						
+						println("Block from <getSource(head(encounteredBlock))> to <getSource(last(encounteredBlock))>");
+						println("equals block from <getSource(head(blockToCompare))> to <getSource(last(blockToCompare))>");
 						
 						// we have found a new largest match, store it
 						if (size(largestMatch[0]) < size(blockToCompare)) {
@@ -417,9 +421,9 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFileProcessed, int startIndexOfBlock) {
 	for (str duplicationClass <- duplicationClasses ) {
 		int numberOfLinesOfDuplicationClass = numberOfLinesForBlock[duplicationClass];
-		println(toString((linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
-		println();
-		println(toString(removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
+		//println(toString((linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
+		//println();
+		//println(toString(removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
 		str linesAsString = toString(removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)]));
 		
 		// compare with representative block of duplication class

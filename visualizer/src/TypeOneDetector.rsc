@@ -120,6 +120,9 @@ public list[value] declarationToLines(Declaration ast)
 	}
 }
 
+/*
+ * Get the source of the last line in a list of lines, or the startLocation when the list is empty.
+ */
 public loc getEndSource(loc startLocation, list[value] bodyLines) {
 	if (isEmpty(bodyLines)) {
 		return startLocation;

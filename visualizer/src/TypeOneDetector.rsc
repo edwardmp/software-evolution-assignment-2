@@ -7,6 +7,10 @@ import Set;
 import Node;
 import Exception;
 
+/*
+ * Map from each combination of lines appearing at least twice in the analyzed code,
+ * to the locations that code appears at.
+ */
 map[list[value], list[loc]] duplicationClasses = ();
 	
 /*
@@ -97,21 +101,37 @@ public list[value] declarationToLines(Declaration ast)
 	}
 }
 
+/*
+ * Get the source of a representation of a line, whether it is a part of an AST
+ * (a declaration, a statement, or an expression), or a tuple with a location
+ * as its last element, as we created while converting the AST to a list of lines.
+ */
 public loc getSource(Declaration decl) = decl@src;
 public loc getSource(Statement stat) = stat@src;
 public loc getSource(Expression expr) = expr@src;
 public loc getSource(<*value v, loc location>) = location;
 
+/*
+ * Remove all annotations from a part of an AST, including all its children.
+ */
 public Declaration removeAnnotations(Declaration decl) = delAnnotationsRec(decl);
 public Statement removeAnnotations(Statement stat) = delAnnotationsRec(stat);
 public Expression removeAnnotations(Expression expr) = delAnnotationsRec(expr);
 
+/*
+ * Remove all annotations from all elements of a list,
+ * which can not contain any elements for which removeAnnotations in not defined.
+ */
 public list[value] removeAnnotations(list[value] v) {
 	return for (val <- v) {
 		append (removeAnnotations(val));
 	}
 }
 
+/*
+ * Remove all annotations from a duplication class, represented as map from a list of lines
+ * to a list of locations at which these lines appeared.
+ */
 public map[list[value], list[loc]] removeAnnotations(map[list[value], list[loc]] linesAndLocationMap) {
 	map[list[value], list[loc]] result = ();
 	for(lines <- linesAndLocationMap) {
@@ -121,6 +141,10 @@ public map[list[value], list[loc]] removeAnnotations(map[list[value], list[loc]]
 	return result;
 }
 
+/*
+ * Remove all annotations from the first element when v is a tuple and return the result.
+ * Return v itself in case it is not a tuple with a value and a location.
+ */
 public value removeAnnotations(value v) { 
 	if (<value x, loc location> := v) {
 		return removeAnnotations(x);
@@ -130,6 +154,9 @@ public value removeAnnotations(value v) {
 	}
 }
 
+/*
+ * Return the location of the first line in a location that ranges over one or more lines.
+ */
 public loc returnFirstLineLocationFromLocation(loc location) {
 	location.length = 0;
 	location.begin.column = 0;
@@ -259,6 +286,10 @@ public void findDuplicationClasses(list[list[value]] linesPerFile) {
 	}
 }
 
+/*
+ * Find duplicates for all lines in a file - within that file and in other files - and add them to
+ * the duplication classes.
+ */
 public map[list[value], list[loc]] findDuplicationForLinesInFile(list[list[value]] linesPerFile, list[value] linesForCurrentFileProcessed, int indexOfFile) {
 	int startIndexOfBlock = 0;
 	while (startIndexOfBlock < size(linesForCurrentFileProcessed) - minimumDuplicateBlockSizeConsidered) {
@@ -353,12 +384,20 @@ public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFil
 	return 1;
 }
 
+/*
+ * Merge two locations into one by starting at the start of startLocation and ending at then end of endLocation.
+ */
 public loc mergeLocations(loc startLocation, loc endLocation) {
 	startLocation.end.column = endLocation.end.column;
 	startLocation.end.line = endLocation.end.line;
 	return startLocation;
 }
 
+/*
+ * Find type 1 duplication in all .java-files at a given location.
+ * The location must be specified in the file-scheme, because of usage of lang::java::m3::AST::createAstFromFile
+ * or lang::java::m3::AST::createAstsFromDirectory.
+ */
 public void main(loc location) {
 	set[Declaration] asts = locToAsts(location);
 	list[value] lines = astsToLines(asts);

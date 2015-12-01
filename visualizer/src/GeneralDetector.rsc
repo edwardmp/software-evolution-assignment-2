@@ -419,20 +419,24 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
  * If so, we've found yet another duplication instance of that block.
  */
 public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFileProcessed, int startIndexOfBlock) {
-	for (str duplicationClass <- duplicationClasses ) {
+	for (str duplicationClass <- duplicationClasses) {
 		int numberOfLinesOfDuplicationClass = numberOfLinesForBlock[duplicationClass];
-
 		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)];
-		str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
-		
-		// compare with representative block of duplication class
-		if (duplicationClass == linesAsStringWithoutAnnotations) {
-			loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
-			loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
+		int startLocation = getSource(head(linesWithAnnotations)).begin.line;
+		list[int] locationsInClass = [l.begin.line | l <- duplicationClasses[duplicationClass]];
+		if (startLocation notin locationsInClass) {
+			str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
 			
-			duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock,endLocationDuplicateBlock);
+			// compare with representative block of duplication class
+			if (duplicationClass == linesAsStringWithoutAnnotations) {
+				loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
+				loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
+				println("Block from <startLocationDuplicateBlock> to <endLocationDuplicateBlock> added to existing duplication class.");
+				
+				duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock,endLocationDuplicateBlock);
 
-			return size(linesForCurrentFileProcessed);
+				return size(linesForCurrentFileProcessed);
+			}
 		}
 	}
 	

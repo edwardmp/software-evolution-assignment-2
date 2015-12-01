@@ -253,6 +253,7 @@ public void findDuplicationClasses(list[list[value]] linesPerFile) {
 		list[value] linesForCurrentFileProcessed = linesPerFile[indexOfFile];
 		
 		if (size(linesForCurrentFileProcessed) >= minimumDuplicateBlockSizeConsidered) {
+			println("File <indexOfFile> is being processed");
 			findDuplicationForLinesInFile(linesPerFile, linesForCurrentFileProcessed, indexOfFile);
 		}
 		indexOfFile += 1;
@@ -367,5 +368,5 @@ public void main(loc location) {
 	
 	// for debug purposes
 	printToFile(removeAnnotations(duplicationClasses));
-	println(removeAnnotations(duplicationClasses));
+	//println(removeAnnotations(duplicationClasses));
 }

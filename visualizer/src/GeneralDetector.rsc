@@ -424,12 +424,13 @@ public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFil
 		//println(toString((linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
 		//println();
 		//println(toString(removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
-		str linesAsString = toString(removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)]));
+		list[value] linesToCompare = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)];
+		str linesAsString = toString(removeAnnotations(linesToCompare));
 		
 		// compare with representative block of duplication class
 		if (duplicationClass == linesAsString) {
-			loc startLocationDuplicateBlock = getSource(head(linesForCurrentFileProcessed));
-			loc endLocationDuplicateBlock = getSource(last(linesForCurrentFileProcessed));
+			loc startLocationDuplicateBlock = getSource(head(linesToCompare));
+			loc endLocationDuplicateBlock = getSource(last(linesToCompare));
 			
 			duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock,endLocationDuplicateBlock);
 

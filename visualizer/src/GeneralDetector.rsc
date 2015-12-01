@@ -356,7 +356,7 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 				int startIndexOfBlockToCompare = 0;
 				list[value] linesToConsiderInFile = linesToConsider[fileIndex];
 				while (startIndexOfBlockToCompare < size(linesToConsiderInFile)) {	
-					list[value] blockToCompare = linesToConsiderInFile[startIndexOfBlockToCompare..(startIndexOfBlockToCompare + minimumDuplicateBlockSizeConsidered)];
+ 					list[value] blockToCompare = linesToConsiderInFile[startIndexOfBlockToCompare..(startIndexOfBlockToCompare + minimumDuplicateBlockSizeConsidered)];
 					list[value] encounteredBlock = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + minimumDuplicateBlockSizeConsidered)];
 						
 					// remove annotations such as @src because they will let the equality check fail though their lines are equal
@@ -421,16 +421,14 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFileProcessed, int startIndexOfBlock) {
 	for (str duplicationClass <- duplicationClasses ) {
 		int numberOfLinesOfDuplicationClass = numberOfLinesForBlock[duplicationClass];
-		//println(toString((linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
-		//println();
-		//println(toString(removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)])));
-		list[value] linesToCompare = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)];
-		str linesAsString = toString(removeAnnotations(linesToCompare));
+
+		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)];
+		str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
 		
 		// compare with representative block of duplication class
-		if (duplicationClass == linesAsString) {
-			loc startLocationDuplicateBlock = getSource(head(linesToCompare));
-			loc endLocationDuplicateBlock = getSource(last(linesToCompare));
+		if (duplicationClass == linesAsStringWithoutAnnotations) {
+			loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
+			loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
 			
 			duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock,endLocationDuplicateBlock);
 

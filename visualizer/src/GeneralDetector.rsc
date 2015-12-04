@@ -7,7 +7,6 @@ import Debug;
 import Set;
 import Node;
 import Exception;
-import Relation;
 
 /*
  * Map from each combination of lines appearing at least twice in the analyzed code,

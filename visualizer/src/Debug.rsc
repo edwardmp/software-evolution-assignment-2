@@ -1,6 +1,9 @@
 module Debug
 
 import IO;
+import util::Math;
+
+int teller = 0;
 
 // for debugging purposes
 public void printToFile(set[value] s) {
@@ -26,8 +29,12 @@ public void printToFile(map[value, value] m) {
 // for debugging purposes
 public void printToFile(str s) {
 	loc location = |project://visualizer/debugPrintString.txt|;
-	clearFile(location);
-	appendToFile(location, s + "\n");
+	
+	if(!isFile(location))
+		clearFile(location);
+	
+	teller += 1;	
+	appendToFile(location, toString(teller) + " " + s + "\n");
 }
 
 public void clearFile(loc location) {

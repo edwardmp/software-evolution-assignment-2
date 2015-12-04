@@ -328,6 +328,8 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
 		list[value] linesForCurrentFileProcessed = linesPerFile[indexOfCurrentlyProcessedFile];
 		
 		if (size(linesForCurrentFileProcessed) >= minimumDuplicateBlockSizeConsidered) {
+			printToFile("");
+			printToFile("Processing file with index <indexOfCurrentlyProcessedFile>, path: <getSource(head(linesPerFile[indexOfCurrentlyProcessedFile])).path>");
 			findDuplicationForLinesInFile(linesPerFile, linesForCurrentFileProcessed, indexOfCurrentlyProcessedFile);
 		}
 		
@@ -354,19 +356,20 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 			list[value] linesInRestOfFile = linesForCurrentFileProcessed[(startIndexOfBlockEncountered + minimumDuplicateBlockSizeConsidered)..size(linesForCurrentFileProcessed)];
 			list[list[value]] linesPerFileInOtherFiles = linesPerFile[(indexOfCurrentlyProcessedFile + 1)..size(linesPerFile)];
 			list[list[value]] linesToConsider = [linesInRestOfFile, *linesPerFileInOtherFiles];
-		
+			
+			printToFile("	encounteredBlock <startIndexOfBlockEncountered>");
+			
 			int fileToCompareWithIndex = 0;
 			while (fileToCompareWithIndex < size(linesToConsider)) {
+			printToFile("		fileToCompareWithIndex <fileToCompareWithIndex>");
 				int startIndexOfBlockToCompare = 0;
-
 				list[value] linesToConsiderInFile = linesToConsider[fileToCompareWithIndex];
-				printToFile("lines to consider <linesToConsiderInFile>");
+				
 				while (startIndexOfBlockToCompare < size(linesToConsiderInFile)) {	
-					printToFile("");
-					printToFile("startIndexOfBlockToCompare <startIndexOfBlockToCompare>");
+					printToFile("			startIndexOfBlockToCompare <startIndexOfBlockToCompare>");
  					list[value] blockToCompare = linesToConsiderInFile[startIndexOfBlockToCompare..(startIndexOfBlockToCompare + minimumDuplicateBlockSizeConsidered)];
 					list[value] encounteredBlock = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + minimumDuplicateBlockSizeConsidered)];
-					printToFile("Compare block with index <startIndexOfBlockToCompare> to file fileToCompareWithIndex:<fileToCompareWithIndex>, indexOfCurrentlyProcessedFile:<indexOfCurrentlyProcessedFile> <getSource(head(encounteredBlock))> <getSource(head(blockToCompare))>");
+					//printToFile("Compare block with index <startIndexOfBlockToCompare> to file fileToCompareWithIndex:<fileToCompareWithIndex>, indexOfCurrentlyProcessedFile:<indexOfCurrentlyProcessedFile> <getSource(head(encounteredBlock))> <getSource(head(blockToCompare))>");
 					set[loc] blocksAsSet = {getSource(blockToCompare[0]), getSource(encounteredBlock[0])};
 	
 					// remove annotations such as @src because they will let the equality check fail though their lines are equal
@@ -395,14 +398,14 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 							
 							largestOriginal = <encounteredBlock, mergeLocations(startLocationOriginalBlock, endLocationOriginalBlock)>;
 							largestMatch = <blockToCompare, mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock)>;
-							
-							printToFile("largest match <largestMatch>");
 						}
 					}
 					
 					// only increment by size of largest match if there actually is a largest match
 					int sizeOfLargestMatch = size(largestMatch[0]);
 					startIndexOfBlockToCompare += (sizeOfLargestMatch == 0) ? 1 : sizeOfLargestMatch;
+					
+					//printToFile("");
 				}
 				
 				fileToCompareWithIndex += 1;

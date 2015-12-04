@@ -360,21 +360,13 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 			while (fileIndex < size(linesToConsider)) {
 				int startIndexOfBlockToCompare = 0;
 				list[value] linesToConsiderInFile = linesToConsider[fileIndex];
-				while (startIndexOfBlockToCompare < size(linesToConsiderInFile)) {	
+				while (startIndexOfBlockToCompare <= size(linesToConsiderInFile) - minimumDuplicateBlockSizeConsidered) {	
 					//println("startIndexOfBlockToCompare <startIndexOfBlockToCompare>");
 					//println("Compare block with index <startIndexOfBlockToCompare> to file fileIndex:<fileIndex>, indexOfFile:<indexOfFile>");
  					list[value] blockToCompare = linesToConsiderInFile[startIndexOfBlockToCompare..(startIndexOfBlockToCompare + minimumDuplicateBlockSizeConsidered)];
 					list[value] encounteredBlock = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + minimumDuplicateBlockSizeConsidered)];
 					
 					set[loc] blocksAsSet = {getSource(blockToCompare[0]), getSource(encounteredBlock[0])};
-					// we've already compared these blocks with eachother so skip
-					if (blocksAsSet in comparedBlockWithThisOtherBlock) {
-						printToFile("Skipped <blocksAsSet>");
-						startIndexOfBlockToCompare += size(blockToCompare);
-						continue;
-					}
-					// register that we compared these two so we can skip them later
-					comparedBlockWithThisOtherBlock += {blocksAsSet};
 					printToFile("Comparing <blocksAsSet>");
 	
 					// remove annotations such as @src because they will let the equality check fail though their lines are equal

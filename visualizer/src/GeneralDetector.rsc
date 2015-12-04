@@ -358,6 +358,7 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 			int fileToCompareWithIndex = 0;
 			while (fileToCompareWithIndex < size(linesToConsider)) {
 				int startIndexOfBlockToCompare = 0;
+
 				list[value] linesToConsiderInFile = linesToConsider[fileToCompareWithIndex];
 				printToFile("lines to consider <linesToConsiderInFile>");
 				while (startIndexOfBlockToCompare < size(linesToConsiderInFile)) {	
@@ -367,18 +368,6 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 					list[value] encounteredBlock = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + minimumDuplicateBlockSizeConsidered)];
 					printToFile("Compare block with index <startIndexOfBlockToCompare> to file fileToCompareWithIndex:<fileToCompareWithIndex>, indexOfCurrentlyProcessedFile:<indexOfCurrentlyProcessedFile> <getSource(head(encounteredBlock))> <getSource(head(blockToCompare))>");
 					set[loc] blocksAsSet = {getSource(blockToCompare[0]), getSource(encounteredBlock[0])};
-					// we've already compared these blocks with eachother so skip
-					if (blocksAsSet in comparedBlockWithThisOtherBlock) {
-						printToFile("Skipped <blocksAsSet>");
-						
-						// skip over those lines
-						startIndexOfBlockToCompare += size(blockToCompare);
-						continue;
-					}
-					
-					// register that we compared these two so we can skip them later
-					comparedBlockWithThisOtherBlock += {blocksAsSet};
-					printToFile("Comparing <blocksAsSet>");
 	
 					// remove annotations such as @src because they will let the equality check fail though their lines are equal
 					if (removeAnnotations(encounteredBlock) == removeAnnotations(blockToCompare)) {
@@ -444,10 +433,12 @@ public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] lines
 public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 	for (str duplicationClass <- duplicationClasses) {
 		int numberOfLinesOfDuplicationClass = numberOfLinesForBlock[duplicationClass];
+
 		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + numberOfLinesOfDuplicationClass)];
-		int startLocation = getSource(head(linesWithAnnotations)).begin.line;
-		list[int] locationsInClass = [l.begin.line | l <- duplicationClasses[duplicationClass]];
-		if (startLocation notin locationsInClass) {
+		loc startLocation = getSource(head(linesWithAnnotations));
+		tuple[int,str] startLocationTuple = <startLocation.begin.line,startLocation.path>;
+		list[tuple[int,str]] locationsInClass = [<l.begin.line,l.path> | l <- duplicationClasses[duplicationClass]];
+		if (startLocationTuple notin locationsInClass) {
 			str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
 			
 			// compare with representative block of duplication class

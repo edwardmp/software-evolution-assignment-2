@@ -442,9 +442,10 @@ public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFil
 	for (str duplicationClass <- duplicationClasses) {
 		int numberOfLinesOfDuplicationClass = numberOfLinesForBlock[duplicationClass];
 		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlock..(startIndexOfBlock + numberOfLinesOfDuplicationClass)];
-		int startLocation = getSource(head(linesWithAnnotations)).begin.line;
-		list[int] locationsInClass = [l.begin.line | l <- duplicationClasses[duplicationClass]];
-		if (startLocation notin locationsInClass) {
+		loc startLocation = getSource(head(linesWithAnnotations));
+		tuple[int,str] startLocationTuple = <startLocation.begin.line,startLocation.path>;
+		list[tuple[int,str]] locationsInClass = [<l.begin.line,l.path> | l <- duplicationClasses[duplicationClass]];
+		if (startLocationTuple notin locationsInClass) {
 			str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
 			
 			// compare with representative block of duplication class

@@ -4,32 +4,32 @@ import IO;
 
 // for debugging purposes
 public void printToFile(set[value] s) {
-	clearFile();
-	iprintToFile(|project://visualizer/debugPrintSet.txt|, s);
+	loc location = |project://visualizer/debugPrintSet.txt|;
+	clearFile(location);
+	iprintToFile(location, s);
 }
 
 // for debugging purposes
 public void printToFile(list[value] l) {
-	clearFile();
-	iprintToFile(|project://visualizer/debugPrintList.txt|, l);
+	loc location = |project://visualizer/debugPrintList.txt|;
+	clearFile(location);
+	iprintToFile(location, l);
 }
 
 // for debugging purposes
 public void printToFile(map[value, value] m) {
-	clearFile();
-	iprintToFile(|project://visualizer/debugPrintMap.txt|, m);
+	loc location = |project://visualizer/debugPrintMap.txt|;
+	clearFile(location);
+	iprintToFile(location, m);
 }
 
 // for debugging purposes
 public void printToFile(str s) {
-	if (isFile(|project://visualizer/debugPrintString.txt|)) {
-		appendToFile(|project://visualizer/debugPrintString.txt|, s + "\n");
-	}
-	else {
-		iprintToFile(|project://visualizer/debugPrintString.txt|, s);
-	}
+	loc location = |project://visualizer/debugPrintString.txt|;
+	clearFile(location);
+	appendToFile(location, s + "\n");
 }
 
-public void clearFile() {
-	writeFile(|project://visualizer/debugPrintSet.txt|, "");
+public void clearFile(loc location) {
+	writeFile(location, "");
 }

@@ -327,15 +327,13 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
 		list[value] linesForCurrentFileProcessed = linesPerFile[indexOfCurrentlyProcessedFile];
 		
 		if (size(linesForCurrentFileProcessed) >= minimumDuplicateBlockSizeConsidered) {
-			printToFile("");
 			printToFile("Processing file with index <indexOfCurrentlyProcessedFile>, path: <getSource(head(linesPerFile[indexOfCurrentlyProcessedFile])).path>");
 			findDuplicationForLinesInFile(linesPerFile, linesForCurrentFileProcessed, indexOfCurrentlyProcessedFile);
-			filterDuplicationClasses();
 		}
 		
 		indexOfCurrentlyProcessedFile += 1;
 	}
-	
+	filterDuplicationClasses();
 	return duplicationClasses;
 }
 
@@ -347,6 +345,7 @@ public void findDuplicationForLinesInFile(list[list[value]] linesPerFile, list[v
 int indexOfCurrentlyProcessedFile) {
 	int startIndexOfBlockEncountered = 0;
 	while (startIndexOfBlockEncountered < (size(linesForCurrentFileProcessed) - minimumDuplicateBlockSizeConsidered)) {
+		printToFile("	Comparing block starting at index <startIndexOfBlockEncountered>");
 		startIndexOfBlockEncountered += addBlockToDuplicationClass(indexOfCurrentlyProcessedFile, linesPerFile,
 			linesForCurrentFileProcessed, startIndexOfBlockEncountered);
 	}
@@ -404,7 +403,6 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 				else {
 					loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
 					loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
-					printToFile("Block from <startLocationDuplicateBlock> to <endLocationDuplicateBlock> added to existing duplication class.");
 					
 					duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock);
 					return size(linesForCurrentFileProcessed);

@@ -1,12 +1,13 @@
 module GeneralDetector
 
+import Debug;
+import Exception;
 import IO;
 import lang::java::m3::AST;
 import List;
-import Debug;
-import Set;
+import Map;
 import Node;
-import Exception;
+import Set;
 
 /*
  * Map from each combination of lines appearing at least twice in the analyzed code,
@@ -14,10 +15,8 @@ import Exception;
  */
 map[str, list[loc]] duplicationClasses = ();
 
-map[str, int] numberOfLinesForBlock = ();
+map[str, tuple[int fileIndex, int lineIndex, int size]] startIndexAndSizeOfFirstElementOfDuplicationClass = ();
 
-set[set[loc]] comparedBlockWithThisOtherBlock = {};
-	
 /*
  * Defines the least amount of lines considered that would count as a duplicate.
  */
@@ -331,6 +330,7 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
 			printToFile("");
 			printToFile("Processing file with index <indexOfCurrentlyProcessedFile>, path: <getSource(head(linesPerFile[indexOfCurrentlyProcessedFile])).path>");
 			findDuplicationForLinesInFile(linesPerFile, linesForCurrentFileProcessed, indexOfCurrentlyProcessedFile);
+			filterDuplicationClasses();
 		}
 		
 		indexOfCurrentlyProcessedFile += 1;
@@ -343,121 +343,94 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
  * Find duplicates for all lines in a file - within that file and in other files - and add them to
  * the duplication classes.
  */
-public map[str, list[loc]] findDuplicationForLinesInFile(list[list[value]] linesPerFile, list[value] linesForCurrentFileProcessed, int indexOfCurrentlyProcessedFile) {
+public void findDuplicationForLinesInFile(list[list[value]] linesPerFile, list[value] linesForCurrentFileProcessed,
+int indexOfCurrentlyProcessedFile) {
 	int startIndexOfBlockEncountered = 0;
 	while (startIndexOfBlockEncountered < (size(linesForCurrentFileProcessed) - minimumDuplicateBlockSizeConsidered)) {
-		int stepNumOfLines = addBlockToDuplicationClassIfApplicable(linesForCurrentFileProcessed, startIndexOfBlockEncountered);
-		
-		// no match yet, try to find duplicate in rest same file and other files
-		if (stepNumOfLines == 1) {
-			tuple[list[value], loc] largestOriginal = <[], |project:///|>;
-			tuple[list[value], loc] largestMatch = <[], |project:///|>; 
-		
-			list[value] linesInRestOfFile = linesForCurrentFileProcessed[(startIndexOfBlockEncountered + minimumDuplicateBlockSizeConsidered)..size(linesForCurrentFileProcessed)];
-			list[list[value]] linesPerFileInOtherFiles = linesPerFile[(indexOfCurrentlyProcessedFile + 1)..size(linesPerFile)];
-			list[list[value]] linesToConsider = [linesInRestOfFile, *linesPerFileInOtherFiles];
-			
-			printToFile("	encounteredBlock <startIndexOfBlockEncountered>");
-			
-			int fileToCompareWithIndex = 0;
-			while (fileToCompareWithIndex < size(linesToConsider)) {
-			printToFile("		fileToCompareWithIndex <fileToCompareWithIndex>");
-				int startIndexOfBlockToCompare = 0;
-				list[value] linesToConsiderInFile = linesToConsider[fileToCompareWithIndex];
-				
-				while (startIndexOfBlockToCompare < size(linesToConsiderInFile)) {	
-					printToFile("			startIndexOfBlockToCompare <startIndexOfBlockToCompare>");
- 					list[value] blockToCompare = linesToConsiderInFile[startIndexOfBlockToCompare..(startIndexOfBlockToCompare + minimumDuplicateBlockSizeConsidered)];
-					list[value] encounteredBlock = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + minimumDuplicateBlockSizeConsidered)];
-					//printToFile("Compare block with index <startIndexOfBlockToCompare> to file fileToCompareWithIndex:<fileToCompareWithIndex>, indexOfCurrentlyProcessedFile:<indexOfCurrentlyProcessedFile> <getSource(head(encounteredBlock))> <getSource(head(blockToCompare))>");
-					set[loc] blocksAsSet = {getSource(blockToCompare[0]), getSource(encounteredBlock[0])};
-	
-					// remove annotations such as @src because they will let the equality check fail though their lines are equal
-					if (removeAnnotations(encounteredBlock) == removeAnnotations(blockToCompare)) {
-						int distanceFromStartPosition = minimumDuplicateBlockSizeConsidered;
-						// increase duplicate block size by one line each iteration to see if an even larger match can be found
-						while ((startIndexOfBlockEncountered + distanceFromStartPosition) < size(linesForCurrentFileProcessed)
-							&& (startIndexOfBlockToCompare + distanceFromStartPosition) < size(linesToConsiderInFile) 
-							&& linesForCurrentFileProcessed[(startIndexOfBlockEncountered + distanceFromStartPosition)]
-								== linesToConsiderInFile[(startIndexOfBlockToCompare + distanceFromStartPosition)]) {
-							blockToCompare += linesToConsiderInFile[(startIndexOfBlockToCompare + distanceFromStartPosition)];
-							encounteredBlock += linesForCurrentFileProcessed[(startIndexOfBlockEncountered + distanceFromStartPosition)];
-							distanceFromStartPosition += 1;
-						}
-						
-						printToFile("Block from <getSource(head(encounteredBlock))> to <getSource(last(encounteredBlock))>");
-						printToFile("equals block from <getSource(head(blockToCompare))> to <getSource(last(blockToCompare))>");
-						
-						// we have found a new largest match, store it
-						if (size(largestMatch[0]) < size(blockToCompare)) {
-							// 'remember' location of duplicate blocks
-							loc startLocationDuplicateBlock = getSource(head(blockToCompare));
-							loc endLocationDuplicateBlock = getSource(last(blockToCompare));
-							loc startLocationOriginalBlock = getSource(head(encounteredBlock));
-							loc endLocationOriginalBlock = getSource(last(encounteredBlock));
-							
-							largestOriginal = <encounteredBlock, mergeLocations(startLocationOriginalBlock, endLocationOriginalBlock)>;
-							largestMatch = <blockToCompare, mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock)>;
-						}
-					}
-					
-					// only increment by size of largest match if there actually is a largest match
-					int sizeOfLargestMatch = size(largestMatch[0]);
-					startIndexOfBlockToCompare += (sizeOfLargestMatch == 0) ? 1 : sizeOfLargestMatch;
-					
-					//printToFile("");
-				}
-				
-				fileToCompareWithIndex += 1;
-			}
-			
-			// duplication found
-			if (size(largestOriginal[0]) >= 1) {			
-				// first index of largestMatch is blockToCompare value
-				str largestOriginalAsString = toString(removeAnnotations(largestOriginal[0]));
-				duplicationClasses += (largestOriginalAsString: [largestOriginal[1], largestMatch[1]]);
-				numberOfLinesForBlock += (largestOriginalAsString: size(largestOriginal[0]));
-				stepNumOfLines = size(largestOriginal[0]);
-				printToFile("Duplication found <largestOriginal[1]>");
-			}
-		}
-	
-		startIndexOfBlockEncountered += stepNumOfLines;
+		startIndexOfBlockEncountered += addBlockToDuplicationClass(indexOfCurrentlyProcessedFile, linesPerFile,
+			linesForCurrentFileProcessed, startIndexOfBlockEncountered);
 	}
-	
-	return duplicationClasses;
 }
 
 /*
  * Loop through all currently known duplicate blocks and check if the block from a current line position (startLocationDuplicateBlock)
  * to end position (endLocationDuplicateBlock) matches with that known duplicate block.
- * If so, we've found yet another duplication instance of that block.
+ * If so, we've found yet another duplication instance of that block. If not, we've found a new duplication class.
  */
-public int addBlockToDuplicationClassIfApplicable(list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
+public int addBlockToDuplicationClass(int indexOfCurrentlyProcessedFile, list[list[value]] linesPerFile,
+list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 	for (str duplicationClass <- duplicationClasses) {
-		int numberOfLinesOfDuplicationClass = numberOfLinesForBlock[duplicationClass];
-
+		tuple[int fileIndex, int lineIndex, int size] startIndexAndFile = startIndexAndSizeOfFirstElementOfDuplicationClass[duplicationClass];
+		int numberOfLinesOfDuplicationClass = startIndexAndFile.size;
+		
 		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + numberOfLinesOfDuplicationClass)];
 		loc startLocation = getSource(head(linesWithAnnotations));
-		tuple[int,str] startLocationTuple = <startLocation.begin.line,startLocation.path>;
-		list[tuple[int,str]] locationsInClass = [<l.begin.line,l.path> | l <- duplicationClasses[duplicationClass]];
+		tuple[int, str] startLocationTuple = <startLocation.begin.line, startLocation.path>;
+		list[tuple[int, str]] locationsInClass = [<l.begin.line, l.path> | l <- duplicationClasses[duplicationClass]];
 		if (startLocationTuple notin locationsInClass) {
 			str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
 			
 			// compare with representative block of duplication class
 			if (duplicationClass == linesAsStringWithoutAnnotations) {
-				loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
-				loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
-				printToFile("Block from <startLocationDuplicateBlock> to <endLocationDuplicateBlock> added to existing duplication class.");
-				
-				duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock,endLocationDuplicateBlock);
-
-				return size(linesForCurrentFileProcessed);
+				// if only one example of this class was found yet, check for larger duplication block
+				if (size(duplicationClasses[duplicationClass]) == 1) {
+					int fileIndex = startIndexAndFile.fileIndex;
+					int firstLineIndex = startIndexAndFile.lineIndex;
+					list[value] linesForFileOfFirstItemInDuplicationClass = linesPerFile[fileIndex];
+					list[value] linesForDuplicationBlock
+						= linesForFileOfFirstItemInDuplicationClass[firstLineIndex..firstLineIndex + minimumDuplicateBlockSizeConsidered];
+						
+					int i = minimumDuplicateBlockSizeConsidered;
+					// expand duplication class if possible
+					while (firstLineIndex + i < size(linesForFileOfFirstItemInDuplicationClass)
+						&& startIndexOfBlockEncountered + i < size(linesForCurrentFileProcessed)
+						&& linesForFileOfFirstItemInDuplicationClass[firstLineIndex + i]
+							== linesForCurrentFileProcessed[startIndexOfBlockEncountered + i]) {
+						linesForDuplicationBlock += startIndexOfBlockEncountered + i < size(linesForCurrentFileProcessed);
+						linesWithAnnotations += linesForCurrentFileProcessed[startIndexOfBlockEncountered + i];
+					}
+					
+					duplicationClasses = delete(duplicationClasses, duplicationClass);
+					loc startLocationDuplicateBlock = getSource(head(linesForDuplicationBlock));
+					loc endLocationDuplicateBlock = getSource(last(linesForDuplicationBlock));
+					loc locationDuplicateBlock = mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock);
+					loc startLocationEncounteredBlock = getSource(head(linesWithAnnotations));
+					loc endLocationEncounteredBlock = getSource(last(linesWithAnnotations));
+					loc locationEncounteredBlock = mergeLocations(startLocationEncounteredBlock, endLocationEncounteredBlock);
+					duplicationClasses += (toString(removeAnnotations(linesForDuplicationBlock)):
+						[locationDuplicateBlock, locationEncounteredBlock]);
+					return size(linesWithAnnotations);
+				}
+				else {
+					loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
+					loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
+					printToFile("Block from <startLocationDuplicateBlock> to <endLocationDuplicateBlock> added to existing duplication class.");
+					
+					duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock);
+					return size(linesForCurrentFileProcessed);
+				}
 			}
 		}
 	}
 	
+	list[value] block = linesForCurrentFileProcessed[startIndexOfBlockEncountered..startIndexOfBlockEncountered
+		+ minimumDuplicateBlockSizeConsidered];
+	loc startLocation = getSource(head(block));
+	loc endLocation = getSource(last(block));
+	loc location = mergeLocations(startLocation, endLocation);
+	str blockAsString = toString(removeAnnotations(block));
+	duplicationClasses += (blockAsString: [location]);
+	startIndexAndSizeOfFirstElementOfDuplicationClass += (blockAsString: <indexOfCurrentlyProcessedFile, startIndexOfBlockEncountered,
+		size(block)>);
+	
 	return 1;
+}
+
+/*
+ * Remove 'duplication classes' containing only one location.
+ */
+public void filterDuplicationClasses() {
+	duplicationClasses = (c: duplicationClasses[c] | c <- duplicationClasses, size(duplicationClasses[c]) != 1);
 }
 
 /*

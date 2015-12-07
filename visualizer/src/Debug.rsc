@@ -31,12 +31,13 @@ public void printToFile(str s) {
 	loc location = |project://visualizer/debugPrintString.txt|;
 	
 	if(!isFile(location))
-		clearFile(location);
+		clearFile(location); 
 	
 	teller += 1;	
 	appendToFile(location, toString(teller) + " " + s + "\n");
 }
 
 public void clearFile(loc location) {
+	teller = 0;
 	writeFile(location, "");
 }

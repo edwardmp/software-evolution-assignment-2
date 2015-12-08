@@ -22,23 +22,30 @@ foreach ($allDuplicationClasses as $duplicationClass)
         $locationInfoAsArray = (array) $location[1];
 
         $childLocationArray = array();
-        $childLocationArray["name"] = sprintf("%s %d %d", $locationInfoAsArray["path"], $locationInfoAsArray["beginLine"], $locationInfoAsArray["endLine"]);
+        $childLocationArray["name"] = sprintf("%s %d %d", basename($locationInfoAsArray["path"]), $locationInfoAsArray["beginLine"], $locationInfoAsArray["endLine"]);
         $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
 
         $convertedLocationArray[] = $childLocationArray;
     }
 
     $duplicationCategoryName = sprintf("%d lines", $duplicationNumberOfLinesPerBlock, "lines");
-    $duplicationClassArray = array("name" => $duplicatedCodeBlockContents, "children" => $convertedLocationArray);
+    $duplicationClassArray = array("name" => substr($duplicatedCodeBlockContents, 0, 100), "children" => $convertedLocationArray);
 
     if (!array_key_exists($duplicationCategoryName, $convertedDataArray))
          $convertedDataArray[$duplicationCategoryName] = array();
-    $convertedDataArray[$duplicationCategoryName][] = $duplicationClassArray;
 
-    //print_r($convertedDataArray);
+    $convertedDataArray[$duplicationCategoryName][] = $duplicationClassArray;
 }
 
-$convertedDataArrayAsJSON = json_encode($convertedDataArray);
+$convertedDataArrayWithLineCategoryRewritten = array();
+foreach($convertedDataArray as $convertDataArrayLineCategoryKey => $convertDataArrayLineCategoryValue)
+{
+    $convertedDataArrayWithLineCategoryRewritten [] = array("name" => $convertDataArrayLineCategoryKey, "children" => $convertDataArrayLineCategoryValue);
+}
+
+$convertedDataArrayWithLineCategoryRewrittenWithSkeleton = array("name" => "", "children" => $convertedDataArrayWithLineCategoryRewritten);
+
+$convertedDataArrayAsJSON = json_encode($convertedDataArrayWithLineCategoryRewrittenWithSkeleton );
 
 file_put_contents("resultOfAnalysisConverted.json", $convertedDataArrayAsJSON);
 

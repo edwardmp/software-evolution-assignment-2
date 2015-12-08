@@ -9,22 +9,31 @@ $convertedDataArray = array();
 
 foreach ($allDuplicationClasses as $duplicationClass)
 {
-    $amountOfLinesInDuplicationClass = 0;
     $duplicatedCodeBlockContents = $duplicationClass[0][1];
-
-    $convertedDataArray[$duplicatedCodeBlockContents]["children"] = array();
-
     $locations = $duplicationClass[1][1];
-   // var_dump($locations);
+
+    $firstLocationInfo = $locations[1][1];
+    $duplicationNumberOfLinesPerBlock = $firstLocationInfo->endLine - $firstLocationInfo->beginLine;
+    $amountOfLinesInDuplicationClass = count($locations) * $duplicationNumberOfLinesPerBlock;
+
+    $convertedLocationArray = array();
     foreach ($locations as $location)
     {
         $locationInfoAsArray = (array) $location[1];
-        $amountOfLinesInDuplicationClass += $locationInfoAsArray["endLine"] - $locationInfoAsArray["beginLine"];
-        $locationInfoToKeep = array_intersect_key($locationInfoAsArray , array_flip(array("endLine", "beginLine", "path")));
-        $convertedDataArray[$duplicatedCodeBlockContents]["children"][] = $locationInfoToKeep;
+
+        $childLocationArray = array();
+        $childLocationArray["name"] = sprintf("%s %d %d", $locationInfoAsArray["path"], $locationInfoAsArray["beginLine"], $locationInfoAsArray["endLine"]);
+        $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
+
+        $convertedLocationArray[] = $childLocationArray;
     }
 
-    $convertedDataArray[$duplicatedCodeBlockContents]["numberOfLines"] = $amountOfLinesInDuplicationClass;
+    $duplicationCategoryName = sprintf("%d lines", $duplicationNumberOfLinesPerBlock, "lines");
+    $duplicationClassArray = array("name" => $duplicatedCodeBlockContents, "children" => $convertedLocationArray);
+
+    if (!array_key_exists($duplicationCategoryName, $convertedDataArray))
+         $convertedDataArray[$duplicationCategoryName] = array();
+    $convertedDataArray[$duplicationCategoryName][] = $duplicationClassArray;
 
     //print_r($convertedDataArray);
 }

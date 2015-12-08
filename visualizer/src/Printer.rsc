@@ -1,7 +1,8 @@
-module Debug
+module Printer
 
 import IO;
 import util::Math;
+import lang::json::IO;
 
 int teller = 0;
 
@@ -35,6 +36,12 @@ public void printToFile(str s) {
 	
 	teller += 1;	
 	appendToFile(location, toString(teller) + " " + s + "\n");
+}
+
+public void printToJSON(map[value, value] m) {
+	loc location = |project://visualizer/resultOfAnalysis.json|;
+	clearFile(location);
+	appendToFile(location, toJSON(m));
 }
 
 public void clearFile(loc location) {

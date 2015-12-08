@@ -3,7 +3,7 @@ module TypeTwoDetector
 import GeneralDetector;
 import IO;
 import lang::java::m3::AST;
-import Debug;
+import Printer;
 
 private int enumCounter = 0;
 

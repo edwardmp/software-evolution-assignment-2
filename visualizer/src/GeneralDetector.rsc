@@ -1,13 +1,12 @@
 module GeneralDetector
 
-import Debug;
-import Exception;
 import IO;
 import lang::java::m3::AST;
 import List;
 import Map;
 import Node;
 import Set;
+import util::Math;
 
 /*
  * Map from each combination of lines appearing at least twice in the analyzed code,
@@ -323,11 +322,10 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
 	// manually loop through all files, which contain the source lines
 	int indexOfCurrentlyProcessedFile = 0;
 	while (indexOfCurrentlyProcessedFile < size(linesPerFile)) {
-		//printToFile("Currently processing file: <(indexOfCurrentlyProcessedFile + 1)> <(indexOfCurrentlyProcessedFile + 1) / (size(linesPerFile) * 1.0)>");
+		println("Currently processing file: <(indexOfCurrentlyProcessedFile + 1)> <round((indexOfCurrentlyProcessedFile + 1) / (size(linesPerFile) * 1.0) * 100, 1)>");
 		list[value] linesForCurrentFileProcessed = linesPerFile[indexOfCurrentlyProcessedFile];
 		
 		if (size(linesForCurrentFileProcessed) >= minimumDuplicateBlockSizeConsidered) {
-			printToFile("Processing file with index <indexOfCurrentlyProcessedFile>, path: <getSource(head(linesPerFile[indexOfCurrentlyProcessedFile])).path>");
 			findDuplicationForLinesInFile(linesPerFile, linesForCurrentFileProcessed, indexOfCurrentlyProcessedFile);
 		}
 		
@@ -344,14 +342,10 @@ public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile
 public void findDuplicationForLinesInFile(list[list[value]] linesPerFile, list[value] linesForCurrentFileProcessed,
 int indexOfCurrentlyProcessedFile) {
 	int startIndexOfBlockEncountered = 0;
-	while (startIndexOfBlockEncountered < (size(linesForCurrentFileProcessed) - minimumDuplicateBlockSizeConsidered)) {
-		printToFile("	Comparing block starting at index <startIndexOfBlockEncountered> <toString([removeAnnotations(linesForCurrentFileProcessed[startIndexOfBlockEncountered])])>");
+	while (startIndexOfBlockEncountered < (size(linesForCurrentFileProcessed) - minimumDuplicateBlockSizeConsidered)) {		
 		startIndexOfBlockEncountered += addBlockToDuplicationClass(indexOfCurrentlyProcessedFile, linesPerFile,
 			linesForCurrentFileProcessed, startIndexOfBlockEncountered);
-		
-		printToFile("YOLO <startIndexOfBlockEncountered>");
 	}
-	printToFile("Done processsing file <indexOfCurrentlyProcessedFile>");
 }
 
 /*
@@ -364,8 +358,6 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 	for (str duplicationClass <- duplicationClasses) {
 		tuple[int fileIndex, int lineIndex, int size] startIndexAndFile = startIndexAndSizeOfFirstElementOfDuplicationClass[duplicationClass];
 		int numberOfLinesOfDuplicationClass = startIndexAndFile.size;
-		
-		printToFile("		addBlockToDuplicationClass <startIndexAndFile>");
 
 		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + numberOfLinesOfDuplicationClass)];
 		loc startLocation = getSource(head(linesWithAnnotations));
@@ -396,6 +388,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 					}
 					
 					duplicationClasses = delete(duplicationClasses, duplicationClass);
+					
 					loc startLocationDuplicateBlock = getSource(head(linesForDuplicationBlock));
 					loc endLocationDuplicateBlock = getSource(last(linesForDuplicationBlock));
 					loc locationDuplicateBlock = mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock);
@@ -408,9 +401,13 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 						[locationDuplicateBlock, locationEncounteredBlock]);
 						
 					tuple[int fileIndex, int lineIndex, int size] duplicationClassTuple = startIndexAndSizeOfFirstElementOfDuplicationClass[duplicationClass];
+					
 					startIndexAndSizeOfFirstElementOfDuplicationClass += (linesForDuplicationBlockWithoutAnnotations: 
 						<duplicationClassTuple.fileIndex, duplicationClassTuple.lineIndex, size(linesForDuplicationBlock)>);
-					startIndexAndSizeOfFirstElementOfDuplicationClass = delete(startIndexAndSizeOfFirstElementOfDuplicationClass, duplicationClass);
+						
+					if (linesForDuplicationBlockWithoutAnnotations != duplicationClass) {
+						startIndexAndSizeOfFirstElementOfDuplicationClass = delete(startIndexAndSizeOfFirstElementOfDuplicationClass, duplicationClass);
+					}
 
 					return size(linesWithAnnotations);
 				}

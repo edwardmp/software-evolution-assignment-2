@@ -349,7 +349,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 		tuple[int, str] startLocationTuple = <startLocation.begin.line, startLocation.path>;
 		list[tuple[int, str]] locationsInClass = [<l.begin.line, l.path> | l <- duplicationClasses[duplicationClass]];
 		if (startLocationTuple notin locationsInClass) {
-			str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
+			str linesAsStringWithoutAnnotations = toString(delAnnotationsRec(linesWithAnnotations));
 			
 			// compare with representative block of duplication class
 			if (duplicationClass == linesAsStringWithoutAnnotations) {
@@ -374,10 +374,10 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 					
 					duplicationClasses = delete(duplicationClasses, duplicationClass);
 					
-					loc locationDuplicateBlock = findLocation(linesForDuplicateBlock);
+					loc locationDuplicateBlock = findLocation(linesForDuplicationBlock);
 					loc locationEncounteredBlock = findLocation(linesWithAnnotations);
 					
-					str linesForDuplicationBlockWithoutAnnotations = toString(removeAnnotations(linesForDuplicationBlock));
+					str linesForDuplicationBlockWithoutAnnotations = toString(delAnnotationsRec(linesForDuplicationBlock));
 					duplicationClasses += (linesForDuplicationBlockWithoutAnnotations:
 						[locationDuplicateBlock, locationEncounteredBlock]);
 						

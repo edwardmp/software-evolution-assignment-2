@@ -33,3 +33,5 @@ local.properties
 .texlipse
 
 debug*.txt
+
+result*.json

@@ -14,6 +14,11 @@ import util::Math;
  */
 map[str, list[loc]] duplicationClasses = ();
 
+/*
+ * Map from each combination of lines appearing at least twice in the analyzed code,
+ * to a tuple consisting of the index of the file and the line the first found appearence of this code start
+ * and the size of the code fragment.
+ */
 map[str, tuple[int fileIndex, int lineIndex, int size]] startIndexAndSizeOfFirstElementOfDuplicationClass = ();
 
 /*
@@ -131,47 +136,27 @@ public loc getSource(Expression expr) = expr@src;
 public loc getSource(<*value v, loc location>) = location;
 
 /*
- * Remove all annotations from a part of an AST, including all its children.
- */
-public Declaration removeAnnotations(Declaration decl) = delAnnotationsRec(decl);
-public Statement removeAnnotations(Statement stat) = delAnnotationsRec(stat);
-public Expression removeAnnotations(Expression expr) = delAnnotationsRec(expr);
-
-/*
  * Remove all annotations from all elements of a list,
- * which can not contain any elements for which removeAnnotations in not defined.
+ * which can not contain any elements for which delAnnotationsRec is not defined.
  */
-public list[value] removeAnnotations(list[value] v) {
-	return for (val <- v) {
-		append (removeAnnotations(val));
-	}
-}
+public list[value] delAnnotationsRec(list[value] v) = [delAnnotationsRec(val) | val <- v];
 
 /*
  * Remove all annotations from a duplication class, represented as map from a list of lines
  * to a list of locations at which these lines appeared.
  */
-public map[list[value], list[loc]] removeAnnotations(map[list[value], list[loc]] linesAndLocationMap) {
-	map[list[value], list[loc]] result = ();
-	for(lines <- linesAndLocationMap) {
-		result += (removeAnnotations(lines): linesAndLocationMap[lines]);
-	}
-	
-	return result;
-}
+public map[list[value], list[loc]] delAnnotationsRec(map[list[value], list[loc]] linesAndLocationMap)
+    = (delAnnotationsRec(lines) : linesAndLocationMap[lines] | lines <- linesAndLocationMap);
 
 /*
- * Remove all annotations from the first element when v is a tuple and return the result.
- * Return v itself in case it is not a tuple with a value and a location.
+ * Return the first element of a tuple consisting of some value and a location, with all annotations removed.
  */
-public value removeAnnotations(value v) { 
-	if (<value x, loc location> := v) {
-		return removeAnnotations(x);
-	}
-	else {
-		return v;
-	}
-}
+public value delAnnotationsRec(<value x, loc location>) = delAnnotationsRec(x);
+
+/*
+ * Return v itself in case delAnnotationsRec is called for a value v for which this method is not defined more specifically.
+ */
+public default value delAnnotationsRec(value v) = v;
 
 /*
  * Return the location of the first line in a location that ranges over one or more lines.
@@ -364,7 +349,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 		tuple[int, str] startLocationTuple = <startLocation.begin.line, startLocation.path>;
 		list[tuple[int, str]] locationsInClass = [<l.begin.line, l.path> | l <- duplicationClasses[duplicationClass]];
 		if (startLocationTuple notin locationsInClass) {
-			str linesAsStringWithoutAnnotations = toString(removeAnnotations(linesWithAnnotations));
+			str linesAsStringWithoutAnnotations = toString(delAnnotationsRec(linesWithAnnotations));
 			
 			// compare with representative block of duplication class
 			if (duplicationClass == linesAsStringWithoutAnnotations) {
@@ -389,14 +374,10 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 					
 					duplicationClasses = delete(duplicationClasses, duplicationClass);
 					
-					loc startLocationDuplicateBlock = getSource(head(linesForDuplicationBlock));
-					loc endLocationDuplicateBlock = getSource(last(linesForDuplicationBlock));
-					loc locationDuplicateBlock = mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock);
-					loc startLocationEncounteredBlock = getSource(head(linesWithAnnotations));
-					loc endLocationEncounteredBlock = getSource(last(linesWithAnnotations));
-					loc locationEncounteredBlock = mergeLocations(startLocationEncounteredBlock, endLocationEncounteredBlock);
+					loc locationDuplicateBlock = findLocation(linesForDuplicationBlock);
+					loc locationEncounteredBlock = findLocation(linesWithAnnotations);
 					
-					str linesForDuplicationBlockWithoutAnnotations = toString(removeAnnotations(linesForDuplicationBlock));
+					str linesForDuplicationBlockWithoutAnnotations = toString(delAnnotationsRec(linesForDuplicationBlock));
 					duplicationClasses += (linesForDuplicationBlockWithoutAnnotations:
 						[locationDuplicateBlock, locationEncounteredBlock]);
 						
@@ -412,10 +393,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 					return size(linesWithAnnotations);
 				}
 				else {
-					loc startLocationDuplicateBlock = getSource(head(linesWithAnnotations));
-					loc endLocationDuplicateBlock = getSource(last(linesWithAnnotations));
-					
-					duplicationClasses[duplicationClass] += mergeLocations(startLocationDuplicateBlock, endLocationDuplicateBlock);
+					duplicationClasses[duplicationClass] += findLocation(linesWithAnnotations);
 					return size(linesForCurrentFileProcessed);
 				}
 			}
@@ -426,8 +404,8 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 		+ minimumDuplicateBlockSizeConsidered];
 	loc startLocation = getSource(head(block));
 	loc endLocation = getSource(last(block));
-	loc location = mergeLocations(startLocation, endLocation);
-	str blockAsString = toString(removeAnnotations(block));
+	loc location = findLocation(block);
+	str blockAsString = toString(delAnnotationsRec(block));
 	duplicationClasses += (blockAsString: [location]);
 	startIndexAndSizeOfFirstElementOfDuplicationClass += (blockAsString: <indexOfCurrentlyProcessedFile, startIndexOfBlockEncountered,
 		size(block)>);
@@ -443,9 +421,11 @@ public void filterDuplicationClasses() {
 }
 
 /*
- * Merge two locations into one by starting at the start of startLocation and ending at then end of endLocation.
+ * Find the location of a list of lines.
  */
-public loc mergeLocations(loc startLocation, loc endLocation) {
+public loc findLocation(list[value] lines) {
+	loc startLocation = getSource(head(lines));
+	loc endLocation = getSource(last(lines));
 	startLocation.end.line = endLocation.end.line;
 	startLocation.end.column = endLocation.end.column;
 	return startLocation;

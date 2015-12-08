@@ -9,11 +9,4 @@ import Printer;
  * The location must be specified in the file-scheme, because of usage of lang::java::m3::AST::createAstFromFile
  * or lang::java::m3::AST::createAstsFromDirectory.
  */
-public void main(loc location) {
-	set[Declaration] asts = locToAsts(location);
-	list[value] lines = astsToLines(asts);
-
-	map[str, list[loc]] duplicationClasses = findDuplicationClasses(lines);
-	
-	printToJSON(duplicationClasses);
-}
+public void main(loc location) = printToJSON(findDuplicationClasses(astsToLines(locToAsts(location))));

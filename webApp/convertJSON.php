@@ -1,6 +1,6 @@
 <?php
 
-$analysisResultJSONFileContents = file_get_contents("resultOfAnalysis.json");
+$analysisResultJSONFileContents = file_get_contents(dirname(__DIR__) . "/visualizer/resultOfAnalysis.json");
 
 $jsonAsArray = json_decode($analysisResultJSONFileContents);
 $allDuplicationClasses = $jsonAsArray[1];
@@ -24,12 +24,15 @@ foreach ($allDuplicationClasses as $duplicationClass)
         $childLocationArray = array();
         $childLocationArray["name"] = sprintf("%s %d %d", basename($locationInfoAsArray["path"]), $locationInfoAsArray["beginLine"], $locationInfoAsArray["endLine"]);
         $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
+        $childLocationArray["url"] = $locationInfoAsArray["path"];
+        $childLocationArray["begin"] = $locationInfoAsArray["beginLine"];
+        $childLocationArray["end"] = $locationInfoAsArray["endLine"];
 
         $convertedLocationArray[] = $childLocationArray;
     }
 
     $duplicationCategoryName = sprintf("%d lines", $duplicationNumberOfLinesPerBlock, "lines");
-    $duplicationClassArray = array("name" => substr($duplicatedCodeBlockContents, 0, 100), "children" => $convertedLocationArray);
+    $duplicationClassArray = array("name" => substr($duplicatedCodeBlockContents, 0, 0), "children" => $convertedLocationArray);
 
     if (!array_key_exists($duplicationCategoryName, $convertedDataArray))
          $convertedDataArray[$duplicationCategoryName] = array();

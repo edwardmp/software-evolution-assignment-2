@@ -18,34 +18,34 @@ var vis = graph.insert('svg:svg')
     .attr('transform', 'translate(' + (w - r) / 2 + ',' + (h - r) / 2 + ')');
 
 function zoom(d) {
-  var k = r / d.r / 2;
-  x.domain([d.x - d.r, d.x + d.r]);
-  y.domain([d.y - d.r, d.y + d.r]);
+    var k = r / d.r / 2;
+    x.domain([d.x - d.r, d.x + d.r]);
+    y.domain([d.y - d.r, d.y + d.r]);
 
-  var t = vis.transition()
-      .duration(d3.event.altKey ? 7500 : 750);
+    var t = vis.transition()
+          .duration(d3.event.altKey ? 7500 : 750);
 
-  t.selectAll('circle')
-    .attr('cx', function(d) { return x(d.x); })
-    .attr('cy', function(d) { return y(d.y); })
-    .attr('r', function(d) { return k * d.r; });
+    t.selectAll('circle')
+        .attr('cx', function(d) { return x(d.x); })
+        .attr('cy', function(d) { return y(d.y); })
+        .attr('r', function(d) { return k * d.r; });
 
-  t.selectAll('text')
-    .attr('x', function(d) { return x(d.x); })
-    .attr('y', function(d) { return y(d.y); })
-    .style('opacity', function(d) { 
-    return k * d.r > 20 ? 1 : 0; });
+    t.selectAll('text')
+        .attr('x', function(d) { return x(d.x); })
+        .attr('y', function(d) { return y(d.y); })
+        .style('opacity', function(d) { 
+        return k * d.r > 20 ? 1 : 0; });
 
-  node = d;
-  d3.event.stopPropagation();
+    node = d;
+    d3.event.stopPropagation();
 }
 
 d3.json('resultOfAnalysisConverted.json', function(data) {
-  node = root = data;
+    node = root = data;
 
-  var nodes = pack.nodes(root);
+var nodes = pack.nodes(root);
 
-  vis.selectAll('circle')
+vis.selectAll('circle')
     .data(nodes)
     .enter().append('svg:circle')
     .attr('class', function(d) { 
@@ -56,7 +56,7 @@ d3.json('resultOfAnalysisConverted.json', function(data) {
     .attr('r', function(d) { return d.r; })
     .on('click', function(d) { return zoom(node === d ? root : d); });
 
-  vis.selectAll('text')
+vis.selectAll('text')
     .data(nodes)
     .enter().append('svg:text')
     .attr('class', function(d) { 
@@ -77,7 +77,17 @@ d3.json('resultOfAnalysisConverted.json', function(data) {
         else   
             return 0;
     })
-    .text(function(d) { return d.name; });
+    .text(function(d) { return d.name; })
+    .on('click', function(d) { 
+        if (d.depth === 3) {
+            $.get('codeReader.php', {'filePath': d.url }, function( data ) {
+                $("#code").html(data);
+                $("#codePre").attr("data-line", d.begin + "-" + d.end);
+                Prism.highlightElement($('#code')[0]);
+                $('#codeModal').modal('show');
+            });
+        }
+    });
 
-  d3.select(window).on('click', function() { zoom(root); });
+    d3.select(window).on('click', function() { zoom(root); });
 });

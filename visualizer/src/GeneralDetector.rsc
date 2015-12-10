@@ -141,13 +141,6 @@ public loc getSource(<*value v, loc location>) = location;
 public list[value] delAnnotationsRec(list[value] v) = [delAnnotationsRec(val) | val <- v];
 
 /*
- * Remove all annotations from a duplication class, represented as map from a list of lines
- * to a list of locations at which these lines appeared.
- */
-public map[list[value], list[loc]] delAnnotationsRec(map[list[value], list[loc]] linesAndLocationMap)
-    = (delAnnotationsRec(lines) : linesAndLocationMap[lines] | lines <- linesAndLocationMap);
-
-/*
  * Return the first element of a tuple consisting of some value and a location, with all annotations removed.
  */
 public value delAnnotationsRec(<value x, loc location>) = delAnnotationsRec(x);

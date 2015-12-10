@@ -1,22 +1,13 @@
 module TypeTwoDetector
 
 import GeneralDetector;
-import IO;
 import lang::java::m3::AST;
 import Printer;
 
 private int enumCounter = 0;
 
-public void main(loc location) {
-	set[Declaration] asts = locToAsts(location);
-	list[value] lines = astsToLines(asts);
-
-	map[list[value], list[loc]] duplicationClasses = findDuplicationClasses(lines);
-	
-	// for debug purposes
-	printToFile(removeAnnotations(duplicationClasses));
-	println(removeAnnotations(duplicationClasses));
-}
+// Print for debugging purposes. Not finished yet.
+public void main(loc location) = printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(locToAsts(location)))));
 
 public set[Declaration] standardizeIdentifiersLiteralsAndTypes(set[Declaration] ast) {
 	top-down visit(ast) {

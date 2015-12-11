@@ -10,16 +10,15 @@ import util::Math;
 
 /*
  * Map from each combination of lines appearing at least twice in the analyzed code,
- * to the locations that code appears at.
+ * to the locations that code appears at and the number of lines that code consists of.
  */
-map[str, list[loc]] duplicationClasses = ();
+map[str, tuple[list[loc] locations, int numberOfLines]] duplicationClasses = ();
 
 /*
  * Map from each combination of lines appearing at least twice in the analyzed code,
- * to a tuple consisting of the index of the file and the line the first found appearence of this code start
- * and the size of the code fragment.
+ * to a tuple consisting of the index of the file and the line the first found appearence of this code starts at.
  */
-map[str, tuple[int fileIndex, int lineIndex, int size]] startIndexAndSizeOfFirstElementOfDuplicationClass = ();
+map[str, tuple[int fileIndex, int lineIndex]] startIndexOfFirstElementOfDuplicationClass = ();
 
 /*
  * Defines the least amount of lines considered that would count as a duplicate.
@@ -140,13 +139,6 @@ public loc getSource(<*value v, loc location>) = location;
  * which can not contain any elements for which delAnnotationsRec is not defined.
  */
 public list[value] delAnnotationsRec(list[value] v) = [delAnnotationsRec(val) | val <- v];
-
-/*
- * Remove all annotations from a duplication class, represented as map from a list of lines
- * to a list of locations at which these lines appeared.
- */
-public map[list[value], list[loc]] delAnnotationsRec(map[list[value], list[loc]] linesAndLocationMap)
-    = (delAnnotationsRec(lines) : linesAndLocationMap[lines] | lines <- linesAndLocationMap);
 
 /*
  * Return the first element of a tuple consisting of some value and a location, with all annotations removed.
@@ -303,7 +295,7 @@ public list[value] statementToLines(Statement statement) {
 /*
  * A list is passed which contains a list with lines for each file discovered.
  */
-public map[str, list[loc]] findDuplicationClasses(list[list[value]] linesPerFile) {	
+public map[str, tuple[list[loc] locations, int numberOfLines]] findDuplicationClasses(list[list[value]] linesPerFile) {	
 	// manually loop through all files, which contain the source lines
 	int indexOfCurrentlyProcessedFile = 0;
 	while (indexOfCurrentlyProcessedFile < size(linesPerFile)) {
@@ -341,20 +333,20 @@ int indexOfCurrentlyProcessedFile) {
 public int addBlockToDuplicationClass(int indexOfCurrentlyProcessedFile, list[list[value]] linesPerFile,
 list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 	for (str duplicationClass <- duplicationClasses) {
-		tuple[int fileIndex, int lineIndex, int size] startIndexAndFile = startIndexAndSizeOfFirstElementOfDuplicationClass[duplicationClass];
-		int numberOfLinesOfDuplicationClass = startIndexAndFile.size;
+		tuple[int fileIndex, int lineIndex] startIndexAndFile = startIndexOfFirstElementOfDuplicationClass[duplicationClass];
+		int numberOfLinesOfDuplicationClass = duplicationClasses[duplicationClass].numberOfLines;
 
 		list[value] linesWithAnnotations = linesForCurrentFileProcessed[startIndexOfBlockEncountered..(startIndexOfBlockEncountered + numberOfLinesOfDuplicationClass)];
 		loc startLocation = getSource(head(linesWithAnnotations));
 		tuple[int, str] startLocationTuple = <startLocation.begin.line, startLocation.path>;
-		list[tuple[int, str]] locationsInClass = [<l.begin.line, l.path> | l <- duplicationClasses[duplicationClass]];
+		list[tuple[int, str]] locationsInClass = [<l.begin.line, l.path> | l <- duplicationClasses[duplicationClass].locations];
 		if (startLocationTuple notin locationsInClass) {
 			str linesAsStringWithoutAnnotations = toString(delAnnotationsRec(linesWithAnnotations));
 			
 			// compare with representative block of duplication class
 			if (duplicationClass == linesAsStringWithoutAnnotations) {
 				// if only one example of this class was found yet, check for larger duplication block
-				if (size(duplicationClasses[duplicationClass]) == 1) {
+				if (size(duplicationClasses[duplicationClass].locations) == 1) {
 					int fileIndex = startIndexAndFile.fileIndex;
 					int firstLineIndex = startIndexAndFile.lineIndex;
 					list[value] linesForFileOfFirstItemInDuplicationClass = linesPerFile[fileIndex];
@@ -378,22 +370,23 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 					loc locationEncounteredBlock = findLocation(linesWithAnnotations);
 					
 					str linesForDuplicationBlockWithoutAnnotations = toString(delAnnotationsRec(linesForDuplicationBlock));
+					int numberOfLinesForDuplicationClass = size(linesForDuplicationBlock);
 					duplicationClasses += (linesForDuplicationBlockWithoutAnnotations:
-						[locationDuplicateBlock, locationEncounteredBlock]);
+						<[locationDuplicateBlock, locationEncounteredBlock], numberOfLinesForDuplicationClass>);
 						
-					tuple[int fileIndex, int lineIndex, int size] duplicationClassTuple = startIndexAndSizeOfFirstElementOfDuplicationClass[duplicationClass];
+					tuple[int fileIndex, int lineIndex] duplicationClassTuple = startIndexOfFirstElementOfDuplicationClass[duplicationClass];
 					
-					startIndexAndSizeOfFirstElementOfDuplicationClass += (linesForDuplicationBlockWithoutAnnotations: 
-						<duplicationClassTuple.fileIndex, duplicationClassTuple.lineIndex, size(linesForDuplicationBlock)>);
+					startIndexOfFirstElementOfDuplicationClass += (linesForDuplicationBlockWithoutAnnotations: 
+						<duplicationClassTuple.fileIndex, duplicationClassTuple.lineIndex>);
 						
 					if (linesForDuplicationBlockWithoutAnnotations != duplicationClass) {
-						startIndexAndSizeOfFirstElementOfDuplicationClass = delete(startIndexAndSizeOfFirstElementOfDuplicationClass, duplicationClass);
+						startIndexOfFirstElementOfDuplicationClass = delete(startIndexOfFirstElementOfDuplicationClass, duplicationClass);
 					}
 
 					return size(linesWithAnnotations);
 				}
 				else {
-					duplicationClasses[duplicationClass] += findLocation(linesWithAnnotations);
+					duplicationClasses[duplicationClass].locations += findLocation(linesWithAnnotations);
 					return size(linesForCurrentFileProcessed);
 				}
 			}
@@ -406,9 +399,8 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 	loc endLocation = getSource(last(block));
 	loc location = findLocation(block);
 	str blockAsString = toString(delAnnotationsRec(block));
-	duplicationClasses += (blockAsString: [location]);
-	startIndexAndSizeOfFirstElementOfDuplicationClass += (blockAsString: <indexOfCurrentlyProcessedFile, startIndexOfBlockEncountered,
-		size(block)>);
+	duplicationClasses += (blockAsString: <[location], size(block)>);
+	startIndexOfFirstElementOfDuplicationClass += (blockAsString: <indexOfCurrentlyProcessedFile, startIndexOfBlockEncountered>);
 	
 	return 1;
 }
@@ -417,7 +409,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
  * Remove 'duplication classes' containing only one location.
  */
 public void filterDuplicationClasses() {
-	duplicationClasses = (c: duplicationClasses[c] | c <- duplicationClasses, size(duplicationClasses[c]) != 1);
+	duplicationClasses = (c: duplicationClasses[c] | c <- duplicationClasses, size(duplicationClasses[c].locations) != 1);
 }
 
 /*

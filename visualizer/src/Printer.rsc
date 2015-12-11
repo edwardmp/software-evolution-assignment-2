@@ -4,7 +4,7 @@ import IO;
 import util::Math;
 import lang::json::IO;
 
-int teller = 0;
+int lineCounter = 0;
 
 // for debugging purposes
 public void printToFile(set[value] s) {
@@ -34,17 +34,23 @@ public void printToFile(str s) {
 	if(!isFile(location))
 		clearFile(location); 
 	
-	teller += 1;	
-	appendToFile(location, toString(teller) + " " + s + "\n");
+	lineCounter += 1;	
+	appendToFile(location, toString(lineCounter) + " " + s + "\n");
 }
 
+/*
+ * Convert result to JSON so it can be imported in web app.
+ */
 public void printToJSON(map[value, value] m) {
 	loc location = |project://visualizer/resultOfAnalysis.json|;
 	clearFile(location);
 	appendToFile(location, toJSON(m));
 }
 
+/*
+ * Clears a file completely if its content is not empty.
+ */
 public void clearFile(loc location) {
-	teller = 0;
+	lineCounter = 0;
 	writeFile(location, "");
 }

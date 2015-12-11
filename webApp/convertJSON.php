@@ -22,7 +22,7 @@ foreach ($allDuplicationClasses as $duplicationClass)
         $locationInfoAsArray = (array) $location[1];
 
         $childLocationArray = array();
-        $childLocationArray["name"] = sprintf("%s %d %d", basename($locationInfoAsArray["path"]), $locationInfoAsArray["beginLine"], $locationInfoAsArray["endLine"]);
+        $childLocationArray["name"] = basename($locationInfoAsArray["path"]);
         $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
         $childLocationArray["url"] = $locationInfoAsArray["path"];
         $childLocationArray["begin"] = $locationInfoAsArray["beginLine"];

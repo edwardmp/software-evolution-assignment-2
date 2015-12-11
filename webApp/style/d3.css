@@ -1,6 +1,7 @@
 text {
   font-size: 11px;
   pointer-events: all;
+  fill: black;
 }
 
 text.parent {

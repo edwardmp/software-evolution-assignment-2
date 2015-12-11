@@ -1,55 +1,83 @@
 <?php
 
-$analysisResultJSONFileContents = file_get_contents(dirname(__DIR__) . "/visualizer/resultOfAnalysis.json");
+define('RASCAL_ANALYSIS_RESULT_LOCATION', sprintf("%s/%s", dirname(__DIR__), "visualizer/resultOfAnalysis.json"));
+define('RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION', "resultOfAnalysisConverted.json");
+define('RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION', "resultOfAnalysisConvertedToPieChartFormat.json");
 
-$jsonAsArray = json_decode($analysisResultJSONFileContents);
-$allDuplicationClasses = $jsonAsArray[1];
+$analysisResultJSONFileContents = file_get_contents(RASCAL_ANALYSIS_RESULT_LOCATION);
 
-$convertedDataArray = array();
-
-foreach ($allDuplicationClasses as $duplicationClass)
+function convertJSON($analysisResultJSONFileContents)
 {
-    $duplicatedCodeBlockContents = $duplicationClass[0][1];
-    $locations = $duplicationClass[1][1];
+    // convert JSON to PHP array
+    $jsonAsArray = json_decode($analysisResultJSONFileContents);
+    $allDuplicationClasses = $jsonAsArray[1];
 
-    $firstLocationInfo = $locations[1][1];
-    $duplicationNumberOfLinesPerBlock = $firstLocationInfo->endLine - $firstLocationInfo->beginLine;
-    $amountOfLinesInDuplicationClass = count($locations) * $duplicationNumberOfLinesPerBlock;
+    $convertedDataArray = array();
+    $duplicationClassList = array();
 
-    $convertedLocationArray = array();
-    foreach ($locations as $location)
+    foreach ($allDuplicationClasses as $key => $duplicationClass)
     {
-        $locationInfoAsArray = (array) $location[1];
+        $duplicatedCodeBlockContents = $duplicationClass[0][1];
+        $locations = $duplicationClass[1][1];
 
-        $childLocationArray = array();
-        $childLocationArray["name"] = basename($locationInfoAsArray["path"]);
-        $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
-        $childLocationArray["url"] = $locationInfoAsArray["path"];
-        $childLocationArray["begin"] = $locationInfoAsArray["beginLine"];
-        $childLocationArray["end"] = $locationInfoAsArray["endLine"];
+        $firstLocationInfo = $locations[1][1];
+        $duplicationNumberOfLinesPerBlock = $firstLocationInfo->endLine - $firstLocationInfo->beginLine;
+        $amountOfLinesInDuplicationClass = count($locations) * $duplicationNumberOfLinesPerBlock;
 
-        $convertedLocationArray[] = $childLocationArray;
+        $convertedLocationArray = array();
+        foreach ($locations as $location)
+        {
+            $locationInfoAsArray = (array) $location[1];
+
+            $childLocationArray = array();
+            $childLocationArray["name"] = basename($locationInfoAsArray["path"]);
+            $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
+            $childLocationArray["url"] = $locationInfoAsArray["path"];
+            $childLocationArray["begin"] = $locationInfoAsArray["beginLine"];
+            $childLocationArray["end"] = $locationInfoAsArray["endLine"];
+            $childLocationArray["basenamePlusFileLocation"] =  sprintf("%s <%d, %d>", $childLocationArray["name"], $childLocationArray["begin"], $childLocationArray["end"]);
+
+            $convertedLocationArray[] = $childLocationArray;
+        }
+
+        // used in pack hierarchy
+        $duplicationCategoryName = sprintf("%d lines", $duplicationNumberOfLinesPerBlock, "lines");
+       
+        // used in pie chart
+        $duplicationClassArray = array("name" => "", "children" => $convertedLocationArray);
+
+        $locationsArray = array_unique(array_column($convertedLocationArray, "basenamePlusFileLocation"));
+        $duplicationClassList[] = array("caption" => join(", ", $locationsArray), "label" => "Duplication class $key", "value" => $amountOfLinesInDuplicationClass);
+        if (!array_key_exists($duplicationCategoryName, $convertedDataArray))
+             $convertedDataArray[$duplicationCategoryName] = array();
+
+        $convertedDataArray[$duplicationCategoryName][] = $duplicationClassArray;
     }
 
-    $duplicationCategoryName = sprintf("%d lines", $duplicationNumberOfLinesPerBlock, "lines");
-    $duplicationClassArray = array("name" => substr($duplicatedCodeBlockContents, 0, 0), "children" => $convertedLocationArray);
+    $convertedDataArrayWithLineCategoryRewritten = array();
+    foreach($convertedDataArray as $convertDataArrayLineCategoryKey => $convertDataArrayLineCategoryValue)
+    {
+        $convertedDataArrayWithLineCategoryRewritten [] = array("name" => $convertDataArrayLineCategoryKey, "children" => $convertDataArrayLineCategoryValue);
+    }
 
-    if (!array_key_exists($duplicationCategoryName, $convertedDataArray))
-         $convertedDataArray[$duplicationCategoryName] = array();
+    $convertedDataArrayWithLineCategoryRewrittenWithSkeleton = array("name" => "", "children" => $convertedDataArrayWithLineCategoryRewritten);
 
-    $convertedDataArray[$duplicationCategoryName][] = $duplicationClassArray;
+    convertArrayToJSONAndSaveToFile($convertedDataArrayWithLineCategoryRewrittenWithSkeleton, $duplicationClassList);
 }
 
-$convertedDataArrayWithLineCategoryRewritten = array();
-foreach($convertedDataArray as $convertDataArrayLineCategoryKey => $convertDataArrayLineCategoryValue)
+function convertArrayToJSONAndSaveToFile($convertedDataArrayWithLineCategoryRewrittenWithSkeleton, $duplicationClassList)
 {
-    $convertedDataArrayWithLineCategoryRewritten [] = array("name" => $convertDataArrayLineCategoryKey, "children" => $convertDataArrayLineCategoryValue);
+    $convertedDataArrayAsJSON = json_encode($convertedDataArrayWithLineCategoryRewrittenWithSkeleton );
+
+    file_put_contents(sprintf("data/%s", RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION), $convertedDataArrayAsJSON);
+
+    $duplicationClassesAsJSON = json_encode($duplicationClassList);
+
+    file_put_contents(sprintf("data/%s", RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION), $duplicationClassesAsJSON);
+
+    printf("Conversion successful from input file %s.\nFound and extracted %d duplication classes.\nData written to files %s and %s.\n", RASCAL_ANALYSIS_RESULT_LOCATION, count($duplicationClassList), RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION, RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION);
+
 }
 
-$convertedDataArrayWithLineCategoryRewrittenWithSkeleton = array("name" => "", "children" => $convertedDataArrayWithLineCategoryRewritten);
-
-$convertedDataArrayAsJSON = json_encode($convertedDataArrayWithLineCategoryRewrittenWithSkeleton );
-
-file_put_contents("resultOfAnalysisConverted.json", $convertedDataArrayAsJSON);
-
+convertJSON($analysisResultJSONFileContents);
 ?>

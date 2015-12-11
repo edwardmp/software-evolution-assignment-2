@@ -1,4 +1,4 @@
-var r = 720,
+var r = 650,
     x = d3.scale.linear().range([0, r]),
     y = d3.scale.linear().range([0, r]),
     node,
@@ -33,28 +33,35 @@ function zoom(d) {
 
     t.selectAll('text')
         .attr('x', function(d) { return x(d.x); })
+        .text(function(d) { 
+                if (d.url && d.url.length != 0 && k < 2) {
+                    return '';
+                }
+                return d.name;
+            })  
         .attr('y', function(d) { return y(d.y); })
         .style('opacity', function(d) { 
-
-        if (k === 1) {
-            if (d.name.indexOf('lines') != -1) {
+            if (k === 1 && d.name.indexOf('lines') != -1) {
                 return 1;
             }
-            return 0;
-        }
-
-        return k * d.r > 20 ? 1 : 0; });
+            else if (k === 1) {
+                return 0;
+            }
+            else {
+                return k * d.r > 20 ? 1 : 0; 
+            }
+        });
 
     node = d;
     d3.event.stopPropagation();
 }
 
-d3.json('resultOfAnalysisConverted.json', function(data) {
+d3.json('data/resultOfAnalysisConverted.json', function(data) {
     node = root = data;
 
-var nodes = pack.nodes(root);
+    var nodes = pack.nodes(root);
 
-vis.selectAll('circle')
+    vis.selectAll('circle')
     .data(nodes)
     .enter().append('svg:circle')
     .attr('class', function(d) { 
@@ -68,7 +75,6 @@ vis.selectAll('circle')
     var t = vis.selectAll('text')
         .data(nodes)
         .enter();
-
         t.append('svg:text')
         .attr('class', function(d) { 
             if (d.name.indexOf('lines') != -1) {
@@ -95,7 +101,9 @@ vis.selectAll('circle')
                     var res = $("#code").replaceWith('<pre class="brush: java" id="code">' + data + '</pre>');
                     $('#codeModal').modal('show');
                     $('#codeModal h4').html('File ' + d.name);
-
+                    var url = d.url;
+                    var replacedURL = url.replace(' ', '+');
+                    $('#openInEclipseButton').attr('href', 'openineclipse://open?url=file://' + replacedURL + '&line=' + d.begin);
                     SyntaxHighlighter.defaults['highlight']  = d3.range(d.begin, d.end + 1);
                     SyntaxHighlighter.highlight();
 
@@ -110,4 +118,75 @@ vis.selectAll('circle')
         });
 
     d3.select(window).on('click', function() { zoom(root); });
+});
+
+$.getJSON("data/resultOfAnalysisConvertedToPieChartFormat.json", function(dataJSON) {
+    var chartConfig = {
+        "size": {
+            "canvasWidth": 1024,
+            "pieOuterRadius": "90%"
+        },
+        "data": {
+            "sortOrder": "value-desc",
+        },
+        "labels": {
+            "outer": {
+                "pieDistance": 32
+            },
+            "inner": {
+                "hideWhenLessThanPercentage": 3
+            },
+            "mainLabel": {
+                "fontSize": 11
+            },
+            "percentage": {
+                "color": "#ffffff",
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#adadad",
+                "fontSize": 11
+            },
+            "lines": {
+                "enabled": true
+            },
+            "truncation": {
+                "enabled": true
+            }
+        },
+        "tooltips": {
+            "enabled": true,
+            "type": "caption",
+            "styles": {
+                backgroundColor: "lightblue",
+                backgroundOpacity: 0.9,
+                color: "#ffffcc",
+            }
+        },
+        "effects": {
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        },
+        "misc": {
+            "gradient": {
+                "enabled": false,
+                "percentage": 100
+            }
+        },
+        "callbacks": {}
+    };
+
+    // set data
+    chartConfig.data.content = dataJSON;
+
+    // render chart
+    var pie = new d3pie("pieChart", chartConfig);
+
+    // render info table
+    jQuery.each(dataJSON, function(i, duplicationClass) {
+        $('#duplicationClassTable > tbody:last-child').append('<tr><td>' + duplicationClass.label + '</td><td>' + duplicationClass.caption + '</td><td>' + duplicationClass.value + '</td></tr>');
+    });
 });

@@ -24,18 +24,19 @@ public Declaration standardize(Declaration d, map[str, str] symbolTable, int cou
 			counter += 1;
 			list[Declaration] newConstants = [];
 			for (constant <- constants) {
-				if (\enumConstant(str constantName, list[Expression] arguments, Declaration class) := constant) {
-					symbolTable += (constantName: "v<counter>");
-					counter += 1;
-					class = standardize(class, symbolTable, counter);
-					newArguments = [standardize(argument, symbolTable, counter) | argument <- arguments];
-					newConstants += (\enumConstant(symbolTable[constantName], newArguments, class));
-				}
-				else if (\enumConstant(str constantName, list[Expression] arguments) := constant) {
+				// All cases, if-statement for binding arguments only
+				if (\enumConstant(str constantName, list[Expression] arguments, _) := constant
+				|| \enumConstant(str constantName, list[Expression] arguments) := constant) {
 					symbolTable += (constantName: "v<counter>");
 					counter += 1;
 					newArguments = [standardize(argument, symbolTable, counter) | argument <- arguments];
+					if (\enumConstant(str constantName, list[Expression] arguments, list[Declaration] class) := constant) {
+						class = standardize(class, symbolTable, counter);
+						newConstants += (\enumConstant(symbolTable[constantName], newArguments, class));
+					}
+					else {
 					newConstants += (\enumConstant(symbolTable[constantName], newArguments));
+					}
 				}
 			}
 			return copySrc(d, \enum(symbolTable[name], implements, newConstants, standardize(body, symbolTable, counter)));

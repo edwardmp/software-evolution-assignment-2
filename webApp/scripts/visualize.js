@@ -81,10 +81,19 @@ vis.selectAll('text')
     .on('click', function(d) { 
         if (d.depth === 3) {
             $.get('codeReader.php', {'filePath': d.url }, function( data ) {
-                $("#code").html(data);
-                $("#codePre").attr("data-line", d.begin + "-" + d.end);
-                Prism.highlightElement($('#code')[0]);
+                var res = $("#code").replaceWith('<pre class="brush: java" id="code">' + data + '</pre>');
                 $('#codeModal').modal('show');
+                $('#codeModal h4').html('File ' + d.name);
+
+                SyntaxHighlighter.defaults['highlight']  = d3.range(d.begin, d.end + 1);
+                SyntaxHighlighter.highlight();
+
+                $('#codeModal').on('shown.bs.modal', function() {
+                    var $container = $(this);
+                    var linePos = $('.number' + d.begin).first().position().top;
+
+                    $container.animate({scrollTop: linePos}, 'fast');
+                });      
             });
         }
     });

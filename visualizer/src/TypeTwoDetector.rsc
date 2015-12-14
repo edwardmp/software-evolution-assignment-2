@@ -109,7 +109,8 @@ public Expression copySrc(Expression from, Expression to) {
 	return to;
 }
 
-public void addToSymbolTable(str variable) {	symbolTableStack[0] += (variable: newNameForLiteral());
+public void addToSymbolTable(str variable) {
+	symbolTableStack[0] += (variable: newNameForLiteral());
 }
 
 public str newNameForLiteral() {

@@ -26,14 +26,10 @@ public set[Declaration] standardize(set[Declaration] asts) = {standardize(ast) |
 
 public Declaration standardize(Declaration d) {
 	top-down-break visit(d) {
-		case \compilationUnit(list[Declaration] imports, list[Declaration] types): {
-			types = standardize(types);
-			return copySrc(d, \compilationUnit(imports, types));
-		}
-		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types): {
-			types = standardize(types);
-			return copySrc(d, \compilationUnit(package, imports, standardize(types)));
-		}
+		case \compilationUnit(list[Declaration] imports, list[Declaration] types)
+			=> copySrc(d, \compilationUnit(imports, standardize(types)))
+		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types)
+			=> copySrc(d, \compilationUnit(package, imports, standardize(types)))
 		case \enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body): {
 			addToSymbolTable(name);
 			createNewStacks();
@@ -41,17 +37,17 @@ public Declaration standardize(Declaration d) {
 			body = standardize(body);
 			Declaration result = copySrc(d, \enum(head(symbolTableStack)[name], implements, constants, body));
 			removeStackHeads();
-			return result;
+			insert result;
 		}
 		case \enumConstant(str constantName, list[Expression] arguments): {
 			addToSymbolTable(constantName);
-			return copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments)));
+			insert copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments)));
 		}
 		case \enumConstant(str constantName, list[Expression] arguments, Declaration class): {
 			addToSymbolTable(constantName);
 			arguments = standardize(arguments);
 			class = standardize(class);
-			return copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments, class)));
+			insert copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments, class)));
 		}
 		case \class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			addToSymbolTable(name);
@@ -59,29 +55,36 @@ public Declaration standardize(Declaration d) {
 			list[Declaration] newBody = standardize(body);
 			Declaration result = copySrc(d, \class(name, extends, implements, newBody));
 			removeStackHeads();
-			return result;
+			insert result;
 		}
-		case \class(list[Declaration] body): {
-			body = standardize(body);
-			return copySrc(d, \class(body));
-		}
+		case \class(list[Declaration] body) => copySrc(d, \class(standardize(body)))
 		case \interface(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			addToSymbolTable(name);
 			createNewStacks();
 			body = standardize(body);
 			Declaration result = copySrc(d, \interface(name, extends, implements, body));
 			removeStackHeads();
-			return result;
+			insert result;
 		}
-		case \field(Type \type, list[Expression] fragments): {
-			fragments = standardize(fragments);
-			return copySrc(d, \field(\type, fragments));
+		case \field(Type \type, list[Expression] fragments)
+			=> copySrc(d, \field(\type, standardize(fragments)))
+		case \initializer(Statement initializerBody)
+			=> copySrc(d, \initializer(standardize(initializerBody)))
+		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
+			addToSymbolTable(name);
+			createNewStacks();
+			parameters = standardize(parameters);
+			impl = standardize(impl);
+			Declaration result = copySrc(d, \method(\return, name, parameters, exceptions, impl));
+			removeStackHeads();
+			insert result;
 		}
-		case \initializer(Statement initializerBody): {
-			initializerBody = standardize(initializerBody);
-			return copySrc(d, \initializer(initializerBody));
+		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions): {
+			addToSymbolTable(name);
+			parameters = standardize(parameters);
+			insert copySrc(d, \method(\return, name, parameters, exception));
 		}
-		default: return d; //TODO handle other cases
+		// TODO handle other cases
 	}
 }
 
@@ -98,6 +101,8 @@ public Expression standardize(Expression e) {
 }
 
 public list[Expression] standardize(list[Expression] exprs) = exprs; //TODO handle case
+
+public Statement standardize(Statement stat) = stat; //TODO handle case
 
 public Declaration copySrc(Declaration from, Declaration to) {
 	to@src = from@src;

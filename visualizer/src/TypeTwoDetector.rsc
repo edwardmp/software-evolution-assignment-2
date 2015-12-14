@@ -42,12 +42,12 @@ public Declaration standardize(Declaration d) {
 				|| \enumConstant(str constantName, list[Expression] arguments) := constant) {
 					addToSymbolTable(constantName);
 					newArguments = [standardize(argument) | argument <- arguments];
-					if (\enumConstant(str constantName, list[Expression] arguments, list[Declaration] class) := constant) {
-						class = [standardize(elem) | elem <- class];
-						newConstants += copySrc(constant, (\enumConstant(symbolTable[constantName], newArguments, class)));
+					if (\enumConstant(str constantName, list[Expression] arguments, Declaration class) := constant) {
+						class = standardize(class);
+						newConstants += copySrc(constant, (\enumConstant(head(symbolTableStack)[constantName], newArguments, class)));
 					}
 					else {
-					newConstants += copySrc(constant, (\enumConstant(head(symbolTableStack)[constantName], newArguments)));
+						newConstants += copySrc(constant, (\enumConstant(head(symbolTableStack)[constantName], newArguments)));
 					}
 				}
 			}

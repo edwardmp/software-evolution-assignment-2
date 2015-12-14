@@ -28,7 +28,7 @@ public Declaration standardize(Declaration d) {
 	top-down-break visit(d) {
 		case \compilationUnit(list[Declaration] imports, list[Declaration] types): {
 			types = standardize(types);
-			return copySrc(d, \compilationUnit(imports, newTypes));
+			return copySrc(d, \compilationUnit(imports, types));
 		}
 		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types): {
 			types = standardize(types);

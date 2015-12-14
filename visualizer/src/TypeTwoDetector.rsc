@@ -6,6 +6,7 @@ import lang::java::m3::AST;
 import List; // head (as peek), pop and push are used for simulating a stack
 import Printer;
 import Set;
+import Exception;
 
 private list[int] counterStack;
 
@@ -32,7 +33,7 @@ public void initialize() {
 public set[Declaration] standardize(set[Declaration] asts) = { standardize(ast) | ast <- asts };
 
 public Declaration standardize(Declaration d) {
-	top-down-break visit(d) {
+	return top-down-break visit(d) {
 		case \compilationUnit(list[Declaration] imports, list[Declaration] types)
 			=> copySrc(d, \compilationUnit(imports, standardize(types)))
 		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types)
@@ -42,19 +43,19 @@ public Declaration standardize(Declaration d) {
 			createNewStacks();
 			constants = standardize(constants);
 			body = standardize(body);
-			Declaration result = copySrc(d, \enum(head(symbolTableStack)[name], implements, constants, body));
+			Declaration result = copySrc(d, \enum(retrieveFromCurrentSymbolTable(name), implements, constants, body));
 			removeStackHeads();
 			insert result;
 		}
 		case \enumConstant(str constantName, list[Expression] arguments): {
 			addToSymbolTable(constantName);
-			insert copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments)));
+			insert copySrc(d, (\enumConstant(retrieveFromCurrentSymbolTable(constantName), arguments)));
 		}
 		case \enumConstant(str constantName, list[Expression] arguments, Declaration class): {
 			addToSymbolTable(constantName); // why dont create new stack here?
 			arguments = standardize(arguments);
 			class = standardize(class);
-			insert copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments, class)));
+			insert copySrc(d, (\enumConstant(retrieveFromCurrentSymbolTable(constantName), arguments, class)));
 		}
 		case \class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			addToSymbolTable(name);
@@ -98,24 +99,7 @@ public Declaration standardize(Declaration d) {
 public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
 
 public Expression standardize(Expression e) {
-  	top-down-break visit(e) {
-  		case \arrayAccess(Expression array, Expression index): {
-  			insert copySrc(e, \arrrayAccess(standardize(array), standardize(index)));
-  		}
-  		case \newArray(Type \type, list[Expression] dimensions, Expression init): {
-  			insert copySrc(e, \newArray(standardize(dimensions), standardize(init)));
-  		}
-   		case \newArray(Type \type, list[Expression] dimensions): {
-   			// handle literals
-   			insert copySrc(e, \newArray(standardize(dimensions)));
-   		}
-   		case \arrayInitializer(list[Expression] elements): {
-   			insert copySrc(e, \arrayInitializer(standardize(elements))); 
-   		}
-   		case \assignment(Expression lhs, str operator, Expression rhs): {
-   			// left hand side is variable name (e.g. testInt = ), should have been standardized earlier
-   			insert copySrc(e, \assignment(standardize(lhs), operator, standardize(rhs)));
-   		}
+  	return top-down-break visit(e) {
 	    case \fieldAccess(bool isSuper, Expression expression, str name) => copySrc(\fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
 	    case \fieldAccess(bool isSuper, str name) => copySrc(\fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
 	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class) => \newObject(standardize(expr), \type, standardize(args), standardize(class))
@@ -123,9 +107,7 @@ public Expression standardize(Expression e) {
 		case \simpleName(str name) => copySrc(\simpleName(retrieveFromCurrentSymbolTable(name)))
 		/* literals */
 		case \booleanLiteral(bool boolValue) => \booleanLiteral(true)
-		case \characterLiteral(str charValue): {
-   			insert copySrc(e, \characterLiteral("c")); // always the same?
-   		}
+		case \characterLiteral(str charValue) => copySrc(e, \characterLiteral("c")) // always the same?
    		case \number(str numberValue) => \number("1") // assuming this is a number literal
     	case \stringLiteral(str stringValue) => \stringLiteral("string")
     	case \variable(str name, int extraDimensions) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
@@ -154,6 +136,10 @@ public void addToSymbolTable(str variable) {
 }
 
 public str retrieveFromCurrentSymbolTable(str constantName) {
+	if (size(symbolTableStack) == 0) {
+		throw AssertionFailed("No symbol tables initialized.");
+	}
+	
 	return head(symbolTableStack)[constantName];
 }
 

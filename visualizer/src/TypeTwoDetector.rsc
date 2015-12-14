@@ -25,13 +25,13 @@ public void initialize() {
 public set[Declaration] standardize(set[Declaration] asts) = {standardize(ast) |  ast <- asts};
 
 public Declaration standardize(Declaration d) {
-	switch(d) {
+	top-down-break visit(d) {
 		case \compilationUnit(list[Declaration] imports, list[Declaration] types): {
-			list[Declaration] newTypes = [standardize(\type) | \type <- types];
+			types = standardize(types);
 			return copySrc(d, \compilationUnit(imports, newTypes));
 		}
 		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types): {
-			list[Declaration] newTypes = [standardize(\type) | \type <- types];
+			types = standardize(types);
 			return copySrc(d, \compilationUnit(package, imports, standardize(types)));
 		}
 		case \enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body): {
@@ -63,7 +63,23 @@ public Declaration standardize(Declaration d) {
 		}
 		case \class(list[Declaration] body): {
 			body = standardize(body);
-			return \class(body);
+			return copySrc(d, \class(body));
+		}
+		case \interface(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
+			addToSymbolTable(name);
+			createNewStacks();
+			body = standardize(body);
+			Declaration result = copySrc(d, \interface(name, extends, implements, body));
+			removeStackHeads();
+			return result;
+		}
+		case \field(Type \type, list[Expression] fragments): {
+			fragments = standardize(fragments);
+			return copySrc(d, \field(\type, fragments));
+		}
+		case \initializer(Statement initializerBody): {
+			initializerBody = standardize(initializerBody);
+			return copySrc(d, \initializer(initializerBody));
 		}
 		default: return d; //TODO handle other cases
 	}
@@ -88,8 +104,8 @@ public Expression copySrc(Expression from, Expression to) {
 }
 
 public void addToSymbolTable(str variable) {
-	symbolTableStack[0] += (variable: "v<counter>");
-	counter += 1;
+	symbolTableStack[0] += (variable: "v<head(counterStack)>");
+	counterStack[0] += 1;
 }
 
 public void createNewStacks() {

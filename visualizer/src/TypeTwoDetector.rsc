@@ -11,20 +11,21 @@ private list[map[str, str]] symbolTableStack;
 
 public void main(loc location) {
 	counter = 0;
-	symbolTableStack = [()];
+	map[str, str] initialSymbolTable = ();
+	symbolTableStack = [initialSymbolTable];
 	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
 }
 
-public set[Declaration] standardize(set[Declaration] asts) = mapper(asts, standardize);
+public set[Declaration] standardize(set[Declaration] asts) = {standardize(ast) |  ast <- asts};
 
 public Declaration standardize(Declaration d) {
 	switch(d) {
 		case \compilationUnit(list[Declaration] imports, list[Declaration] types): {
-			list[Declaration] newTypes = mapper(types, standardize);
+			list[Declaration] newTypes = [standardize(\type) | \type <- types];
 			return copySrc(d, \compilationUnit(imports, newTypes));
 		}
 		case \compilationUnit(Declaration package, list[Declaration] imports, list[Declaration] types): {
-			list[Declaration] newTypes = mapper(types, standardize);
+			list[Declaration] newTypes = [standardize(\type) | \type <- types];
 			return copySrc(d, \compilationUnit(package, imports, standardize(types)));
 		}
 		case \enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body): {
@@ -38,19 +39,24 @@ public Declaration standardize(Declaration d) {
 					addToSymbolTable(constantName);
 					newArguments = [standardize(argument) | argument <- arguments];
 					if (\enumConstant(str constantName, list[Expression] arguments, list[Declaration] class) := constant) {
-						class = mapper(class, standardize);
+						class = [standardize(elem) | elem <- class];
 						newConstants += (\enumConstant(symbolTable[constantName], newArguments, class));
 					}
 					else {
-					newConstants += (\enumConstant(symbolTable[constantName], newArguments));
+					newConstants += (\enumConstant(head(symbolTableStack)[constantName], newArguments));
 					}
 				}
 			}
+			Declaration result = copySrc(d, \enum(head(symbolTableStack)[name], implements, newConstants, standardize(body)));
 			removeLatestSymbolTable();
-			return copySrc(d, \enum(symbolTable[name], implements, newConstants, standardize(body, symbolTable)));
+			return result;
 		}
 		default: return d; //TODO handle other cases
 	}
+}
+
+public list[Declaration] standardize(list[Declaration] decls) {
+    return decls; //TODO handle body
 }
 
 public Expression standardize(Expression e) {
@@ -63,14 +69,14 @@ public Declaration copySrc(Declaration from, Declaration to) {
 }
 
 public void addToSymbolTable(str variable) {
-	head(symbolTableStack) += (name: "v<counter>");
+	symbolTableStack[0] += (variable: "v<counter>");
 	counter += 1;
 }
 
 public void createNewSymbolTable() {
-	symbolTable = push(head(symbolTableStack), symbolTableStack);
+	push(head(symbolTableStack), symbolTableStack);
 }
 
 public void removeLatestSymbolTable() {
-	<_,symbolTable> = pop(symbolTable);
+	<_,symbolTableStack> = pop(symbolTableStack);
 }

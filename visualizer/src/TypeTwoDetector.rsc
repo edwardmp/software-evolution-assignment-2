@@ -10,10 +10,14 @@ private int counter;
 private list[map[str, str]] symbolTableStack;
 
 public void main(loc location) {
+	initialize();
+	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
+}
+
+public void initialize() {
 	counter = 0;
 	map[str, str] initialSymbolTable = ();
 	symbolTableStack = [initialSymbolTable];
-	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
 }
 
 public set[Declaration] standardize(set[Declaration] asts) = {standardize(ast) |  ast <- asts};
@@ -40,10 +44,10 @@ public Declaration standardize(Declaration d) {
 					newArguments = [standardize(argument) | argument <- arguments];
 					if (\enumConstant(str constantName, list[Expression] arguments, list[Declaration] class) := constant) {
 						class = [standardize(elem) | elem <- class];
-						newConstants += (\enumConstant(symbolTable[constantName], newArguments, class));
+						newConstants += copySrc(constant, (\enumConstant(symbolTable[constantName], newArguments, class)));
 					}
 					else {
-					newConstants += (\enumConstant(head(symbolTableStack)[constantName], newArguments));
+					newConstants += copySrc(constant, (\enumConstant(head(symbolTableStack)[constantName], newArguments)));
 					}
 				}
 			}
@@ -55,9 +59,7 @@ public Declaration standardize(Declaration d) {
 	}
 }
 
-public list[Declaration] standardize(list[Declaration] decls) {
-    return decls; //TODO handle body
-}
+public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
 
 public Expression standardize(Expression e) {
 	return e; //TODO handle cases

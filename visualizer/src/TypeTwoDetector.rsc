@@ -62,6 +62,11 @@ public Declaration standardize(Declaration d) {
 public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
 
 public Expression standardize(Expression e) {
+  	top-down visit(e) {
+  		case \arrayAccess(Expression array, Expression index): {
+  		;	
+  		}
+  	}
 	return e; //TODO handle cases
 }
 

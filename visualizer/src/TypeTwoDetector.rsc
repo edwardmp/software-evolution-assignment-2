@@ -16,13 +16,20 @@ public void main(loc location) {
 	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
 }
 
+/*
+ * Initializes the symbol table and counter stack
+ */
 public void initialize() {
 	counterStack = [0];
 	map[str, str] initialSymbolTable = ();
 	symbolTableStack = [initialSymbolTable];
 }
 
-public set[Declaration] standardize(set[Declaration] asts) = {standardize(ast) |  ast <- asts};
+/*
+ * Loop over all Asts generated from the source files.
+ * This will normalize identifiers to faciliate type-2 clone detection.
+ */
+public set[Declaration] standardize(set[Declaration] asts) = { standardize(ast) | ast <- asts };
 
 public Declaration standardize(Declaration d) {
 	top-down-break visit(d) {
@@ -48,7 +55,7 @@ public Declaration standardize(Declaration d) {
 			return copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments)));
 		}
 		case \enumConstant(str constantName, list[Expression] arguments, Declaration class): {
-			addToSymbolTable(constantName);
+			addToSymbolTable(constantName); // why dont create new stack here?
 			arguments = standardize(arguments);
 			class = standardize(class);
 			return copySrc(d, (\enumConstant(head(symbolTableStack)[constantName], arguments, class)));
@@ -88,16 +95,44 @@ public Declaration standardize(Declaration d) {
 public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
 
 public Expression standardize(Expression e) {
-  	top-down visit(e) {
+  	top-down-break visit(e) {
   		case \arrayAccess(Expression array, Expression index): {
-  			standardize(array);
-  			standardize(index);
+  			insert copySrc(e, \arrrayAccess(standardize(array), standardize(index)));
   		}
+  		case \newArray(Type \type, list[Expression] dimensions, Expression init): {
+  			insert copySrc(e, \newArray(standardize(dimensions), standardize(init)));
+  		}
+   		case \newArray(Type \type, list[Expression] dimensions): {
+   			// handle literals
+   			insert copySrc(e, \newArray(standardize(dimensions)));
+   		}
+   		case \arrayInitializer(list[Expression] elements): {
+   			insert copySrc(e, \arrayInitializer(standardize(elements))); 
+   		}
+   		case \assignment(Expression lhs, str operator, Expression rhs): {
+   			// left hand side is variable name (e.g. testInt = ), should have been standardized earlier
+   			insert copySrc(e, \assignment(standardize(lhs), operator, standardize(rhs)));
+   		}
+	    case \fieldAccess(bool isSuper, Expression expression, str name) => copySrc(\fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
+	    case \fieldAccess(bool isSuper, str name) => copySrc(\fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
+	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class) => \newObject(standardize(expr), \type, standardize(args), standardize(class))
+    	case \newObject(Type \type, list[Expression] args, Declaration class) => \newObject(\type, standardize(args), standardize(class)) 
+		case \simpleName(str name) => copySrc(\simpleName(retrieveFromCurrentSymbolTable(name)))
+		/* literals */
+		case \booleanLiteral(bool boolValue) => \booleanLiteral(true)
+		case \characterLiteral(str charValue): {
+   			insert copySrc(e, \characterLiteral("c")); // always the same?
+   		}
+   		case \number(str numberValue) => \number("1") // assuming this is a number literal
+    	case \stringLiteral(str stringValue) => \stringLiteral("string")
+    	case \variable(str name, int extraDimensions) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
+    	case \variable(str name, int extraDimensions, Expression \initializer) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
+    	case \declarationExpression(Declaration decl) => \declarationExpression(standardize(decl))
+    	default: return e;
   	}
-	return e; //TODO handle cases
 }
 
-public list[Expression] standardize(list[Expression] exprs) = exprs; //TODO handle case
+public list[Expression] standardize(list[Expression] exprs) = [standardize(expr) | expr <- exprs];
 
 public Declaration copySrc(Declaration from, Declaration to) {
 	to@src = from@src;
@@ -111,6 +146,10 @@ public Expression copySrc(Expression from, Expression to) {
 
 public void addToSymbolTable(str variable) {
 	symbolTableStack[0] += (variable: newNameForLiteral());
+}
+
+public str retrieveFromCurrentSymbolTable(str constantName) {
+	return head(symbolTableStack)[constantName];
 }
 
 public str newNameForLiteral() {

@@ -88,6 +88,12 @@ public Declaration standardize(Declaration d) {
 public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
 
 public Expression standardize(Expression e) {
+  	top-down visit(e) {
+  		case \arrayAccess(Expression array, Expression index): {
+  			standardize(array);
+  			standardize(index);
+  		}
+  	}
 	return e; //TODO handle cases
 }
 
@@ -103,9 +109,13 @@ public Expression copySrc(Expression from, Expression to) {
 	return to;
 }
 
-public void addToSymbolTable(str variable) {
-	symbolTableStack[0] += (variable: "v<head(counterStack)>");
-	counterStack[0] += 1;
+public void addToSymbolTable(str variable) {	symbolTableStack[0] += (variable: newNameForLiteral());
+}
+
+public str newNameForLiteral() {
+	str tempResult = "v<head(counterStack)>";
+	head(counterStack) += 1;
+	return tempResult;
 }
 
 public void createNewStacks() {

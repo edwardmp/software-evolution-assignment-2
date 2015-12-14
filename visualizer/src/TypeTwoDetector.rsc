@@ -115,7 +115,7 @@ public void addToSymbolTable(str variable) {
 
 public str newNameForLiteral() {
 	str tempResult = "v<head(counterStack)>";
-	head(counterStack) += 1;
+	counterStack[0] += 1;
 	return tempResult;
 }
 

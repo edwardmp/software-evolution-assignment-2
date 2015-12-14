@@ -6,7 +6,8 @@ import lang::java::m3::AST;
 import List; // head (as peek), pop and push are used for simulating a stack
 import Printer;
 import Set;
-private int counter;
+
+private list[int] counterStack;
 
 private list[map[str, str]] symbolTableStack;
 
@@ -16,7 +17,7 @@ public void main(loc location) {
 }
 
 public void initialize() {
-	counter = 0;
+	counterStack = [0];
 	map[str, str] initialSymbolTable = ();
 	symbolTableStack = [initialSymbolTable];
 }
@@ -35,11 +36,11 @@ public Declaration standardize(Declaration d) {
 		}
 		case \enum(str name, list[Type] implements, list[Declaration] constants, list[Declaration] body): {
 			addToSymbolTable(name);
-			createNewSymbolTable();
+			createNewStacks();
 			constants = standardize(constants);
 			body = standardize(body);
 			Declaration result = copySrc(d, \enum(head(symbolTableStack)[name], implements, constants, body));
-			removeLatestSymbolTable();
+			removeStackHeads();
 			return result;
 		}
 		case \enumConstant(str constantName, list[Expression] arguments): {
@@ -54,11 +55,15 @@ public Declaration standardize(Declaration d) {
 		}
 		case \class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			addToSymbolTable(name);
-			createNewSymbolTable();
+			createNewStacks();
 			list[Declaration] newBody = standardize(body);
 			Declaration result = copySrc(d, \class(name, extends, implements, newBody));
-			removeLatetestSymbolTable();
+			removeStackHeads();
 			return result;
+		}
+		case \class(list[Declaration] body): {
+			body = standardize(body);
+			return \class(body);
 		}
 		default: return d; //TODO handle other cases
 	}
@@ -87,10 +92,12 @@ public void addToSymbolTable(str variable) {
 	counter += 1;
 }
 
-public void createNewSymbolTable() {
+public void createNewStacks() {
+	push(0, counterStack);
 	push(head(symbolTableStack), symbolTableStack);
 }
 
-public void removeLatestSymbolTable() {
-	<_,symbolTableStack> = pop(symbolTableStack);
+public void removeStackHeads() {
+	<_, symbolTableStack> = pop(symbolTableStack);
+	<_, counterStack> = pop(counterStack);
 }

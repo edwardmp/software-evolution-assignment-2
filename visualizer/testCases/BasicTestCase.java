@@ -19,8 +19,8 @@ public class BasicTestCase {
 		dummyField = true;
 	}
 	
-	public void firstMethodContainingDuplicateLines() {
-		for (int i = 0; i < 10; i++) {
+	public void firstMethodContainingDuplicateLines(int limit) {
+		for (int i = 0; i < limit; i++) {
 			if (i == 0) {
 				System.out.println("OMG i == 0");
 				System.out.println("OMG i == 0");
@@ -30,8 +30,8 @@ public class BasicTestCase {
 		}
 	}
 	
-	public void secondMethodContainingDuplicateLines() {
-		for (int i = 0; i < 10; i++) {
+	public void secondMethodContainingDuplicateLines(int limit) {
+		for (int i = 0; i < limit; i++) {
 			if (i == 0) {
 				System.out.println("OMG i == 0");
 				System.out.println("OMG i == 0");

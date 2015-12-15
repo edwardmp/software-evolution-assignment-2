@@ -92,7 +92,27 @@ public Declaration standardize(Declaration d) {
 			parameters = standardize(parameters);
 			insert copySrc(d, \method(\return, name, parameters, exception));
 		}
-		// TODO handle other cases
+		case \constructor(str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
+			addToSymbolTable(name);
+			createNewStacks();
+			parameters = standardize(parameters);
+			impl = standardize(impl);
+			Declaration result = copySrc(d, \constructor(name, parameters, exceptions, impl));
+			removeStackHeads();
+			insert result;
+		}
+		case \variables(Type \type, list[Expression] \fragments): {
+			\fragments = standardize(\fragments);
+			insert copySrc(d, \variables(\type, \fragments));
+		}
+		case \parameter(Type \type, str name, int extraDimensions): {
+			addToSymbolTable(name);
+			insert copySrc(d, \parameter(\type, name, extraDimensions));
+		}
+		case \vararg(Type \type, str name): {
+			addToSymbolTable(name);
+			insert copySrc(d, \vararg(\type, name));
+		}
 	}
 }
 

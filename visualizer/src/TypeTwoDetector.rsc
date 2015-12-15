@@ -172,6 +172,9 @@ public Expression standardize(Expression e) {
     	case \variable(str name, int extraDimensions) => copySrc(e, \variable(retrieveFromCurrentSymbolTable(name), extraDimensions))
     	case \variable(str name, int extraDimensions, Expression \initializer) => copySrc(e, \variable(retrieveFromCurrentSymbolTable(name), extraDimensions, standardize(initializer)))
     	case \declarationExpression(Declaration decl) => copySrc(e, \declarationExpression(standardize(decl)))
+    	/* ignore types */
+		case \qualifiedName(Expression qualifier, Expression expression) => e
+    	case \type(Type \type) => e
   	}
 }
 
@@ -240,13 +243,13 @@ public Statement standardize(Statement s) {
 		case \return(Expression expression) => copySrc(s, \return(standardize(expression)))
 		case \switch(Expression expression, list[Statement] statements): {
 			expression = standardize(expression);
-			createNewStack();
+			createNewStacks();
 			Statement result = copySrc(s, \switch(expression, standardize(statements)));
 			removeStackHeads();
 			insert result;
 		}
 		case \case(Expression expression): {
-			createNewStack();
+			createNewStacks();
 			Statement result = copySrc(s, \case(standardize(expression)));
 			removeStackHeads();
 			insert result;
@@ -285,7 +288,7 @@ public Statement standardize(Statement s) {
 		case \while(Expression condition, Statement body): {
 			condition = standardize(condition);
 			createNewStacks();
-			Statement result = copySrc(s, \while(condtion, standardize(body)));
+			Statement result = copySrc(s, \while(condition, standardize(body)));
 			removeStackHeads();
 			insert result;
 		}
@@ -317,12 +320,16 @@ public void addToSymbolTable(str variable) {
 /*
  * Retrieve the standardized name for some str from the current symbol table.
  */
-public str retrieveFromCurrentSymbolTable(str constantName) {
+public str retrieveFromCurrentSymbolTable(str name) {
 	if (size(symbolTableStack) == 0) {
 		throw AssertionFailed("No symbol tables initialized.");
 	}
-	
-	return head(symbolTableStack)[constantName];
+	if (name == "") {
+		return name;
+	}
+	else {
+		return head(symbolTableStack)[name];
+	}
 }
 
 /*

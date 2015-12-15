@@ -200,6 +200,62 @@ public Statement standardize(Statement s) {
 			insert result;
 		}
 		case \return(Expression expression) => copySrc(s, \return(standardize(expression)))
+		case \switch(Expression expression, list[Statement] statements): {
+			expression = standardize(expression);
+			createNewStack();
+			Statement result = copySrc(s, \switch(expression, standardize(statements)));
+			removeStackHeads();
+			insert result;
+		}
+		case \case(Expression expression): {
+			createNewStack();
+			Statement result = copySrc(s, \case(standardize(expression)));
+			removeStackHeads();
+			insert result;
+		}
+		case \synchronizedStatement(Expression lock, Statement body): {
+			lock = standardize(lock);
+			createNewStacks();
+			Statement result = copySrc(s, \synchronizedStatement(lock, standardize(body)));
+			removeStackHeads();
+			insert result;
+		}
+		case \throw(Expression expression) => copySrc(s, \throw(standardize(expression)))
+		case \try(Statement body, list[Statement] catchClauses): {
+			createNewStacks();
+			body = standardize(body);
+			removeStackHeads();
+			catchClauses = standardize(catchClauses);
+			insert copySrc(s, \try(body, catchClauses));
+		}
+		case \try(Statement body, list[Statement] catchClauses, Statement \finally): {
+			createNewStacks();
+			body = standardize(body);
+			removeStackHeads();
+			catchClauses = standardize(catchClauses);
+			\finally = standardize(\finally);
+			insert copySrc(s, \try(body, catchClauses, \finally));
+		}
+		case \catch(Declaration exception, Statement body): {
+			exception = standardize(exception);
+			createNewStacks();
+			Statement result = copySrc(s, \catch(exception, standardize(body)));
+			removeStackHeads();
+			insert copySrc(s, \catch(result));
+		}
+		case \declarationStatement(Declaration declaration) => copySrc(s, \declarationStatement(standardize(declaration)))
+		case \while(Expression condition, Statement body): {
+			condition = standardize(condition);
+			createNewStacks();
+			Statement result = copySrc(s, \while(condtion, standardize(body)));
+			removeStackHeads();
+			insert result;
+		}
+		case \expressionStatement(Expression stmt) => copySrc(s, \expressionStatement(standardize(stmt)))
+		case \constructorCall(bool isSuper, Expression expr, list[Expression] arguments)
+			=> copySrc(s, \constructorCall(isSuper, standardize(expr), standardize(arguments)))
+		case \constructorCall(bool isSuper, list[Expression] arguments)
+			=> copySrc(s, \constructorCall(isSuper, standardize(arguments)))
 	}
 }
 

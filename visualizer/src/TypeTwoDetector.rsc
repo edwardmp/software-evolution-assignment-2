@@ -113,7 +113,7 @@ public Declaration standardize(Declaration d) {
 	}
 }
 
-public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
+public list[&T] standardize(list[&T] values) = [standardize(v) | v <- values];
 
 //TODO add cases for "recursion" to other instances of this overloaded method
 public Expression standardize(Expression e) {
@@ -138,13 +138,12 @@ public Expression standardize(Expression e) {
   	}
 }
 
-public list[Expression] standardize(list[Expression] exprs) = [standardize(expr) | expr <- exprs];
-
 public Statement standardize(Statement s) {
 	return top-down-break visit(s) {
 		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
 		case \assert(Expression expression, Expression message) => copySrc(s, \assert(standardize(expression), standardize(message)))
 		case \block(list[Statement] statements) => copySrc(s, standardize(statements))
+		
 		default: insert s; //TODO handle other cases
 	}
 }

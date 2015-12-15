@@ -100,10 +100,13 @@ public list[Declaration] standardize(list[Declaration] decls) = [standardize(dec
 
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
-	    case \fieldAccess(bool isSuper, Expression expression, str name) => copySrc(\fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
+	    case \fieldAccess(bool isSuper, Expression expression, str name)
+	    	=> copySrc(\fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
 	    case \fieldAccess(bool isSuper, str name) => copySrc(\fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
-	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class) => \newObject(standardize(expr), \type, standardize(args), standardize(class))
-    	case \newObject(Type \type, list[Expression] args, Declaration class) => \newObject(\type, standardize(args), standardize(class)) 
+	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class)
+	    	=> \newObject(standardize(expr), \type, standardize(args), standardize(class))
+    	case \newObject(Type \type, list[Expression] args, Declaration class)
+    		=> \newObject(\type, standardize(args), standardize(class)) 
 		case \simpleName(str name) => copySrc(\simpleName(retrieveFromCurrentSymbolTable(name)))
 		/* literals */
 		case \booleanLiteral(bool boolValue) => \booleanLiteral(true)
@@ -111,7 +114,8 @@ public Expression standardize(Expression e) {
    		case \number(str numberValue) => \number("1") // assuming this is a number literal
     	case \stringLiteral(str stringValue) => \stringLiteral("string")
     	case \variable(str name, int extraDimensions) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
-    	case \variable(str name, int extraDimensions, Expression \initializer) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
+    	case \variable(str name, int extraDimensions, Expression \initializer)
+    		=> \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
     	case \declarationExpression(Declaration decl) => \declarationExpression(standardize(decl))
     	default: return e;
   	}

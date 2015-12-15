@@ -386,8 +386,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 					return size(linesWithAnnotations);
 				}
 				else {
-					duplicationClasses[duplicationClass] += <[*(duplicationClasses[duplicationClass].locations),
-						findLocation(linesWithAnnotations)], duplicationClasses[duplicationClass].numberOfLines>;
+					duplicationClasses[duplicationClass].locations = duplicationClasses[duplicationClass].locations + findLocation(linesWithAnnotations);
 					return size(linesForCurrentFileProcessed);
 				}
 			}

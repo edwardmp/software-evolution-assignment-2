@@ -52,7 +52,7 @@ public Declaration standardize(Declaration d) {
 			insert copySrc(d, (\enumConstant(retrieveFromCurrentSymbolTable(constantName), arguments)));
 		}
 		case \enumConstant(str constantName, list[Expression] arguments, Declaration class): {
-			addToSymbolTable(constantName); // why dont create new stack here?
+			addToSymbolTable(constantName);
 			arguments = standardize(arguments);
 			class = standardize(class);
 			insert copySrc(d, (\enumConstant(retrieveFromCurrentSymbolTable(constantName), arguments, class)));
@@ -60,9 +60,8 @@ public Declaration standardize(Declaration d) {
 		case \class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			addToSymbolTable(name);
 			createNewStacks();
-			list[Declaration] newBody = standardize(body);
-
-			Declaration result = copySrc(d, \class(name, extends, implements, newBody));
+			body = standardize(body);
+			Declaration result = copySrc(d, \class(retrieveFromCurrentSymbolTable(name), extends, implements, body));
 			removeStackHeads();
 			insert result;
 		}
@@ -71,7 +70,7 @@ public Declaration standardize(Declaration d) {
 			addToSymbolTable(name);
 			createNewStacks();
 			body = standardize(body);
-			Declaration result = copySrc(d, \interface(name, extends, implements, body));
+			Declaration result = copySrc(d, \interface(retrieveFromCurrentSymbolTable(name), extends, implements, body));
 			removeStackHeads();
 			insert result;
 		}
@@ -82,10 +81,9 @@ public Declaration standardize(Declaration d) {
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
 			addToSymbolTable(name);
 			createNewStacks();
-
 			parameters = standardize(parameters);
 			impl = standardize(impl);
-			Declaration result = copySrc(d, \method(\return, name, parameters, exceptions, impl));
+			Declaration result = copySrc(d, \method(\return, retrieveFromCurrentSymbolTable(name), parameters, exceptions, impl));
 			println("before remove method <symbolTableStack>");
 			removeStackHeads();
 			println("after remove method <symbolTableStack>");
@@ -94,13 +92,30 @@ public Declaration standardize(Declaration d) {
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions): {
 			addToSymbolTable(name);
 			parameters = standardize(parameters);
-			insert copySrc(d, \method(\return, name, parameters, exception));
+			insert copySrc(d, \method(\return, retrieveFromCurrentSymbolTable(name), parameters, exception));
 		}
-		// TODO handle other cases
+		case \constructor(str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
+			addToSymbolTable(name);
+			createNewStacks();
+			parameters = standardize(parameters);
+			impl = standardize(impl);
+			Declaration result = copySrc(d, \constructor(retrieveFromCurrentSymbolTable(name), parameters, exceptions, impl));
+			removeStackHeads();
+			insert result;
+		}
+		case \variables(Type \type, list[Expression] \fragments) => copySrc(d, \variables(\type, standardize(\fragments)))
+		case \parameter(Type \type, str name, int extraDimensions): {
+			addToSymbolTable(name);
+			insert copySrc(d, \parameter(\type, retrieveFromCurrentSymbolTable(name), extraDimensions));
+		}
+		case \vararg(Type \type, str name): {
+			addToSymbolTable(name);
+			insert copySrc(d, \vararg(\type, retrieveFromCurrentSymbolTable(name)));
+		}
 	}
 }
 
-public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
+public list[&T] standardize(list[&T] values) = [standardize(v) | v <- values];
 
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
@@ -125,20 +140,49 @@ public Expression standardize(Expression e) {
     	case \variable(str name, int extraDimensions) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
     	case \variable(str name, int extraDimensions, Expression \initializer) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions, standardize(initializer))
     	case \declarationExpression(Declaration decl) => \declarationExpression(standardize(decl))
-    	default: return e;
   	}
 }
 
-public list[Expression] standardize(list[Expression] exprs) = [standardize(expr) | expr <- exprs];
-
-public Statement standardize(Statement stat) = stat; //TODO handle case
-
-public Declaration copySrc(Declaration from, Declaration to) {
-	to@src = from@src;
-	return to;
+public Statement standardize(Statement s) {
+	return top-down-break visit(s) {
+		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
+		case \assert(Expression expression, Expression message) => copySrc(s, \assert(standardize(expression), standardize(message)))
+		case \block(list[Statement] statements) => copySrc(s, standardize(statements))
+		case \break(str label) => copySrc(s, \break(retrieveFromCurrentSymbolTable(label)))
+		case \continue(str label) => copySrc(s, \continue(label, \continue(retrieveFromCurrentSymbolTable(label))))
+		case \do(Statement body, Expression condition): {
+			condition = standardize(condition);
+			createNewStacks();
+			body = standardize(body);
+			removeStackHeads();
+			insert copySrc(s, \do(body, condition));
+		}
+		case \foreach(Declaration parameter, Expression collection, Statement body): {
+			collection = standardize(collection);
+			createNewStacks();
+			parameter = standardize(parameter);
+			body = standardize(body);
+			removeStackHeads();
+			insert copySrc(s, \foreach(parameter, collection, body));
+		}
+		case \for(list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body): {
+			createNewStacks();
+			Statement result = \for(standardize(initializers), standardize(condition), standardize(updaters), standardize(body));
+			removeStackHeads();
+			insert result;
+		}
+		case \for(list[Expression] initializers, list[Expression] updaters, Statement body): {
+			createNewStacks();
+			Statement result = \for(standardize(initializers), standardize(updaters), standardize(body));
+			removeStackHeads();
+			insert result;
+		}
+		
+		default: insert s; //TODO handle other cases
+	}
 }
 
-public Expression copySrc(Expression from, Expression to) {
+public &T copySrc(&T from, &T to) {
 	to@src = from@src;
 	return to;
 }

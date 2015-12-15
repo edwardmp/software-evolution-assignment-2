@@ -74,8 +74,10 @@ public Declaration standardize(Declaration d) {
 			removeStackHeads();
 			insert result;
 		}
-		case \field(Type \type, list[Expression] fragments)
-			=> copySrc(d, \field(\type, standardize(fragments)))
+		case \field(Type \type, list[Expression] fragments): {
+			addVariablesToSymbolTable(fragments);
+			insert copySrc(d, \field(\type, standardize(fragments)));
+		}
 		case \initializer(Statement initializerBody)
 			=> copySrc(d, \initializer(standardize(initializerBody)))
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
@@ -101,7 +103,10 @@ public Declaration standardize(Declaration d) {
 			removeStackHeads();
 			insert result;
 		}
-		case \variables(Type \type, list[Expression] \fragments) => copySrc(d, \variables(\type, standardize(\fragments)))
+		case \variables(Type \type, list[Expression] \fragments): {
+			addVariablesToSymbolTable(fragments);
+			insert copySrc(d, \variables(\type, standardize(\fragments)));
+		}
 		case \parameter(Type \type, str name, int extraDimensions): {
 			addToSymbolTable(name);
 			insert copySrc(d, \parameter(\type, retrieveFromCurrentSymbolTable(name), extraDimensions));
@@ -109,6 +114,14 @@ public Declaration standardize(Declaration d) {
 		case \vararg(Type \type, str name): {
 			addToSymbolTable(name);
 			insert copySrc(d, \vararg(\type, retrieveFromCurrentSymbolTable(name)));
+		}
+	}
+}
+
+public void addVariablesToSymbolTable(list[Expression] exprs) {
+	for (expr <- exprs) {
+		if (\variable(str name, _) := expr || \variable(str name, _, _) := expr) {
+			addToSymbolTable(name);
 		}
 	}
 }
@@ -123,7 +136,7 @@ public Expression standardize(Expression e) {
 	    case \fieldAccess(bool isSuper, Expression expression, str name) => copySrc(e, \fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
 	    case \fieldAccess(bool isSuper, str name) => copySrc(e, \fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
 	    case \methodCall(bool isSuper, str name, list[Expression] arguments) => copySrc(e, \methodCall(isSuper, name, standardize(arguments)))
-    	case \methodCall(bool isSuper, Expression receiver, str name, list[Expression] arguments) => copySrc(e, \methodCall(isSuper, standardize(receiver), name, standardize(arguments)))
+    	case \methodCall(bool isSuper, Expression receiver, str name, list[Expression] arguments) => copySrc(e, \methodCall(isSuper, receiver, name, standardize(arguments)))
 	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class) => copySrc(e, \newObject(standardize(expr), \type, standardize(args), standardize(class)))
     	case \newObject(Type \type, list[Expression] args, Declaration class) => copySrc(e, \newObject(\type, standardize(args), standardize(class)))
     	case \newObject(Expression expr, Type \type, list[Expression] args) => copySrc(e, \newObject(standardize(expr), \type, standardize(args)))
@@ -165,20 +178,21 @@ public Statement standardize(Statement s) {
 		}
 		case \for(list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body): {
 			createNewStacks();
-			Statement result = \for(standardize(initializers), standardize(condition), standardize(updaters), standardize(body));
+			Statement result = copySrc(s,
+				\for(standardize(initializers), standardize(condition), standardize(updaters), standardize(body)));
 			removeStackHeads();
 			insert result;
 		}
 		case \for(list[Expression] initializers, list[Expression] updaters, Statement body): {
 			createNewStacks();
-			Statement result = \for(standardize(initializers), standardize(updaters), standardize(body));
+			Statement result = copySrc(s, \for(standardize(initializers), standardize(updaters), standardize(body)));
 			removeStackHeads();
 			insert result;
 		}
 		case \if(Expression condition, Statement thenBranch): {
 			condition = standardize(condition);
 			createNewStacks();
-			Statement result = \if(condition, standardize(thenBranch));
+			Statement result = copySrc(s, \if(condition, standardize(thenBranch)));
 			removeStackHeads();
 			insert result;
 		}
@@ -241,7 +255,7 @@ public Statement standardize(Statement s) {
 			createNewStacks();
 			Statement result = copySrc(s, \catch(exception, standardize(body)));
 			removeStackHeads();
-			insert copySrc(s, \catch(result));
+			insert result;
 		}
 		case \declarationStatement(Declaration declaration) => copySrc(s, \declarationStatement(standardize(declaration)))
 		case \while(Expression condition, Statement body): {
@@ -260,7 +274,9 @@ public Statement standardize(Statement s) {
 }
 
 public &T copySrc(&T from, &T to) {
-	to@src = from@src;
+	if (from@src ?) {
+		to@src = from@src;
+	}
 	return to;
 }
 

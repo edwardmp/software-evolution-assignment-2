@@ -1,17 +1,26 @@
 module TypeTwoDetector
 
 import GeneralDetector;
-import IO;//debug
 import lang::java::m3::AST;
 import List; // head (as peek), pop and push are used for simulating a stack
 import Printer;
 import Set;
 import Exception;
 
+/*
+ * Stack of counters for each scope in which the currently analyzed line is nested, used for standardizing variables etc.
+ */
 private list[int] counterStack;
 
+/*
+ * Stack of symbol tables for each scope in which the currently analyzed line is nested
+ * A symbol table is a map from the original name of a variable to the standardized name for that variable.
+ */
 private list[map[str, str]] symbolTableStack;
 
+/*
+ * Main method to detect type-2 clones in a specified location.
+ */
 public void main(loc location) {
 	initialize();
 	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
@@ -32,6 +41,9 @@ public void initialize() {
  */
 public set[Declaration] standardize(set[Declaration] asts) = { standardize(ast) | ast <- asts };
 
+/*
+ * Standardize a Declaration.
+ */
 public Declaration standardize(Declaration d) {
 	return top-down-break visit(d) {
 		case \compilationUnit(list[Declaration] imports, list[Declaration] types)
@@ -118,6 +130,9 @@ public Declaration standardize(Declaration d) {
 	}
 }
 
+/*
+ * Add all variables in a list of expressions to the symbol table.
+ */
 public void addVariablesToSymbolTable(list[Expression] exprs) {
 	for (expr <- exprs) {
 		if (\variable(str name, _) := expr || \variable(str name, _, _) := expr) {
@@ -126,8 +141,14 @@ public void addVariablesToSymbolTable(list[Expression] exprs) {
 	}
 }
 
+/*
+ * Standardize alle elements of a list.
+ */
 public list[&T] standardize(list[&T] values) = [standardize(v) | v <- values];
 
+/*
+ * Standardize an Expression.
+ */
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
   		case \newArray(Type \type, list[Expression] dimensions, Expression init) => copySrc(e, \newArray(\type, standardize(dimensions), standardize(init)))
@@ -154,6 +175,9 @@ public Expression standardize(Expression e) {
   	}
 }
 
+/*
+ * Standardize a Statement.
+ */
 public Statement standardize(Statement s) {
 	return top-down-break visit(s) {
 		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
@@ -273,6 +297,9 @@ public Statement standardize(Statement s) {
 	}
 }
 
+/*
+ * Copy the value of the src-annotation of some value to another value of the same type, if it is present.
+ */
 public &T copySrc(&T from, &T to) {
 	if (from@src ?) {
 		to@src = from@src;
@@ -280,10 +307,16 @@ public &T copySrc(&T from, &T to) {
 	return to;
 }
 
+/*
+ * Add a str to the current symbol table (mapped to a new standardized name.
+ */
 public void addToSymbolTable(str variable) {
 	symbolTableStack[0] += (variable: newNameForLiteral());
 }
 
+/*
+ * Retrieve the standardized name for some str from the current symbol table.
+ */
 public str retrieveFromCurrentSymbolTable(str constantName) {
 	if (size(symbolTableStack) == 0) {
 		throw AssertionFailed("No symbol tables initialized.");

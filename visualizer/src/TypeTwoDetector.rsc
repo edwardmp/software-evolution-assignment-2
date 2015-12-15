@@ -23,7 +23,7 @@ private list[map[str, str]] symbolTableStack;
  */
 public void main(loc location) {
 	initialize();
-	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
+	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))), "Type2");
 }
 
 /*
@@ -300,7 +300,7 @@ public Statement standardize(Statement s) {
 /*
  * Copy the value of the src-annotation of some value to another value of the same type, if it is present.
  */
-public &T copySrc(&T from, &T to) {
+public &T copySrc(&U from, &T to) {
 	if (from@src ?) {
 		to@src = from@src;
 	}

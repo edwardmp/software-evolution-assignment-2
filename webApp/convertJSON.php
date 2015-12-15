@@ -1,12 +1,17 @@
 <?php
 
-define('RASCAL_ANALYSIS_RESULT_LOCATION', sprintf("%s/%s", dirname(__DIR__), "visualizer/resultOfAnalysis.json"));
-define('RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION', "resultOfAnalysisConverted.json");
-define('RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION', "resultOfAnalysisConvertedToPieChartFormat.json");
+define('RASCAL_ANALYSIS_RESULT_LOCATION', sprintf("%s/%s", dirname(__DIR__), "visualizer/resultOfAnalysis"));
+define('RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION', "resultOfAnalysisConverted");
+define('RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION', "resultOfAnalysisConvertedToPieChartFormat");
 
-$analysisResultJSONFileContents = file_get_contents(RASCAL_ANALYSIS_RESULT_LOCATION);
+$cloneTypes = array("Type1", "Type2", "Type4");
+foreach ($cloneTypes as $cloneType)
+{
+    $analysisResultJSONFileContents = file_get_contents(RASCAL_ANALYSIS_RESULT_LOCATION . "/" . $cloneType . ".json");
+    convertJSON($analysisResultJSONFileContents, $cloneType);
+}
 
-function convertJSON($analysisResultJSONFileContents)
+function convertJSON($analysisResultJSONFileContents, $cloneType)
 {
     // convert JSON to PHP array
     $jsonAsArray = json_decode($analysisResultJSONFileContents);
@@ -61,22 +66,22 @@ function convertJSON($analysisResultJSONFileContents)
 
     $convertedDataArrayWithLineCategoryRewrittenWithSkeleton = array("name" => "", "children" => $convertedDataArrayWithLineCategoryRewritten);
 
-    convertArrayToJSONAndSaveToFile($convertedDataArrayWithLineCategoryRewrittenWithSkeleton, $duplicationClassList);
+    convertArrayToJSONAndSaveToFile($convertedDataArrayWithLineCategoryRewrittenWithSkeleton, $duplicationClassList, $cloneType);
 }
 
-function convertArrayToJSONAndSaveToFile($convertedDataArrayWithLineCategoryRewrittenWithSkeleton, $duplicationClassList)
+function convertArrayToJSONAndSaveToFile($convertedDataArrayWithLineCategoryRewrittenWithSkeleton, $duplicationClassList, $cloneType)
 {
     $convertedDataArrayAsJSON = json_encode($convertedDataArrayWithLineCategoryRewrittenWithSkeleton );
 
-    file_put_contents(sprintf("data/%s", RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION), $convertedDataArrayAsJSON);
+    $filename = $cloneType . ".json";
+    file_put_contents(sprintf("data/%s%s", RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION, $filename), $convertedDataArrayAsJSON);
 
     $duplicationClassesAsJSON = json_encode($duplicationClassList);
 
-    file_put_contents(sprintf("data/%s", RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION), $duplicationClassesAsJSON);
+    file_put_contents(sprintf("data/%s%s", RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION, $filename), $duplicationClassesAsJSON);
 
     printf("Conversion successful from input file %s.\nFound and extracted %d duplication classes.\nData written to files %s and %s.\n", RASCAL_ANALYSIS_RESULT_LOCATION, count($duplicationClassList), RESULT_OF_ANALYSIS_CONVERTED_PACK_HIERARCHY_LOCATION, RESULT_OF_ANALYSIS_CONVERTED_PIE_CHART_LOCATION);
 
 }
 
-convertJSON($analysisResultJSONFileContents);
 ?>

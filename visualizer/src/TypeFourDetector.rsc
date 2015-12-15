@@ -10,7 +10,7 @@ import Set;
 import Exception;
 
 public void main(loc location) {
-	printToFile(astsToLines(rewrite(locToAsts(location))));
+	printToJSON(findDuplicationClasses(astsToLines(rewrite(standardize(locToAsts(location))))), "Type4");
 }
 
 public set[Declaration] rewrite(set[Declaration] asts) = { rewrite(ast) | ast <- asts };
@@ -21,9 +21,11 @@ public Declaration rewrite(Declaration s) {
 		case \do(Statement body, Expression condition): {
 
 		}
+		*/
 		case \foreach(Declaration parameter, Expression collection, Statement body): {
-
+			;
 		}
+		/*
 		case \for(list[Expression] initializers, list[Expression] updaters, Statement body): {
 		}
 		*/
@@ -31,7 +33,6 @@ public Declaration rewrite(Declaration s) {
 			list[Statement] initializerStatements = [ copySrc(initializer, \expressionStatement(initializer)) | initializer <- initializers];
 			list[Statement] updaterStatements = [ copySrc(updater, \expressionStatement(updater)) | updater <- updaters];
 			Statement convertedBody = copySrc(f, \block(body + updaterStatements));
-			
 			Statement convertedWhile = copySrc(f, \while(condition, convertedBody));
 			Statement forToWhileLines = copySrc(f, \block(initializerStatements + convertedWhile));
 			insert forToWhileLines;

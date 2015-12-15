@@ -41,8 +41,9 @@ public void printToFile(str s) {
 /*
  * Convert result to JSON so it can be imported in web app.
  */
-public void printToJSON(map[value, value] m) {
-	loc location = |project://visualizer/resultOfAnalysis.json|;
+public void printToJSON(map[value, value] m, str fileNameSuffix) {
+	loc location = |project://visualizer/resultOfAnalysis|;
+	location += fileNameSuffix + ".json";
 	clearFile(location);
 	appendToFile(location, toJSON(m));
 }

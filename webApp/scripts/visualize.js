@@ -4,6 +4,19 @@ var r = 650,
     node,
     root;
 
+var cloneType = window.location.pathname;
+var fileName;
+if (cloneType.indexOf('1') != -1) {
+    fileName = "Type1";
+}
+else if (cloneType.indexOf('2') != -1) {
+    fileName = "Type2";
+}
+else if (cloneType.indexOf('4') != -1) {
+    fileName = "Type4";
+}
+
+console.log(fileName);
 var pack = d3.layout.pack()
     .size([r, r])
     .value(function(d) { return d.size; });
@@ -41,10 +54,11 @@ function zoom(d) {
             })  
         .attr('y', function(d) { return y(d.y); })
         .style('opacity', function(d) { 
+            console.log(k);
             if (k === 1 && d.name.indexOf('lines') != -1) {
                 return 1;
             }
-            else if (k === 1) {
+            else if (k === 1 || (d.name.indexOf('lines') == -1 && k <= 3)) {
                 return 0;
             }
             else {
@@ -56,7 +70,7 @@ function zoom(d) {
     d3.event.stopPropagation();
 }
 
-d3.json('data/resultOfAnalysisConverted.json', function(data) {
+d3.json('data/resultOfAnalysisConverted' + fileName + '.json', function(data) {
     node = root = data;
 
     var nodes = pack.nodes(root);
@@ -117,10 +131,10 @@ d3.json('data/resultOfAnalysisConverted.json', function(data) {
             }
         });
 
-    d3.select(window).on('click', function() {  if (d.depth !== 3) { zoom(root); } });
+    d3.select(window).on('click', function(d) {  console.log(d); { zoom(root); } });
 });
 
-$.getJSON("data/resultOfAnalysisConvertedToPieChartFormat.json", function(dataJSON) {
+$.getJSON('data/resultOfAnalysisConvertedToPieChartFormat' + fileName + '.json', function(dataJSON) {
     var chartConfig = {
         "size": {
             "canvasWidth": 1024,

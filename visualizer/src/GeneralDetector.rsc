@@ -375,7 +375,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 						<[locationDuplicateBlock, locationEncounteredBlock], numberOfLinesForDuplicationClass>);
 						
 					tuple[int fileIndex, int lineIndex] duplicationClassTuple = startIndexOfFirstElementOfDuplicationClass[duplicationClass];
-					
+					println("fileINDEX <duplicationClassTuple.fileIndex>");
 					startIndexOfFirstElementOfDuplicationClass += (linesForDuplicationBlockWithoutAnnotations: 
 						<duplicationClassTuple.fileIndex, duplicationClassTuple.lineIndex>);
 						
@@ -418,7 +418,13 @@ public void filterDuplicationClasses() {
 public loc findLocation(list[value] lines) {
 	loc startLocation = getSource(head(lines));
 	loc endLocation = getSource(last(lines));
-	startLocation.end.line = endLocation.end.line;
-	startLocation.end.column = endLocation.end.column;
+	if (startLocation.end.line == endLocation.end.line && endLocation.end.column <= startLocation.begin.column) {
+		startLocation.end.column = startLocation.begin.column + 1;
+		startLocation.end.line = endLocation.end.line;
+	}
+	else {
+		startLocation.end.line = endLocation.end.line;
+		startLocation.end.column = endLocation.end.column;
+	}
 	return startLocation;
 }

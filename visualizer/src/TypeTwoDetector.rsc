@@ -194,6 +194,15 @@ public Statement standardize(Statement s) {
 			removeStackHeads();
 			insert copySrc(s, \if(conditioon, thenBranch, elseBranch));
 		}
+		case \label(str name, Statement body): {
+			addToSymbolTable(name);
+			createNewStacks();
+			Statement result = copySrc(s, \label(retrieveFromCurrentSymbolTable(name), standardize(body)));
+			removeStackHeads();
+			insert result;
+		}
+		case \return(Expression expression) => copySrc(s, \return(standardize(expression)))
+		
 		default: insert s; //TODO handle other cases
 	}
 }

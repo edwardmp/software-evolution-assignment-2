@@ -117,7 +117,6 @@ public Expression standardize(Expression e) {
     	case \variable(str name, int extraDimensions, Expression \initializer)
     		=> \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
     	case \declarationExpression(Declaration decl) => \declarationExpression(standardize(decl))
-    	default: return e;
   	}
 }
 

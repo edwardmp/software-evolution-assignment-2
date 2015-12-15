@@ -1,4 +1,4 @@
-module tester::Tester
+module tests::Tester
 
 import TypeOneDetector;
 import IO;
@@ -9,7 +9,7 @@ import Exception;
  */
 public void runTests(bool isEdwardLaptop) {
 	loc pathPrefix;
-	str resultsFixturePrefix = "visualizer/src/tester/";
+	str resultsFixturePrefix = "visualizer/src/tests/";
 	list[str] fixtureLines;
 	if (isEdwardLaptop) {
 		pathPrefix = |file:///Users/Edward/eclipse/workspace/Assignment%202/|;

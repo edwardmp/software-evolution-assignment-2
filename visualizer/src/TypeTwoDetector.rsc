@@ -61,7 +61,7 @@ public Declaration standardize(Declaration d) {
 			addToSymbolTable(name);
 			createNewStacks();
 			list[Declaration] newBody = standardize(body);
-			Declaration result = copySrc(d, \class(name, extends, implements, newBody));
+			Declaration result = copySrc(d, \class(retrieveFromCurrentSymbolTable(name), extends, implements, newBody));
 			removeStackHeads();
 			insert result;
 		}
@@ -70,7 +70,7 @@ public Declaration standardize(Declaration d) {
 			addToSymbolTable(name);
 			createNewStacks();
 			body = standardize(body);
-			Declaration result = copySrc(d, \interface(name, extends, implements, body));
+			Declaration result = copySrc(d, \interface(retrieveFromCurrentSymbolTable(name), extends, implements, body));
 			removeStackHeads();
 			insert result;
 		}
@@ -83,32 +83,32 @@ public Declaration standardize(Declaration d) {
 			createNewStacks();
 			parameters = standardize(parameters);
 			impl = standardize(impl);
-			Declaration result = copySrc(d, \method(\return, name, parameters, exceptions, impl));
+			Declaration result = copySrc(d, \method(\return, retrieveFromCurrentSymbolTable(name), parameters, exceptions, impl));
 			removeStackHeads();
 			insert result;
 		}
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions): {
 			addToSymbolTable(name);
 			parameters = standardize(parameters);
-			insert copySrc(d, \method(\return, name, parameters, exception));
+			insert copySrc(d, \method(\return, retrieveFromCurrentSymbolTable(name), parameters, exception));
 		}
 		case \constructor(str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
 			addToSymbolTable(name);
 			createNewStacks();
 			parameters = standardize(parameters);
 			impl = standardize(impl);
-			Declaration result = copySrc(d, \constructor(name, parameters, exceptions, impl));
+			Declaration result = copySrc(d, \constructor(retrieveFromCurrentSymbolTable(name), parameters, exceptions, impl));
 			removeStackHeads();
 			insert result;
 		}
 		case \variables(Type \type, list[Expression] \fragments) => copySrc(d, \variables(\type, standardize(\fragments)))
 		case \parameter(Type \type, str name, int extraDimensions): {
 			addToSymbolTable(name);
-			insert copySrc(d, \parameter(\type, name, extraDimensions));
+			insert copySrc(d, \parameter(\type, retrieveFromCurrentSymbolTable(name), extraDimensions));
 		}
 		case \vararg(Type \type, str name): {
 			addToSymbolTable(name);
-			insert copySrc(d, \vararg(\type, name));
+			insert copySrc(d, \vararg(\type, retrieveFromCurrentSymbolTable(name)));
 		}
 	}
 }
@@ -143,6 +143,8 @@ public list[Expression] standardize(list[Expression] exprs) = [standardize(expr)
 public Statement standardize(Statement s) {
 	return top-down-break visit(s) {
 		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
+		case \assert(Expression expression, Expression message) => copySrc(s, \assert(standardize(expression), standardize(message)))
+		case \block(list[Statement] statements) => copySrc(s, standardize(statements))
 		default: insert s; //TODO handle other cases
 	}
 }

@@ -2,7 +2,6 @@ module TypeFourDetector
 
 import GeneralDetector;
 import TypeTwoDetector;
-import IO;
 import lang::java::m3::AST;
 import List; 
 import Printer;

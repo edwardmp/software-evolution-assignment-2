@@ -147,17 +147,7 @@ public Statement standardize(Statement s) {
 	}
 }
 
-public Declaration copySrc(Declaration from, Declaration to) {
-	to@src = from@src;
-	return to;
-}
-
-public Expression copySrc(Expression from, Expression to) {
-	to@src = from@src;
-	return to;
-}
-
-public Statement copySrc(Statement from, Statement to) {
+public &T copySrc(&T from, &T to) {
 	to@src = from@src;
 	return to;
 }

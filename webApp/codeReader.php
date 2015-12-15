@@ -2,7 +2,7 @@
 
 $filePath = $_GET["filePath"];
 
-if (!$filePath)
+if (!(bool)$filePath)
 {
     throw new Exception("No path passed.");
 }

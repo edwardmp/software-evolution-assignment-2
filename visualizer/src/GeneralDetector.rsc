@@ -375,7 +375,7 @@ list[value] linesForCurrentFileProcessed, int startIndexOfBlockEncountered) {
 						<[locationDuplicateBlock, locationEncounteredBlock], numberOfLinesForDuplicationClass>);
 						
 					tuple[int fileIndex, int lineIndex] duplicationClassTuple = startIndexOfFirstElementOfDuplicationClass[duplicationClass];
-					println("fileINDEX <duplicationClassTuple.fileIndex>");
+					
 					startIndexOfFirstElementOfDuplicationClass += (linesForDuplicationBlockWithoutAnnotations: 
 						<duplicationClassTuple.fileIndex, duplicationClassTuple.lineIndex>);
 						

@@ -24,7 +24,7 @@ public void runTests(bool isEdwardLaptop) {
 	
 	// run TypeOneDetector
 	main(javaTestFiles);
-	list[str] outputFileLines = readFileLines(pathPrefix + "visualizer/resultOfAnalysis.json");
+	list[str] outputFileLines = readFileLines(pathPrefix + "visualizer/resultOfAnalysis/Type1.json");
 	
 	if (fixtureLines != outputFileLines) {
 		throw AssertionFailed("Fixture output file not equal to generated output file");

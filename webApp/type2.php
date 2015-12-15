@@ -36,7 +36,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li<a href="type1.php">Type 1</a></li>
+                        <li><a href="type1.php">Type 1</a></li>
                         <li class="active"><a href="type2.php">Type 2</a></li>
                         <li><a href="type4.php">Type 4</a></li>
                     </ul>

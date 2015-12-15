@@ -117,7 +117,7 @@ d3.json('data/resultOfAnalysisConverted.json', function(data) {
             }
         });
 
-    d3.select(window).on('click', function() { zoom(root); });
+    d3.select(window).on('click', function() {  if (d.depth !== 3) { zoom(root); } });
 });
 
 $.getJSON("data/resultOfAnalysisConvertedToPieChartFormat.json", function(dataJSON) {
@@ -187,6 +187,12 @@ $.getJSON("data/resultOfAnalysisConvertedToPieChartFormat.json", function(dataJS
 
     // render info table
     jQuery.each(dataJSON, function(i, duplicationClass) {
-        $('#duplicationClassTable > tbody:last-child').append('<tr><td>' + duplicationClass.label + '</td><td>' + duplicationClass.caption + '</td><td>' + duplicationClass.value + '</td></tr>');
+        var openInEclipseTd = $(document.createElement('td'));
+        jQuery.each(duplicationClass.locationNames, function(j, locationName) {
+            var openInEclipseLink = '<a href="openineclipse://open?url=file://' + duplicationClass.locationPaths[j] + '&line=' + duplicationClass.locationBeginLines[j] + '" id="openInEclipseButton" class="btn btn-info btn-xs"><span class="glyphicon glyphicon glyphicon-file" aria-hidden="true"></span>' + locationName + '</a> ';
+            openInEclipseTd.append(openInEclipseLink);
+        });
+
+        $('#duplicationClassTable > tbody:last-child').append('<tr><td>' + duplicationClass.label + '</td><td>' + openInEclipseTd.html() + '</td><td>' + (duplicationClass.value / duplicationClass.locationBeginLines.length) + '</td><td>' + duplicationClass.value + '</td></tr>');
     });
 });

@@ -17,18 +17,15 @@ function convertJSON($analysisResultJSONFileContents)
 
     foreach ($allDuplicationClasses as $key => $duplicationClass)
     {
-        $duplicatedCodeBlockContents = $duplicationClass[0][1];
-        $locations = $duplicationClass[1][1];
-
+        $locations = $duplicationClass[1][1][0][1];
         $firstLocationInfo = $locations[1][1];
-        $duplicationNumberOfLinesPerBlock = $firstLocationInfo->endLine - $firstLocationInfo->beginLine;
+        $duplicationNumberOfLinesPerBlock = $duplicationClass[1][1][1][1];
         $amountOfLinesInDuplicationClass = count($locations) * $duplicationNumberOfLinesPerBlock;
 
         $convertedLocationArray = array();
         foreach ($locations as $location)
         {
             $locationInfoAsArray = (array) $location[1];
-
             $childLocationArray = array();
             $childLocationArray["name"] = basename($locationInfoAsArray["path"]);
             $childLocationArray["size"] = $duplicationNumberOfLinesPerBlock;
@@ -46,8 +43,10 @@ function convertJSON($analysisResultJSONFileContents)
         // used in pie chart
         $duplicationClassArray = array("name" => "", "children" => $convertedLocationArray);
 
-        $locationsArray = array_unique(array_column($convertedLocationArray, "basenamePlusFileLocation"));
-        $duplicationClassList[] = array("caption" => join(", ", $locationsArray), "label" => "Duplication class $key", "value" => $amountOfLinesInDuplicationClass);
+        $locationsArray = array_column($convertedLocationArray, "basenamePlusFileLocation");
+        $locationsPathArray = array_column($convertedLocationArray, "url");
+        $locationsBeginLineArray = array_column($convertedLocationArray, "begin");
+        $duplicationClassList[] = array("caption" => join(", ", $locationsArray), "locationPaths" => $locationsPathArray, "locationNames" => $locationsArray,  "locationBeginLines" => $locationsBeginLineArray, "label" => "Duplication class $key", "value" => $amountOfLinesInDuplicationClass);
         if (!array_key_exists($duplicationCategoryName, $convertedDataArray))
              $convertedDataArray[$duplicationCategoryName] = array();
 

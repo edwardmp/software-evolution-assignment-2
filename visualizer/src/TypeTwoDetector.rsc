@@ -172,7 +172,23 @@ public Statement standardize(Statement s) {
 			removeStackHeads();
 			insert result;
 		}
-		
+		case \if(Expression condition, Statement thenBranch): {
+			condition = standardize(condition);
+			createNewStacks();
+			Statement result = \if(condition, standardize(thenBranch));
+			removeStackHeads();
+			insert result;
+		}
+		case \if(Expression condition, Statement thenBranch, Statement elseBranch):{
+			condition = standardize(condition);
+			createNewStacks();
+			thenBranch = standardize(thenBranch);
+			removeStackHeads();
+			createNewStacks();
+			elseBranch = standardize(elseBranch);
+			removeStackHeads();
+			insert copySrc(s, \if(conditioon, thenBranch, elseBranch));
+		}
 		default: insert s; //TODO handle other cases
 	}
 }
@@ -206,6 +222,8 @@ public void createNewStacks() {
 }
 
 public void removeStackHeads() {
-	<_, symbolTableStack> = pop(symbolTableStack);
-	<_, counterStack> = pop(counterStack);
+	tuple[map[str, str] head, list[map[str, str]] tail] symbolTableTuple = pop(symbolTableStack);
+	symbolTableStack = symbolTableTuple.tail;
+	tuple[int head, list[int] tail] counterTuple = pop(counterStack);
+	counterStack = counterTuple.tail;
 }

@@ -52,7 +52,7 @@ public Declaration standardize(Declaration d) {
 			insert copySrc(d, (\enumConstant(retrieveFromCurrentSymbolTable(constantName), arguments)));
 		}
 		case \enumConstant(str constantName, list[Expression] arguments, Declaration class): {
-			addToSymbolTable(constantName); // why dont create new stack here?
+			addToSymbolTable(constantName);
 			arguments = standardize(arguments);
 			class = standardize(class);
 			insert copySrc(d, (\enumConstant(retrieveFromCurrentSymbolTable(constantName), arguments, class)));
@@ -60,8 +60,8 @@ public Declaration standardize(Declaration d) {
 		case \class(str name, list[Type] extends, list[Type] implements, list[Declaration] body): {
 			addToSymbolTable(name);
 			createNewStacks();
-			list[Declaration] newBody = standardize(body);
-			Declaration result = copySrc(d, \class(retrieveFromCurrentSymbolTable(name), extends, implements, newBody));
+			body = standardize(body);
+			Declaration result = copySrc(d, \class(retrieveFromCurrentSymbolTable(name), extends, implements, body));
 			removeStackHeads();
 			insert result;
 		}
@@ -143,6 +143,35 @@ public Statement standardize(Statement s) {
 		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
 		case \assert(Expression expression, Expression message) => copySrc(s, \assert(standardize(expression), standardize(message)))
 		case \block(list[Statement] statements) => copySrc(s, standardize(statements))
+		case \break(str label) => copySrc(s, \break(retrieveFromCurrentSymbolTable(label)))
+		case \continue(str label) => copySrc(s, \continue(label, \continue(retrieveFromCurrentSymbolTable(label))))
+		case \do(Statement body, Expression condition): {
+			condition = standardize(condition);
+			createNewStacks();
+			body = standardize(body);
+			removeStackHeads();
+			insert copySrc(s, \do(body, condition));
+		}
+		case \foreach(Declaration parameter, Expression collection, Statement body): {
+			collection = standardize(collection);
+			createNewStacks();
+			parameter = standardize(parameter);
+			body = standardize(body);
+			removeStackHeads();
+			insert copySrc(s, \foreach(parameter, collection, body));
+		}
+		case \for(list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body): {
+			createNewStacks();
+			Statement result = \for(standardize(initializers), standardize(condition), standardize(updaters), standardize(body));
+			removeStackHeads();
+			insert result;
+		}
+		case \for(list[Expression] initializers, list[Expression] updaters, Statement body): {
+			createNewStacks();
+			Statement result = \for(standardize(initializers), standardize(updaters), standardize(body));
+			removeStackHeads();
+			insert result;
+		}
 		
 		default: insert s; //TODO handle other cases
 	}

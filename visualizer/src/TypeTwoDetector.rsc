@@ -101,10 +101,7 @@ public Declaration standardize(Declaration d) {
 			removeStackHeads();
 			insert result;
 		}
-		case \variables(Type \type, list[Expression] \fragments): {
-			\fragments = standardize(\fragments);
-			insert copySrc(d, \variables(\type, \fragments));
-		}
+		case \variables(Type \type, list[Expression] \fragments) => copySrc(d, \variables(\type, standardize(\fragments)))
 		case \parameter(Type \type, str name, int extraDimensions): {
 			addToSymbolTable(name);
 			insert copySrc(d, \parameter(\type, name, extraDimensions));
@@ -122,13 +119,13 @@ public list[Declaration] standardize(list[Declaration] decls) = [standardize(dec
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
 	    case \fieldAccess(bool isSuper, Expression expression, str name)
-	    	=> copySrc(\fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
-	    case \fieldAccess(bool isSuper, str name) => copySrc(\fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
+	    	=> copySrc(e, \fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
+	    case \fieldAccess(bool isSuper, str name) => copySrc(e, \fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
 	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class)
 	    	=> \newObject(standardize(expr), \type, standardize(args), standardize(class))
     	case \newObject(Type \type, list[Expression] args, Declaration class)
     		=> \newObject(\type, standardize(args), standardize(class)) 
-		case \simpleName(str name) => copySrc(\simpleName(retrieveFromCurrentSymbolTable(name)))
+		case \simpleName(str name) => copySrc(e, \simpleName(retrieveFromCurrentSymbolTable(name)))
 		/* literals */
 		case \booleanLiteral(bool boolValue) => \booleanLiteral(true)
 		case \characterLiteral(str charValue) => copySrc(e, \characterLiteral("c")) // always the same?
@@ -145,7 +142,7 @@ public list[Expression] standardize(list[Expression] exprs) = [standardize(expr)
 
 public Statement standardize(Statement s) {
 	return top-down-break visit(s) {
-		
+		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
 		default: insert s; //TODO handle other cases
 	}
 }
@@ -156,6 +153,11 @@ public Declaration copySrc(Declaration from, Declaration to) {
 }
 
 public Expression copySrc(Expression from, Expression to) {
+	to@src = from@src;
+	return to;
+}
+
+public Statement copySrc(Statement from, Statement to) {
 	to@src = from@src;
 	return to;
 }

@@ -17,4 +17,15 @@ public class BasicTestCase2 {
 			}
 		}
 	}
+	
+	public void secondMethodContainingDuplicateLines(int l) {
+		for (int j = 0; j < l; j++) {
+			if (j == 0) {
+				System.out.println("OMG j == 0");
+				System.out.println("OMG j == 0");
+				System.out.println("OMG j == 0");
+				System.out.println("OMG j == 0");
+			}
+		}
+	}
 }

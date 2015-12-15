@@ -118,6 +118,7 @@ public Declaration standardize(Declaration d) {
 
 public list[Declaration] standardize(list[Declaration] decls) = [standardize(decl) | decl <- decls];
 
+//TODO add cases for "recursion" to other instances of this overloaded method
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
 	    case \fieldAccess(bool isSuper, Expression expression, str name)
@@ -142,7 +143,12 @@ public Expression standardize(Expression e) {
 
 public list[Expression] standardize(list[Expression] exprs) = [standardize(expr) | expr <- exprs];
 
-public Statement standardize(Statement stat) = stat; //TODO handle case
+public Statement standardize(Statement s) {
+	return top-down-break visit(s) {
+		
+		default: insert s; //TODO handle other cases
+	}
+}
 
 public Declaration copySrc(Declaration from, Declaration to) {
 	to@src = from@src;

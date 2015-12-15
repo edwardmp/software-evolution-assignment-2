@@ -311,7 +311,7 @@ public &T copySrc(&T from, &T to) {
  * Add a str to the current symbol table (mapped to a new standardized name.
  */
 public void addToSymbolTable(str variable) {
-	symbolTableStack[0] += (variable: newNameForLiteral());
+	symbolTableStack[0] += (variable: reserveNewName());
 }
 
 /*
@@ -325,17 +325,26 @@ public str retrieveFromCurrentSymbolTable(str constantName) {
 	return head(symbolTableStack)[constantName];
 }
 
-public str newNameForLiteral() {
+/*
+ * Reserve a name for a new thing that has to be given a standardized name.
+ */
+public str reserveNewName() {
 	str tempResult = "v<head(counterStack)>";
 	counterStack[0] += 1;
 	return tempResult;
 }
 
+/*
+ * Add a new element that is a copy of the current head to the counterStack and symbolTableStack.
+ */
 public void createNewStacks() {
 	counterStack = push(0, counterStack);
 	symbolTableStack = push(head(symbolTableStack), symbolTableStack);
 }
 
+/*
+ * Remove the heads of the counterStack and symbolTableStack.
+ */
 public void removeStackHeads() {
 	tuple[map[str, str] head, list[map[str, str]] tail] symbolTableTuple = pop(symbolTableStack);
 	symbolTableStack = symbolTableTuple.tail;

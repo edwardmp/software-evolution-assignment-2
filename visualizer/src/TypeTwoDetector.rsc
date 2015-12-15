@@ -84,9 +84,7 @@ public Declaration standardize(Declaration d) {
 			parameters = standardize(parameters);
 			impl = standardize(impl);
 			Declaration result = copySrc(d, \method(\return, retrieveFromCurrentSymbolTable(name), parameters, exceptions, impl));
-			println("before remove method <symbolTableStack>");
 			removeStackHeads();
-			println("after remove method <symbolTableStack>");
 			insert result;
 		}
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions): {
@@ -130,7 +128,7 @@ public Expression standardize(Expression e) {
     	case \newObject(Type \type, list[Expression] args, Declaration class) => \newObject(\type, standardize(args), standardize(class)) 
     	case \newObject(Expression expr, Type \type, list[Expression] args) => \newObject(standardize(expr), \type, standardize(args)) 
     	case \newObject(Type \type, list[Expression] args) => \newObject(\type, standardize(args)) 
-		case \simpleName(str name) => copySrc(\simpleName(retrieveFromCurrentSymbolTable(name)))
+		case \simpleName(str name) => copySrc(e, \simpleName(retrieveFromCurrentSymbolTable(name)))
 		/* literals */
 		case \booleanLiteral(bool boolValue) => \booleanLiteral(false)
 		case \characterLiteral(str charValue) => copySrc(e, \characterLiteral("c"))
@@ -147,7 +145,7 @@ public Statement standardize(Statement s) {
 	return top-down-break visit(s) {
 		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
 		case \assert(Expression expression, Expression message) => copySrc(s, \assert(standardize(expression), standardize(message)))
-		case \block(list[Statement] statements) => copySrc(s, standardize(statements))
+		case \block(list[Statement] statements) => copySrc(s, \block(standardize(statements)))
 		case \break(str label) => copySrc(s, \break(retrieveFromCurrentSymbolTable(label)))
 		case \continue(str label) => copySrc(s, \continue(label, \continue(retrieveFromCurrentSymbolTable(label))))
 		case \do(Statement body, Expression condition): {
@@ -202,8 +200,6 @@ public Statement standardize(Statement s) {
 			insert result;
 		}
 		case \return(Expression expression) => copySrc(s, \return(standardize(expression)))
-		
-		default: insert s; //TODO handle other cases
 	}
 }
 
@@ -214,7 +210,6 @@ public &T copySrc(&T from, &T to) {
 
 public void addToSymbolTable(str variable) {
 	symbolTableStack[0] += (variable: newNameForLiteral());
-	println("Added to symbol table <variable> <symbolTableStack>");
 }
 
 public str retrieveFromCurrentSymbolTable(str constantName) {
@@ -232,9 +227,8 @@ public str newNameForLiteral() {
 }
 
 public void createNewStacks() {
-	push(0, counterStack);
-	map[str, str] headOfSymbolTableStack = head(symbolTableStack);
-	symbolTableStack = push(headOfSymbolTableStack, symbolTableStack);
+	counterStack = push(0, counterStack);
+	symbolTableStack = push(head(symbolTableStack), symbolTableStack);
 }
 
 public void removeStackHeads() {

@@ -200,6 +200,27 @@ public Statement standardize(Statement s) {
 			insert result;
 		}
 		case \return(Expression expression) => copySrc(s, \return(standardize(expression)))
+		case \switch(Expression expression, list[Statement] statements): {
+			expression = standardize(expression);
+			createNewStack();
+			Statement result = copySrc(s, \switch(expression, standardize(statements)));
+			removeStackHeads();
+			insert result;
+		}
+		case \case(Expression expression): {
+			createNewStack();
+			Statement result = copySrc(s, \case(standardize(expression)));
+			removeStackHeads();
+			insert result;
+		}
+		case \synchronizedStatement(Expression lock, Statement body): {
+			lock = standardize(lock);
+			createNewStacks();
+			Statement result = \synchronizedStatement(lock, standardize(body));
+			removeStackHeads();
+			insert result;
+		}
+		
 	}
 }
 

@@ -84,7 +84,9 @@ public Declaration standardize(Declaration d) {
 			parameters = standardize(parameters);
 			impl = standardize(impl);
 			Declaration result = copySrc(d, \method(\return, retrieveFromCurrentSymbolTable(name), parameters, exceptions, impl));
+			println("before remove method <symbolTableStack>");
 			removeStackHeads();
+			println("after remove method <symbolTableStack>");
 			insert result;
 		}
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions): {
@@ -115,25 +117,28 @@ public Declaration standardize(Declaration d) {
 
 public list[&T] standardize(list[&T] values) = [standardize(v) | v <- values];
 
-//TODO add cases for "recursion" to other instances of this overloaded method
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
-	    case \fieldAccess(bool isSuper, Expression expression, str name)
-	    	=> copySrc(e, \fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
-	    case \fieldAccess(bool isSuper, str name) => copySrc(e, \fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
-	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class)
-	    	=> \newObject(standardize(expr), \type, standardize(args), standardize(class))
-    	case \newObject(Type \type, list[Expression] args, Declaration class)
-    		=> \newObject(\type, standardize(args), standardize(class)) 
-		case \simpleName(str name) => copySrc(e, \simpleName(retrieveFromCurrentSymbolTable(name)))
+  		case \newArray(Type \type, list[Expression] dimensions, Expression init) => copySrc(e, \newArray(\type, standardize(dimensions), standardize(init)))
+   		case \newArray(Type \type, list[Expression] dimensions) => copySrc(e, \newArray(\type, standardize(dimensions)))
+   		case \arrayInitializer(list[Expression] elements) => copySrc(e, \arrayInitializer(standardize(elements)))
+	    case \fieldAccess(bool isSuper, Expression expression, str name) => copySrc(\fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
+	    case \fieldAccess(bool isSuper, str name) => copySrc(\fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
+	    case \methodCall(bool isSuper, str name, list[Expression] arguments) => \methodCall(isSuper, name, standardize(arguments))
+    	case \methodCall(bool isSuper, Expression receiver, str name, list[Expression] arguments) => \methodCall(isSuper, standardize(receiver), name, standardize(arguments))
+	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class) => \newObject(standardize(expr), \type, standardize(args), standardize(class))
+    	case \newObject(Type \type, list[Expression] args, Declaration class) => \newObject(\type, standardize(args), standardize(class)) 
+    	case \newObject(Expression expr, Type \type, list[Expression] args) => \newObject(standardize(expr), \type, standardize(args)) 
+    	case \newObject(Type \type, list[Expression] args) => \newObject(\type, standardize(args)) 
+		case \simpleName(str name) => copySrc(\simpleName(retrieveFromCurrentSymbolTable(name)))
 		/* literals */
-		case \booleanLiteral(bool boolValue) => \booleanLiteral(true)
-		case \characterLiteral(str charValue) => copySrc(e, \characterLiteral("c")) // always the same?
-   		case \number(str numberValue) => \number("1") // assuming this is a number literal
+		case \booleanLiteral(bool boolValue) => \booleanLiteral(false)
+		case \characterLiteral(str charValue) => copySrc(e, \characterLiteral("c"))
+   		case \number(str numberValue) => \number("1")
     	case \stringLiteral(str stringValue) => \stringLiteral("string")
+    	/* variables */
     	case \variable(str name, int extraDimensions) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
-    	case \variable(str name, int extraDimensions, Expression \initializer)
-    		=> \variable(retrieveFromCurrentSymbolTable(name), extraDimensions)
+    	case \variable(str name, int extraDimensions, Expression \initializer) => \variable(retrieveFromCurrentSymbolTable(name), extraDimensions, standardize(initializer))
     	case \declarationExpression(Declaration decl) => \declarationExpression(standardize(decl))
   	}
 }
@@ -200,6 +205,7 @@ public &T copySrc(&T from, &T to) {
 
 public void addToSymbolTable(str variable) {
 	symbolTableStack[0] += (variable: newNameForLiteral());
+	println("Added to symbol table <variable> <symbolTableStack>");
 }
 
 public str retrieveFromCurrentSymbolTable(str constantName) {
@@ -218,7 +224,8 @@ public str newNameForLiteral() {
 
 public void createNewStacks() {
 	push(0, counterStack);
-	push(head(symbolTableStack), symbolTableStack);
+	map[str, str] headOfSymbolTableStack = head(symbolTableStack);
+	symbolTableStack = push(headOfSymbolTableStack, symbolTableStack);
 }
 
 public void removeStackHeads() {

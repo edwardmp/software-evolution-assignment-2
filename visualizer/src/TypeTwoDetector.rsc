@@ -1,17 +1,26 @@
 module TypeTwoDetector
 
 import GeneralDetector;
-import IO;//debug
 import lang::java::m3::AST;
 import List; // head (as peek), pop and push are used for simulating a stack
 import Printer;
 import Set;
 import Exception;
 
+/*
+ * Stack of counters for each scope in which the currently analyzed line is nested, used for standardizing variables etc.
+ */
 private list[int] counterStack;
 
+/*
+ * Stack of symbol tables for each scope in which the currently analyzed line is nested
+ * A symbol table is a map from the original name of a variable to the standardized name for that variable.
+ */
 private list[map[str, str]] symbolTableStack;
 
+/*
+ * Main method to detect type-2 clones in a specified location.
+ */
 public void main(loc location) {
 	initialize();
 	return printToJSON(delAnnotationsRec(findDuplicationClasses(astsToLines(standardize(locToAsts(location))))));
@@ -32,6 +41,9 @@ public void initialize() {
  */
 public set[Declaration] standardize(set[Declaration] asts) = { standardize(ast) | ast <- asts };
 
+/*
+ * Standardize a Declaration.
+ */
 public Declaration standardize(Declaration d) {
 	return top-down-break visit(d) {
 		case \compilationUnit(list[Declaration] imports, list[Declaration] types)
@@ -74,8 +86,10 @@ public Declaration standardize(Declaration d) {
 			removeStackHeads();
 			insert result;
 		}
-		case \field(Type \type, list[Expression] fragments)
-			=> copySrc(d, \field(\type, standardize(fragments)))
+		case \field(Type \type, list[Expression] fragments): {
+			addVariablesToSymbolTable(fragments);
+			insert copySrc(d, \field(\type, standardize(fragments)));
+		}
 		case \initializer(Statement initializerBody)
 			=> copySrc(d, \initializer(standardize(initializerBody)))
 		case \method(Type \return, str name, list[Declaration] parameters, list[Expression] exceptions, Statement impl): {
@@ -101,7 +115,10 @@ public Declaration standardize(Declaration d) {
 			removeStackHeads();
 			insert result;
 		}
-		case \variables(Type \type, list[Expression] \fragments) => copySrc(d, \variables(\type, standardize(\fragments)))
+		case \variables(Type \type, list[Expression] \fragments): {
+			addVariablesToSymbolTable(fragments);
+			insert copySrc(d, \variables(\type, standardize(\fragments)));
+		}
 		case \parameter(Type \type, str name, int extraDimensions): {
 			addToSymbolTable(name);
 			insert copySrc(d, \parameter(\type, retrieveFromCurrentSymbolTable(name), extraDimensions));
@@ -113,8 +130,25 @@ public Declaration standardize(Declaration d) {
 	}
 }
 
+/*
+ * Add all variables in a list of expressions to the symbol table.
+ */
+public void addVariablesToSymbolTable(list[Expression] exprs) {
+	for (expr <- exprs) {
+		if (\variable(str name, _) := expr || \variable(str name, _, _) := expr) {
+			addToSymbolTable(name);
+		}
+	}
+}
+
+/*
+ * Standardize alle elements of a list.
+ */
 public list[&T] standardize(list[&T] values) = [standardize(v) | v <- values];
 
+/*
+ * Standardize an Expression.
+ */
 public Expression standardize(Expression e) {
   	return top-down-break visit(e) {
   		case \newArray(Type \type, list[Expression] dimensions, Expression init) => copySrc(e, \newArray(\type, standardize(dimensions), standardize(init)))
@@ -123,7 +157,7 @@ public Expression standardize(Expression e) {
 	    case \fieldAccess(bool isSuper, Expression expression, str name) => copySrc(e, \fieldAccess(isSuper, standardize(expression), retrieveFromCurrentSymbolTable(name)))
 	    case \fieldAccess(bool isSuper, str name) => copySrc(e, \fieldAccess(isSuper, retrieveFromCurrentSymbolTable(name)))
 	    case \methodCall(bool isSuper, str name, list[Expression] arguments) => copySrc(e, \methodCall(isSuper, name, standardize(arguments)))
-    	case \methodCall(bool isSuper, Expression receiver, str name, list[Expression] arguments) => copySrc(e, \methodCall(isSuper, standardize(receiver), name, standardize(arguments)))
+    	case \methodCall(bool isSuper, Expression receiver, str name, list[Expression] arguments) => copySrc(e, \methodCall(isSuper, receiver, name, standardize(arguments)))
 	    case \newObject(Expression expr, Type \type, list[Expression] args, Declaration class) => copySrc(e, \newObject(standardize(expr), \type, standardize(args), standardize(class)))
     	case \newObject(Type \type, list[Expression] args, Declaration class) => copySrc(e, \newObject(\type, standardize(args), standardize(class)))
     	case \newObject(Expression expr, Type \type, list[Expression] args) => copySrc(e, \newObject(standardize(expr), \type, standardize(args)))
@@ -141,6 +175,9 @@ public Expression standardize(Expression e) {
   	}
 }
 
+/*
+ * Standardize a Statement.
+ */
 public Statement standardize(Statement s) {
 	return top-down-break visit(s) {
 		case \assert(Expression expression) => copySrc(s, \assert(standardize(expression)))
@@ -165,20 +202,21 @@ public Statement standardize(Statement s) {
 		}
 		case \for(list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body): {
 			createNewStacks();
-			Statement result = \for(standardize(initializers), standardize(condition), standardize(updaters), standardize(body));
+			Statement result = copySrc(s,
+				\for(standardize(initializers), standardize(condition), standardize(updaters), standardize(body)));
 			removeStackHeads();
 			insert result;
 		}
 		case \for(list[Expression] initializers, list[Expression] updaters, Statement body): {
 			createNewStacks();
-			Statement result = \for(standardize(initializers), standardize(updaters), standardize(body));
+			Statement result = copySrc(s, \for(standardize(initializers), standardize(updaters), standardize(body)));
 			removeStackHeads();
 			insert result;
 		}
 		case \if(Expression condition, Statement thenBranch): {
 			condition = standardize(condition);
 			createNewStacks();
-			Statement result = \if(condition, standardize(thenBranch));
+			Statement result = copySrc(s, \if(condition, standardize(thenBranch)));
 			removeStackHeads();
 			insert result;
 		}
@@ -241,7 +279,7 @@ public Statement standardize(Statement s) {
 			createNewStacks();
 			Statement result = copySrc(s, \catch(exception, standardize(body)));
 			removeStackHeads();
-			insert copySrc(s, \catch(result));
+			insert result;
 		}
 		case \declarationStatement(Declaration declaration) => copySrc(s, \declarationStatement(standardize(declaration)))
 		case \while(Expression condition, Statement body): {
@@ -259,15 +297,26 @@ public Statement standardize(Statement s) {
 	}
 }
 
+/*
+ * Copy the value of the src-annotation of some value to another value of the same type, if it is present.
+ */
 public &T copySrc(&T from, &T to) {
-	to@src = from@src;
+	if (from@src ?) {
+		to@src = from@src;
+	}
 	return to;
 }
 
+/*
+ * Add a str to the current symbol table (mapped to a new standardized name.
+ */
 public void addToSymbolTable(str variable) {
-	symbolTableStack[0] += (variable: newNameForLiteral());
+	symbolTableStack[0] += (variable: reserveNewName());
 }
 
+/*
+ * Retrieve the standardized name for some str from the current symbol table.
+ */
 public str retrieveFromCurrentSymbolTable(str constantName) {
 	if (size(symbolTableStack) == 0) {
 		throw AssertionFailed("No symbol tables initialized.");
@@ -276,17 +325,26 @@ public str retrieveFromCurrentSymbolTable(str constantName) {
 	return head(symbolTableStack)[constantName];
 }
 
-public str newNameForLiteral() {
+/*
+ * Reserve a name for a new thing that has to be given a standardized name.
+ */
+public str reserveNewName() {
 	str tempResult = "v<head(counterStack)>";
 	counterStack[0] += 1;
 	return tempResult;
 }
 
+/*
+ * Add a new element that is a copy of the current head to the counterStack and symbolTableStack.
+ */
 public void createNewStacks() {
 	counterStack = push(0, counterStack);
 	symbolTableStack = push(head(symbolTableStack), symbolTableStack);
 }
 
+/*
+ * Remove the heads of the counterStack and symbolTableStack.
+ */
 public void removeStackHeads() {
 	tuple[map[str, str] head, list[map[str, str]] tail] symbolTableTuple = pop(symbolTableStack);
 	symbolTableStack = symbolTableTuple.tail;

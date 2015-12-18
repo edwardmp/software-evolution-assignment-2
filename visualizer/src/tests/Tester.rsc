@@ -1,4 +1,4 @@
-module tester::Tester
+module tests::Tester
 
 import TypeOneDetector;
 import IO;
@@ -9,7 +9,7 @@ import Exception;
  */
 public void runTests(bool isEdwardLaptop) {
 	loc pathPrefix;
-	str resultsFixturePrefix = "visualizer/src/tester/";
+	str resultsFixturePrefix = "visualizer/src/tests/";
 	list[str] fixtureLines;
 	if (isEdwardLaptop) {
 		pathPrefix = |file:///Users/Edward/eclipse/workspace/Assignment%202/|;
@@ -24,7 +24,7 @@ public void runTests(bool isEdwardLaptop) {
 	
 	// run TypeOneDetector
 	main(javaTestFiles);
-	list[str] outputFileLines = readFileLines(pathPrefix + "visualizer/resultOfAnalysis.json");
+	list[str] outputFileLines = readFileLines(pathPrefix + "visualizer/resultOfAnalysis/Type1.json");
 	
 	if (fixtureLines != outputFileLines) {
 		throw AssertionFailed("Fixture output file not equal to generated output file");

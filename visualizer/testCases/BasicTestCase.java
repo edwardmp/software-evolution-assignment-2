@@ -30,16 +30,7 @@ public class BasicTestCase {
 		}
 	}
 	
-	public void secondMethodContainingDuplicateLines(int limit) {
-		for (int i = 0; i < limit; i++) {
-			if (i == 0) {
-				System.out.println("OMG i == 0");
-				System.out.println("OMG i == 0");
-				System.out.println("OMG i == 0");
-				System.out.println("OMG i == 0");
-			}
-		}
-		
+	public void secondMethodContainingDuplicateLines(int limit) {		
 		int i = 0;
 		while(i < limit) {
 			if (i == 0) {

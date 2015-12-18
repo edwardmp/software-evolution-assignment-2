@@ -2,7 +2,7 @@ module TypeTwoDetector
 
 import GeneralDetector;
 import lang::java::m3::AST;
-import List; // head (as peek), pop and push are used for simulating a stack
+import List;
 import Printer;
 import Set;
 import Exception;
@@ -324,6 +324,7 @@ public str retrieveFromCurrentSymbolTable(str name) {
 	if (size(symbolTableStack) == 0) {
 		throw AssertionFailed("No symbol tables initialized.");
 	}
+	
 	if (name == "") {
 		return name;
 	}
